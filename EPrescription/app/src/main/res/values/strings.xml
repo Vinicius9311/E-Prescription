@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">E-Prescription</string>
+    <string name="hint_email">E-mail</string>
+    <string name="hint_password">Senha</string>
+    <string name="login_button">Login</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="create_account">Create Account</string>
+    <string name="login_popup_text">Insira E-mail e senha para entrar</string>
+    <string name="email_hint">E-mail</string>
+    <string name="login_text">Login</string>
+    <string name="title_activity_patient_home">PatientHomeActivity</string>
+    <string name="title_register">Insira seus dados para completar seu cadastro</string>
+    <string name="hint_name">Nome</string>
+    <string name="hint_surname">Sobrenome</string>
+    <string name="hint_date_of_birth">Data de nascimento</string>
+    <string name="radio_button_male">Masculino</string>
+    <string name="radio_button_female">Feminino</string>
+    <string name="register_button">Registrar</string>
+    <string name="hint_confirm_password">Confirmar senha</string>
+    <string name="marital_status_text">Estado civil:</string>
+    <string name="sex">Sexo:</string>
+    <string name="hint_crm">CRM</string>
+    <string name="blood_type">Tipo Sanguíneo</string>
+    <string name="create_password">Crie sua senha</string>
+    <string-array name="marital_status">
+        <item>Solteiro(a)</item>
+        <item>Casado(a)</item>
+        <item>Divorciado(a)</item>
+        <item>Viúvo(a)</item>
+        <item>Separado(a)</item>
+    </string-array>
+    <string-array name="blood_type">
+        <item>A+</item>
+        <item>A-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>O+</item>
+        <item>O-</item>
+    </string-array>
+    <string name="title_activity_patient_home_drawer">PatientHomeDrawerActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+</resources>

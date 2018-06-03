@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.DoctorRegisterActivity">
+
+    <ScrollView
+        android:id="@+id/scrollViewDoctorRegisterID"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/doctorTitleRegisterID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_register"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20sp"
+                tools:layout_editor_absoluteX="163dp"
+                tools:layout_editor_absoluteY="29dp" />
+
+            <EditText
+                android:id="@+id/doctorEditTextNameID"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="@string/hint_name"
+                tools:layout_editor_absoluteX="84dp"
+                tools:layout_editor_absoluteY="65dp" />
+
+            <EditText
+                android:id="@+id/doctorEditTextSurnameID"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="@string/hint_surname"
+                tools:layout_editor_absoluteX="84dp"
+                tools:layout_editor_absoluteY="124dp" />
+
+            <Spinner
+                android:id="@+id/doctorSpinnerSpecialtyID"
+                android:paddingTop="20dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/doctorEditTextCrmID"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_crm"
+                tools:layout_editor_absoluteX="84dp"
+                tools:layout_editor_absoluteY="124dp" />
+
+            <EditText
+                android:id="@+id/doctorEditTextEmailRegisterID"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:hint="@string/hint_email"
+                tools:layout_editor_absoluteX="84dp"
+                tools:layout_editor_absoluteY="185dp" />
+
+            <EditText
+                android:id="@+id/doctorEditTextDateOfBirthID"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="date"
+                android:hint="@string/hint_date_of_birth"
+                tools:layout_editor_absoluteX="84dp"
+                tools:layout_editor_absoluteY="231dp" />
+
+            <TextView
+                android:id="@+id/doctorMaritalStatusTextID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/marital_status_text" />
+
+            <Spinner
+                android:id="@+id/doctorSpinnerMaritalStateID"
+                android:paddingTop="20dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <RadioGroup
+                android:id="@+id/doctorRadioGroupID"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout_editor_absoluteX="84dp"
+                tools:layout_editor_absoluteY="336dp">
+
+                <RadioButton
+                    android:id="@+id/doctorRadioButtonFemaleID"
+                    android:layout_width="120dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:text="@string/radio_button_female" />
+
+                <RadioButton
+                    android:id="@+id/doctorRadioButtonMaleID"
+                    android:layout_width="120dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:text="@string/radio_button_male" />
+
+            </RadioGroup>
+
+            <Spinner
+                android:id="@+id/doctorSpinnerBloodTypeID"
+                android:paddingTop="30dp"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/doctorPasswordRegisterID"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_password"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:id="@+id/doctorConfPasswordRegisterID"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_confirm_password"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/registerDoctorID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/register_button" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
