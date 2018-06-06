@@ -11,6 +11,7 @@ public class Patient {
     private String dateModified; // user modification date
     private String dateCreated;
     private String password;
+    //private String userID;
 
     public Patient(String firstName, String lastName, String email, String dateOfBirth,
                    String maritalStatus, String sex, String bloodType, String dateModified,
@@ -25,6 +26,7 @@ public class Patient {
         this.dateModified = dateModified;
         this.dateCreated = dateCreated;
         this.password = password;
+        //this.userID = userID;
     }
 
     public String getFirstName() {
@@ -107,4 +109,11 @@ public class Patient {
         this.password = password;
     }
 
+//    public String getUserID() {
+//        return userID;
+//    }
+//
+//    public void setUserID(String userID) {
+//        this.userID = userID;
+//    }
 }

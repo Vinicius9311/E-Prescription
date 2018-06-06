@@ -2,9 +2,10 @@
     <string name="app_name">E-Prescription</string>
     <string name="hint_email">E-mail</string>
     <string name="hint_password">Senha</string>
-    <string name="login_button">Login</string>
+    <string name="doctor_login_button">Entrar como Médico</string>
+    <string name="patient_login_button">Entrar como Paciente</string>
     <string name="sign_out">Sign Out</string>
-    <string name="create_account">Create Account</string>
+    <string name="create_account">Criar conta</string>
     <string name="login_popup_text">Insira E-mail e senha para entrar</string>
     <string name="email_hint">E-mail</string>
     <string name="login_text">Login</string>
@@ -39,6 +40,61 @@
         <item>O+</item>
         <item>O-</item>
     </string-array>
+    <string-array name="specialty">
+        <item>ACUPUNTURA</item>
+        <item>ALERGIA E IMUNOLOGIA</item>
+        <item>ANESTESIOLOGIA</item>
+        <item>ANGIOLOGIA</item>
+        <item>CANCEROLOGIA/CANCEROLOGIA CLÍNICA</item>
+        <item>CANCEROLOGIA/CANCEROLOGIA CIRÚRGICA</item>
+        <item>CANCEROLOGIA/CANCEROLOGIA PEDIÁTRICA</item>
+        <item>CARDIOLOGIA</item>
+        <item>CIRURGIA CARDIOVASCULAR</item>
+        <item>CIRURGIA DE CABEÇA E PESCOÇO</item>
+        <item>CIRURGIA DO APARELHO DIGESTIVO</item>
+        <item>CIRURGIA GERAL</item>
+        <item>CIRURGIA PEDIÁTRICA</item>
+        <item>CIRURGIA PLÁSTICA</item>
+        <item>CIRURGIA TORÁCICA</item>
+        <item>CIRURGIA VASCULAR</item>
+        <item>CLÍNICA MÉDICA</item>
+        <item>COLOPROCTOLOGIA</item>
+        <item>ENDOCRINOLOGIA</item>
+        <item>ENDOSCOPIA</item>
+        <item>GASTROENTEROLOGIA</item>
+        <item>GENÉTICA MÉDICA</item>
+        <item>GERIATRIA</item>
+        <item>GINECOLOGIA</item>
+        <item>HEMATOLOGIA E HEMOTERAPIA</item>
+        <item>INFECTOLOGIA</item>
+        <item>MASTOLOGIA</item>
+        <item>MEDICINA DE FAMÍLIA E COMUNIDADE</item>
+        <item>MEDICINA DO TRABALHO</item>
+        <item>MEDICINA DO TRÁFEGO</item>
+        <item>MEDICINA ESPORTIVA</item>
+        <item>MEDICINA FÍSICA E REABILITAÇÃO</item>
+        <item>MEDICINA INTENSIVA</item>
+        <item>MEDICINA LEGAL</item>
+        <item>MEDICINA NUCLEAR</item>
+        <item>MEDICINA PREVENTIVA E SOCIAL</item>
+        <item>NEFROLOGIA</item>
+        <item>NEUROCIRURGIA</item>
+        <item>NEUROLOGIA</item>
+        <item>NUTROLOGIA</item>
+        <item>OFTALMOLOGIA</item>
+        <item>ORTOPEDIA e TRAUMATOLOGIA</item>
+        <item>OTORRINOLARINGOLOGIA</item>
+        <item>PATOLOGIA</item>
+        <item>PATOLOGIA CLÍNICA/MEDICINA LABORATORIAL</item>
+        <item>PEDIATRIA</item>
+        <item>PSIQUIATRIA</item>
+        <item>RADIOLOGIA E DIAGNÓSTICO POR IMAGEM</item>
+        <item>DIAGNÓSTICO POR IMAGEM: ATUAÇÃO EXCLUSIVA ULTRA-SONOGRAFIA GERAL</item>
+        <item>DIAGNÓSTICO POR IMAGEM: ATUAÇÃO EXCLUSIVA RADIOLOGIA INTERVENCIONISTA E ANGIORRADIOLOGIA</item>
+        <item>RADIOTERAPIA</item>
+        <item>REUMATOLOGIA</item>
+        <item>UROLOGIA</item>
+    </string-array>
     <string name="title_activity_patient_home_drawer">PatientHomeDrawerActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -46,4 +102,9 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_patient_home_botton">PatientHomeBottonActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="specialty">Especialidade</string>
 </resources>

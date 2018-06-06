@@ -7,25 +7,20 @@ public class Doctor {
     private String crm;
     private String email;
     private String dateOfBirth;
-    private String maritalStatus; // estado civil
     private String sex;
-    private String bloodType;
     private String dateModified; // user modification date
     private String dateCreated;
     private String password;
 
     public Doctor(String firstName, String lastName, String specialty, String crm,
-                  String email, String dateOfBirth, String maritalStatus, String sex,
-                  String bloodType, String dateModified, String dateCreated, String password) {
+                  String email, String dateOfBirth, String sex, String dateModified, String dateCreated, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.specialty = specialty;
         this.crm = crm;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
-        this.maritalStatus = maritalStatus;
         this.sex = sex;
-        this.bloodType = bloodType;
         this.dateModified = dateModified;
         this.dateCreated = dateCreated;
         this.password = password;
@@ -79,28 +74,12 @@ public class Doctor {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getMaritalStatus() {
-        return maritalStatus;
-    }
-
-    public void setMaritalStatus(String maritalStatus) {
-        this.maritalStatus = maritalStatus;
-    }
-
     public String getSex() {
         return sex;
     }
 
     public void setSex(String sex) {
         this.sex = sex;
-    }
-
-    public String getBloodType() {
-        return bloodType;
-    }
-
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
     }
 
     public String getDateModified() {

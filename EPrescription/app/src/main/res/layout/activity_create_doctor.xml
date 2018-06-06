@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.DoctorRegisterActivity">
+    tools:context=".Activities.CreateDoctorAccountActivity">
 
     <ScrollView
         android:id="@+id/scrollViewDoctorRegisterID"
@@ -52,6 +52,14 @@
                 tools:layout_editor_absoluteX="84dp"
                 tools:layout_editor_absoluteY="124dp" />
 
+            <TextView
+                android:id="@+id/specialtyTextID"
+                android:layout_width="match_parent"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/specialty" />
+
             <Spinner
                 android:id="@+id/doctorSpinnerSpecialtyID"
                 android:paddingTop="20dp"
@@ -91,17 +99,12 @@
                 tools:layout_editor_absoluteY="231dp" />
 
             <TextView
-                android:id="@+id/doctorMaritalStatusTextID"
+                android:id="@+id/sexTextID"
                 android:layout_width="match_parent"
+                android:paddingTop="20dp"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:text="@string/marital_status_text" />
-
-            <Spinner
-                android:id="@+id/doctorSpinnerMaritalStateID"
-                android:paddingTop="20dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:text="@string/sex" />
 
             <RadioGroup
                 android:id="@+id/doctorRadioGroupID"

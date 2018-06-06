@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import eprescription.tcc.ufam.com.e_prescription.R;
 
-public class DoctorRegisterActivity extends AppCompatActivity {
+public class CreateDoctorAccountActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doctor_register);
+        setContentView(R.layout.activity_create_doctor);
     }
 }

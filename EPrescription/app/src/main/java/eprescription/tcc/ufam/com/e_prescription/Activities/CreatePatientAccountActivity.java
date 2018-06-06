@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,16 +18,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import eprescription.tcc.ufam.com.e_prescription.Adapter.SpinnerAdapter;
-import eprescription.tcc.ufam.com.e_prescription.Model.Customer;
-import eprescription.tcc.ufam.com.e_prescription.Model.Patient;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
-public class PatientRegisterActivity extends AppCompatActivity {
+public class CreatePatientAccountActivity extends AppCompatActivity {
 
     private TextView titlePatientRegister;
     private EditText firstName;
@@ -44,18 +39,20 @@ public class PatientRegisterActivity extends AppCompatActivity {
     private EditText passwordConfirmation;
     private Button registerButton;
 
-    private FirebaseDatabase firebaseDatabase;
+    private FirebaseDatabase database;
     private DatabaseReference patientDatabaseReference;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_register);
+        setContentView(R.layout.activity_create_patient);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        patientDatabaseReference = firebaseDatabase.getReference().child("patient");
+        database = FirebaseDatabase.getInstance();
+        patientDatabaseReference = database.getReference().child("patient");
+
+
+        //patientDatabaseReference.keepSynced(true);
         mAuth = FirebaseAuth.getInstance();
 
         titlePatientRegister = (TextView) findViewById(R.id.patientTitleRegisterID);
@@ -114,43 +111,64 @@ public class PatientRegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
+                final String name = firstName.getText().toString();
+                final String surname = lastName.getText().toString();
+                final String email = patientEmail.getText().toString();
+                final String dob = dateOfBirth.getText().toString();
+                final String mStatus = String.valueOf(maritalStatus.getSelectedItem());
+                //String sex = String.valueOf(radioButton.getId());
+                final String blood = String.valueOf(bloodType.getSelectedItem());
+                final String dateCreated = String.valueOf(java.lang.System.currentTimeMillis());
+                final String dateModified = String.valueOf(java.lang.System.currentTimeMillis());
+                final String pwd = password.getText().toString();
+
                 if (!password.getText().toString().equals("") &&
-                        !passwordConfirmation.getText().toString().equals("")) {
+                        !passwordConfirmation.getText().toString().equals("") &&
+                        !name.equals("") && !surname.equals("") && !email.equals("") &&
+                        !dob.equals("") && !mStatus.equals("") && !blood.equals("")) {
 
-                    String name = firstName.getText().toString();
-                    String surname = lastName.getText().toString();
-                    String email = patientEmail.getText().toString();
-                    String dob = dateOfBirth.getText().toString();
-                    String mStatus = String.valueOf(maritalStatus.getSelectedItem());
-                    //String sex = String.valueOf(radioButton.getId());
-                    String blood = String.valueOf(bloodType.getSelectedItem());
-                    String dateCreated = String.valueOf(java.lang.System.currentTimeMillis());
-                    String dateModified = String.valueOf(java.lang.System.currentTimeMillis());
-                    String pwd = password.getText().toString();
-                    //Customer customer = new Customer("Vini", "Helena", "vini@gmail.com", 25);
+                    if (passwordConfirmation.getText().toString().equals(password.getText().toString())) {
+                        mAuth.createUserWithEmailAndPassword(email,pwd).
+                                addOnCompleteListener(CreatePatientAccountActivity.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                    Patient patient = new Patient(name, surname, email, dob, mStatus, sex, blood, dateModified, dateCreated, pwd);
-                    patientDatabaseReference.setValue(patient);
-                    //Toast.makeText(PatientRegisterActivity.this, "name is: " + name, Toast.LENGTH_LONG).show();
-                    mAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(PatientRegisterActivity.this,
-                            new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
 
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(PatientRegisterActivity.this, "Account created", Toast.LENGTH_SHORT).show();
 
-                                    } else {
-                                        Toast.makeText(PatientRegisterActivity.this, "Failed to create Account", Toast.LENGTH_SHORT).show();
+
+                                            String userID = mAuth.getCurrentUser().getUid();
+                                            DatabaseReference currentUserDb = patientDatabaseReference.child(userID);
+                                            currentUserDb.child("firstName").setValue(name);
+                                            currentUserDb.child("lastName").setValue(surname);
+                                            currentUserDb.child("email").setValue(email);
+                                            currentUserDb.child("dateOfBirth").setValue(dob);
+                                            currentUserDb.child("maritalStatus").setValue(mStatus);
+                                            currentUserDb.child("sex").setValue(sex);
+                                            currentUserDb.child("bloodType").setValue(blood);
+                                            currentUserDb.child("dateModified").setValue(dateModified);
+                                            currentUserDb.child("dateCreated").setValue(dateCreated);
+                                            currentUserDb.child("password").setValue(pwd);
+
+                                            Intent intent = new Intent(CreatePatientAccountActivity.this, PatientHomeBottonActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            Toast.makeText(CreatePatientAccountActivity.this, "Conta Criada", Toast.LENGTH_LONG).show();
+                                        } else {
+                                            Toast.makeText(CreatePatientAccountActivity.this, "Criação de conta falhou", Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent(CreatePatientAccountActivity.this, MainActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
                                     }
-                                }
-                            });
+                                });
+                    } else {
+                        Toast.makeText(CreatePatientAccountActivity.this, "Senhas diferentes digitadas, insira novamente", Toast.LENGTH_LONG).show();
+                    }
 
-                    startActivity(new Intent(
-                            PatientRegisterActivity.this, PatientHomeDrawerActivity.class));
-                    finish();
                 } else {
-                    Toast.makeText(PatientRegisterActivity.this, "Por favor, insira seus dados nos campos", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreatePatientAccountActivity.this, "Por favor, insira seus dados nos campos", Toast.LENGTH_LONG).show();
                 }
             }
         });

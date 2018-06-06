@@ -6,11 +6,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,30 +19,25 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import eprescription.tcc.ufam.com.e_prescription.Model.Customer;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseDatabase database;
-    private DatabaseReference myRef;
-    private DatabaseReference mUsersDatabaseReference;
-    private DatabaseReference patientDatabaseReference;
-
+//    private FirebaseDatabase database;
+//    private DatabaseReference myRef;
+//    private DatabaseReference mUsersDatabaseReference;
+//    private DatabaseReference patientDatabaseReference;
+    private FirebaseUser mUser;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
     private static final String TAG = "MainActivity";
 
     private EditText email;
     private EditText password;
-    private Button login;
-    private Button signout;
+    private Button loginDoctor;
+    private Button loginPatient;
     private Button createAcc;
 
     private TextView loginMsg;
@@ -51,120 +47,71 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog loginDialog;
     private AlertDialog.Builder loginDialogBuilder;
 
+    //private ProgressBar mBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         email = (EditText) findViewById(R.id.emailID);
         password = (EditText) findViewById(R.id.passwordID);
-        login = (Button) findViewById(R.id.loginID);
-        signout = (Button) findViewById(R.id.signoutID);
+        loginDoctor = (Button) findViewById(R.id.doctorLoginID);
+        loginPatient = (Button) findViewById(R.id.patientLoginID);
         createAcc = (Button) findViewById(R.id.createAccountID);
         mAuth = FirebaseAuth.getInstance();
-
-
-        // Write a message to the database
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("message");
-
-        mUsersDatabaseReference = database.getReference().child("users");
-        patientDatabaseReference = database.getReference().child("patient");
-
-        //myRef.setValue("Hello, World!");
-
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String value = dataSnapshot.getValue(Customer.class);
-//                Log.d("MainActivity", "Value is " + value);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.d("MainActivity", "Failed to read value");
-//            }
-//        });
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                mUser = firebaseAuth.getCurrentUser();
 
-                if (user != null) {
+                if (mUser != null) {
                     // user is signed in
+                    Toast.makeText(MainActivity.this,"User Signed In", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "user signed in");
-                    Log.d(TAG, "username: " +user.getEmail());
+                    Log.d(TAG, "username: " + mUser.getEmail());
+                    startActivity(new Intent(MainActivity.this, PatientHomeBottonActivity.class));
+                    finish();
                 } else {
                     // user is signed out
                     Log.d(TAG, "user signed out");
+                    Toast.makeText(MainActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
+
                 }
             }
         };
 
-        login.setOnClickListener(new View.OnClickListener() {
+        loginPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createLoginPopupDialog();
-//                String emailString = email.getText().toString();
-//                String pwdString = password.getText().toString();
-//
-//                if (!emailString.equals("") && !pwdString.equals("")) {
-//                    mAuth.signInWithEmailAndPassword(emailString, pwdString)
-//                            .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<AuthResult> task) {
-//                                    if (!task.isSuccessful()) {
-//                                        Toast.makeText(MainActivity.this, "Failed to sign in", Toast.LENGTH_LONG).show();
-//                                    } else {
-//                                        Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
-//
-//                                        Customer customer = new Customer("Vini", "Helena", "vini@gmail.com", 25);
-//                                        // We can now write to the database
-//                                        //myRef.setValue("We are in again");
-//                                        myRef.setValue(customer);
-//                                    }
-//                                }
-//                            });
-//                }
-            }
-        });
-
-        signout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                Toast.makeText(MainActivity.this,"You've signed out", Toast.LENGTH_LONG).show();
             }
         });
 
         createAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, PatientRegisterActivity.class));
-
-//                String emailString = email.getText().toString();
-//                String pwdString = password.getText().toString();
-//
-//                if (!emailString.equals("") && !pwdString.equals("")) {
-//                    mAuth.createUserWithEmailAndPassword(emailString, pwdString).addOnCompleteListener(MainActivity.this,
-//                            new OnCompleteListener<AuthResult>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<AuthResult> task) {
-//
-//                                    if (task.isSuccessful()) {
-//                                        Toast.makeText(MainActivity.this, "Account created", Toast.LENGTH_SHORT).show();
-//
-//                                    } else {
-//                                        Toast.makeText(MainActivity.this, "Failed to create Account", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                }
-//                            });
-//                }
+                startActivity(new Intent(MainActivity.this, CreatePatientAccountActivity.class));
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_signout){
+            mAuth.signOut();
+            Toast.makeText(MainActivity.this, "Signed Out", Toast.LENGTH_LONG).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -209,12 +156,9 @@ public class MainActivity extends AppCompatActivity {
                                         Toast.makeText(MainActivity.this, "Failed to sign in", Toast.LENGTH_LONG).show();
                                     } else {
                                         Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(MainActivity.this, PatientHomeDrawerActivity.class));
-//
-//                                        Customer customer = new Customer("Vini", "Helena", "vini@gmail.com", 25);
-//                                        // We can now write to the database
-//                                        //myRef.setValue("We are in again");
-//                                        mUsersDatabaseReference.setValue(customer);
+                                        // Todo a progress bar
+                                        startActivity(new Intent(MainActivity.this, PatientHomeBottonActivity.class));
+                                        finish();
                                     }
                                 }
                             });
