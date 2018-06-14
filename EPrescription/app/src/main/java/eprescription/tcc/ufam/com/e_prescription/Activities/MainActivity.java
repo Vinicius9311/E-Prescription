@@ -34,11 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private EditText email;
-    private EditText password;
-    private Button loginDoctor;
-    private Button loginPatient;
-    private Button createAcc;
+    private Button createPatient;
+    private Button createDoctor;
 
     private TextView loginMsg;
     private EditText emailLogin;
@@ -55,12 +52,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        email = (EditText) findViewById(R.id.emailID);
-        password = (EditText) findViewById(R.id.passwordID);
-        loginDoctor = (Button) findViewById(R.id.doctorLoginID);
-        loginPatient = (Button) findViewById(R.id.patientLoginID);
-        createAcc = (Button) findViewById(R.id.createAccountID);
+        loginButton = (Button) findViewById(R.id.loginID);
+        createPatient = (Button) findViewById(R.id.createPatientID);
+        createDoctor = (Button) findViewById(R.id.createDoctortID);
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -84,17 +78,24 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        loginPatient.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createLoginPopupDialog();
             }
         });
 
-        createAcc.setOnClickListener(new View.OnClickListener() {
+        createPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, CreatePatientAccountActivity.class));
+            }
+        });
+
+        createDoctor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, CreateDoctorAccountActivity.class));
             }
         });
     }

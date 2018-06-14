@@ -7,27 +7,17 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import eprescription.tcc.ufam.com.e_prescription.R;
 
-public class PatientHomeBottonActivity extends AppCompatActivity {
+public class DoctorHomeBottomActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private FirebaseAuth mAuth;
-    private FirebaseDatabase database;
-    private DatabaseReference myRef;
-    private DatabaseReference test;
-
-    private Button btn;
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -52,35 +42,22 @@ public class PatientHomeBottonActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_home_botton);
-
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("message");
-        test = database.getReference("test");
-
-        myRef.setValue("Hello, World!");
+        setContentView(R.layout.activity_doctor_home_bottom);
 
         mTextMessage = (TextView) findViewById(R.id.message);
-        btn = (Button) findViewById(R.id.button2);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mAuth = FirebaseAuth.getInstance();
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                test.setValue("test");
-            }
-        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_signout){
             mAuth.signOut();
-            Toast.makeText(PatientHomeBottonActivity.this, "Signed Out", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(PatientHomeBottonActivity.this, MainActivity.class));
+            Toast.makeText(DoctorHomeBottomActivity.this, "Signed Out", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(DoctorHomeBottomActivity.this, MainActivity.class));
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -91,6 +68,4 @@ public class PatientHomeBottonActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
-
 }

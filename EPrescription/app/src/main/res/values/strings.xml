@@ -2,10 +2,10 @@
     <string name="app_name">E-Prescription</string>
     <string name="hint_email">E-mail</string>
     <string name="hint_password">Senha</string>
-    <string name="doctor_login_button">Entrar como Médico</string>
-    <string name="patient_login_button">Entrar como Paciente</string>
+    <string name="login_button">Entrar</string>
+    <string name="doctor_create_button">Criar Conta como Médico</string>
     <string name="sign_out">Sign Out</string>
-    <string name="create_account">Criar conta</string>
+    <string name="patient_create_account">Criar conta como Paciente</string>
     <string name="login_popup_text">Insira E-mail e senha para entrar</string>
     <string name="email_hint">E-mail</string>
     <string name="login_text">Login</string>
@@ -107,4 +107,5 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="specialty">Especialidade</string>
+    <string name="title_activity_doctor_home_bottom">DoctorHomeBottomActivity</string>
 </resources>

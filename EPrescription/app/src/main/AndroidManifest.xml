@@ -26,7 +26,10 @@
         <activity android:name=".Activities.CreateDoctorAccountActivity" />
         <activity
             android:name=".Activities.PatientHomeBottonActivity"
-            android:label="@string/title_activity_patient_home_botton"></activity>
+            android:label="@string/title_activity_patient_home_botton" />
+        <activity
+            android:name=".Activities.DoctorHomeBottomActivity"
+            android:label="@string/title_activity_doctor_home_bottom"></activity>
     </application>
 
 </manifest>

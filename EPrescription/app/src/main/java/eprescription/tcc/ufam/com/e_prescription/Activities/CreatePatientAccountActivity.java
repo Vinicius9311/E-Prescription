@@ -52,7 +52,7 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
         patientDatabaseReference = database.getReference().child("patient");
 
 
-        //patientDatabaseReference.keepSynced(true);
+        patientDatabaseReference.keepSynced(true);
         mAuth = FirebaseAuth.getInstance();
 
         titlePatientRegister = (TextView) findViewById(R.id.patientTitleRegisterID);
@@ -111,7 +111,6 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 final String name = firstName.getText().toString();
                 final String surname = lastName.getText().toString();
                 final String email = patientEmail.getText().toString();
@@ -122,6 +121,7 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                 final String dateCreated = String.valueOf(java.lang.System.currentTimeMillis());
                 final String dateModified = String.valueOf(java.lang.System.currentTimeMillis());
                 final String pwd = password.getText().toString();
+                //final String Type = "Doctor";
 
                 if (!password.getText().toString().equals("") &&
                         !passwordConfirmation.getText().toString().equals("") &&
@@ -135,9 +135,6 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                                         if (task.isSuccessful()) {
-
-
-
                                             String userID = mAuth.getCurrentUser().getUid();
                                             DatabaseReference currentUserDb = patientDatabaseReference.child(userID);
                                             currentUserDb.child("firstName").setValue(name);
@@ -150,16 +147,19 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                                             currentUserDb.child("dateModified").setValue(dateModified);
                                             currentUserDb.child("dateCreated").setValue(dateCreated);
                                             currentUserDb.child("password").setValue(pwd);
+                                            //currentUserDb.setValue("Type", Type);
 
                                             Intent intent = new Intent(CreatePatientAccountActivity.this, PatientHomeBottonActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
                                             Toast.makeText(CreatePatientAccountActivity.this, "Conta Criada", Toast.LENGTH_LONG).show();
+                                            finish();
                                         } else {
                                             Toast.makeText(CreatePatientAccountActivity.this, "Criação de conta falhou", Toast.LENGTH_LONG).show();
                                             Intent intent = new Intent(CreatePatientAccountActivity.this, MainActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
+                                            finish();
                                         }
                                     }
                                 });

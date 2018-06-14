@@ -130,13 +130,6 @@
 
             </RadioGroup>
 
-            <Spinner
-                android:id="@+id/doctorSpinnerBloodTypeID"
-                android:paddingTop="30dp"
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
             <EditText
                 android:id="@+id/doctorPasswordRegisterID"
                 android:paddingTop="20dp"
