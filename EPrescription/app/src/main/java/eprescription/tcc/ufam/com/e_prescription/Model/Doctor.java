@@ -5,25 +5,32 @@ public class Doctor {
     private String lastName;
     private String specialty;
     private String crm;
+    private String address;
+    private String phone;
     private String email;
     private String dateOfBirth;
     private String sex;
     private String dateModified; // user modification date
     private String dateCreated;
     private String password;
+    private String user;
 
     public Doctor(String firstName, String lastName, String specialty, String crm,
-                  String email, String dateOfBirth, String sex, String dateModified, String dateCreated, String password) {
+                  String address, String phone, String email, String dateOfBirth, String sex,
+                  String dateModified, String dateCreated, String password, String user) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.specialty = specialty;
         this.crm = crm;
+        this.address = address;
+        this.phone = phone;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.sex = sex;
         this.dateModified = dateModified;
         this.dateCreated = dateCreated;
         this.password = password;
+        this.user = user;
     }
 
     public String getFirstName() {
@@ -56,6 +63,22 @@ public class Doctor {
 
     public void setCrm(String crm) {
         this.crm = crm;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
@@ -104,5 +127,13 @@ public class Doctor {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }

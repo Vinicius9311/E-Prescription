@@ -29,6 +29,8 @@ public class CreateDoctorAccountActivity extends AppCompatActivity {
     private EditText lastName;
     private Spinner specialty;
     private EditText crm;
+    private EditText address;
+    private EditText phone;
     private EditText doctorEmail;
     private EditText dateOfBirth;
     private RadioGroup sexRadioGroup;
@@ -49,13 +51,15 @@ public class CreateDoctorAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_doctor);
 
         database = FirebaseDatabase.getInstance();
-        doctorsDatabaseReference = database.getReference().child("doctor");
+        doctorsDatabaseReference = database.getReference().child("users").child("doctor");
         mAuth = FirebaseAuth.getInstance();
 
         firstName = (EditText) findViewById(R.id.doctorEditTextNameID);
         lastName = (EditText) findViewById(R.id.doctorEditTextSurnameID);
         specialty = (Spinner) findViewById(R.id.doctorSpinnerSpecialtyID);
         crm = (EditText) findViewById(R.id.doctorEditTextCrmID);
+        address = (EditText) findViewById(R.id.docAddressID);
+        phone = (EditText) findViewById(R.id.docPhoneID);
         doctorEmail = (EditText) findViewById(R.id.doctorEditTextEmailRegisterID);
         dateOfBirth = (EditText) findViewById(R.id.doctorEditTextDateOfBirthID);
         sexRadioGroup = (RadioGroup) findViewById(R.id.doctorRadioGroupID);
@@ -97,18 +101,21 @@ public class CreateDoctorAccountActivity extends AppCompatActivity {
                 final String surname = lastName.getText().toString();
                 final String doctorSpecialty = String.valueOf(specialty.getSelectedItem());
                 final String doctorCrm = crm.getText().toString();
+                final String docAddress = address.getText().toString();
+                final String docPhone = phone.getText().toString();
                 final String email = doctorEmail.getText().toString();
                 final String dob = dateOfBirth.getText().toString();
                 final String dateCreated = String.valueOf(java.lang.System.currentTimeMillis());
                 final String dateModified = String.valueOf(java.lang.System.currentTimeMillis());
                 final String pwd = password.getText().toString();
                 final String confPwd = passwordConfirmation.getText().toString();
-                //final String Type = "Doctor";
+                final String Type = "Doctor";
 
                 if (!password.getText().toString().equals("") &&
                         !passwordConfirmation.getText().toString().equals("") &&
                         !name.equals("") && !surname.equals("") && !email.equals("") &&
-                        !dob.equals("") && !doctorSpecialty.equals("") && !doctorCrm.equals("")) {
+                        !dob.equals("") && !doctorSpecialty.equals("") && !doctorCrm.equals("") &&
+                        !docAddress.equals("") && !docPhone.equals("")) {
 
                     if (confPwd.equals(password.getText().toString())) {
                         mAuth.createUserWithEmailAndPassword(email, pwd).
@@ -117,18 +124,9 @@ public class CreateDoctorAccountActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                                         if (task.isSuccessful()) {
-                                            String doctorID = mAuth.getCurrentUser().getUid();
-                                            DatabaseReference docCurrentUserDb = doctorsDatabaseReference.child(doctorID);
-                                            docCurrentUserDb.child("firstName").setValue(name);
-                                            docCurrentUserDb.child("lastName").setValue(surname);
-                                            docCurrentUserDb.child("specialty").setValue(doctorSpecialty);
-                                            docCurrentUserDb.child("crm").setValue(doctorCrm);
-                                            docCurrentUserDb.child("dateOfBirth").setValue( dob);
-                                            docCurrentUserDb.child("dateCreated").setValue(dateCreated);
-                                            docCurrentUserDb.child("dateModified").setValue(dateModified);
-                                            docCurrentUserDb.child("password").setValue(pwd);
-                                            //currentUserDb.setValue("Type", Type);
-
+                                            Doctor doctor = new Doctor(name, surname, doctorSpecialty, doctorCrm, docAddress,
+                                                    docPhone, email, dob, sex, dateModified, dateCreated, pwd, Type);
+                                            doctorsDatabaseReference.push().setValue(doctor);
                                             Intent intent = new Intent(CreateDoctorAccountActivity.this, DoctorHomeBottomActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
@@ -148,8 +146,4 @@ public class CreateDoctorAccountActivity extends AppCompatActivity {
             }
         });
     }
-//
-//    private void createDoctorAccount() {
-//
-//    }
 }

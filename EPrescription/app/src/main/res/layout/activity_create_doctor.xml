@@ -77,6 +77,23 @@
                 tools:layout_editor_absoluteY="124dp" />
 
             <EditText
+                android:id="@+id/docAddressID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/address"
+                android:inputType="textMultiLine"
+                android:singleLine="false" />
+
+            <EditText
+                android:id="@+id/docPhoneID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/phone"
+                android:inputType="phone" />
+
+            <EditText
                 android:id="@+id/doctorEditTextEmailRegisterID"
                 android:paddingTop="20dp"
                 android:layout_width="match_parent"

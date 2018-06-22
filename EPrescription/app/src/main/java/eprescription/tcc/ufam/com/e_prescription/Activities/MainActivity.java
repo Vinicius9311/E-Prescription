@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,20 +21,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 public class MainActivity extends AppCompatActivity {
 
-//    private FirebaseDatabase database;
-//    private DatabaseReference myRef;
-//    private DatabaseReference mUsersDatabaseReference;
-//    private DatabaseReference patientDatabaseReference;
+    private FirebaseDatabase database;
+    private DatabaseReference mUsersDatabaseReference;
     private FirebaseUser mUser;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private static final String TAG = "MainActivity";
+    private String userType;
 
     private Button createPatient;
     private Button createDoctor;
@@ -40,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView loginMsg;
     private EditText emailLogin;
     private EditText passwordLogin;
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
     private Button loginButton;
     private AlertDialog loginDialog;
     private AlertDialog.Builder loginDialogBuilder;
@@ -64,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if (mUser != null) {
                     // user is signed in
-                    Toast.makeText(MainActivity.this,"User Signed In", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(MainActivity.this,"User Signed In", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "user signed in");
                     Log.d(TAG, "username: " + mUser.getEmail());
-                    startActivity(new Intent(MainActivity.this, PatientHomeBottonActivity.class));
+                    startActivity(new Intent(MainActivity.this, PatientHomeActivity.class));
                     finish();
                 } else {
                     // user is signed out
@@ -132,11 +137,33 @@ public class MainActivity extends AppCompatActivity {
     private void createLoginPopupDialog() {
 
         loginDialogBuilder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.login_popup, null);
+        final View view = getLayoutInflater().inflate(R.layout.login_popup, null);
         loginMsg = (TextView) view.findViewById(R.id.loginPopuptextViewID);
         emailLogin = (EditText) view.findViewById(R.id.emailEditTextID);
         passwordLogin = (EditText) view.findViewById(R.id.passwordEditTextID);
+        radioGroup = (RadioGroup) view.findViewById(R.id.loginRadioGroupID);
         loginButton = (Button) view.findViewById(R.id.loginButtonID);
+
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                radioButton = (RadioButton) view.findViewById(checkedId);
+                switch (radioButton.getId()) {
+                    case R.id.patientRadioButtonID:
+                        userType = "patient";
+                        String selectedID = radioButton.getText().toString();
+                        Log.d("RADIOBUTTON", String.valueOf(selectedID));
+                        break;
+                    case R.id.doctorRadioButtonID:
+                        selectedID = radioButton.getText().toString();
+                        userType = "doctor";
+                        Log.d("RADIOBUTTON", String.valueOf(selectedID));
+                        break;
+                }
+            }
+        });
 
         loginDialogBuilder.setView(view);
         loginDialog = loginDialogBuilder.create();
@@ -148,18 +175,32 @@ public class MainActivity extends AppCompatActivity {
                 String emailString = emailLogin.getText().toString();
                 String pwdString = passwordLogin.getText().toString();
 
+
                 if (!emailString.equals("") && !pwdString.equals("")) {
                     mAuth.signInWithEmailAndPassword(emailString, pwdString)
                             .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (!task.isSuccessful()) {
-                                        Toast.makeText(MainActivity.this, "Failed to sign in", Toast.LENGTH_LONG).show();
+                                    if (task.isSuccessful()) {
+                                        Log.d("USERTYPE", String.valueOf(userType));
+
+                                        if (userType.equals("patient")) {
+                                            Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
+                                            startActivity(new Intent(MainActivity.this, PatientHomeActivity.class));
+                                            finish();
+                                            // Todo a progress bar
+                                        } else if (userType.equals("doctor")) {
+                                            Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
+
+                                            finish();
+                                        }
+                                            // Todo a progress bar
+                                        //Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
+//                                        startActivity(new Intent(MainActivity.this, PatientHomeBottomActivity.class));
+//                                        finish();
+//
                                     } else {
-                                        Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
-                                        // Todo a progress bar
-                                        startActivity(new Intent(MainActivity.this, PatientHomeBottonActivity.class));
-                                        finish();
+                                        Toast.makeText(MainActivity.this, "Failed to sign in", Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });

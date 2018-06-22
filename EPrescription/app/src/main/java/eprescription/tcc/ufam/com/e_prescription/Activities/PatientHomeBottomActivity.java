@@ -18,7 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import eprescription.tcc.ufam.com.e_prescription.R;
 
-public class PatientHomeBottonActivity extends AppCompatActivity {
+public class PatientHomeBottomActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private FirebaseAuth mAuth;
@@ -37,6 +37,8 @@ public class PatientHomeBottonActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
+                    startActivity(new Intent(PatientHomeBottomActivity.this, PatientHomeActivity.class));
+
                     return true;
                 case R.id.navigation_dashboard:
                     mTextMessage.setText(R.string.title_dashboard);
@@ -67,20 +69,14 @@ public class PatientHomeBottonActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                test.setValue("test");
-            }
-        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_signout){
             mAuth.signOut();
-            Toast.makeText(PatientHomeBottonActivity.this, "Signed Out", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(PatientHomeBottonActivity.this, MainActivity.class));
+            Toast.makeText(PatientHomeBottomActivity.this, "Signed Out", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(PatientHomeBottomActivity.this, MainActivity.class));
             finish();
         }
         return super.onOptionsItemSelected(item);

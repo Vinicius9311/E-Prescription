@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import eprescription.tcc.ufam.com.e_prescription.Model.Patient;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 public class CreatePatientAccountActivity extends AppCompatActivity {
@@ -49,7 +50,7 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_patient);
 
         database = FirebaseDatabase.getInstance();
-        patientDatabaseReference = database.getReference().child("patient");
+        patientDatabaseReference = database.getReference().child("users").child("patient");
 
 
         patientDatabaseReference.keepSynced(true);
@@ -121,7 +122,7 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                 final String dateCreated = String.valueOf(java.lang.System.currentTimeMillis());
                 final String dateModified = String.valueOf(java.lang.System.currentTimeMillis());
                 final String pwd = password.getText().toString();
-                //final String Type = "Doctor";
+                final String type = "Patient";
 
                 if (!password.getText().toString().equals("") &&
                         !passwordConfirmation.getText().toString().equals("") &&
@@ -135,21 +136,11 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                                         if (task.isSuccessful()) {
-                                            String userID = mAuth.getCurrentUser().getUid();
-                                            DatabaseReference currentUserDb = patientDatabaseReference.child(userID);
-                                            currentUserDb.child("firstName").setValue(name);
-                                            currentUserDb.child("lastName").setValue(surname);
-                                            currentUserDb.child("email").setValue(email);
-                                            currentUserDb.child("dateOfBirth").setValue(dob);
-                                            currentUserDb.child("maritalStatus").setValue(mStatus);
-                                            currentUserDb.child("sex").setValue(sex);
-                                            currentUserDb.child("bloodType").setValue(blood);
-                                            currentUserDb.child("dateModified").setValue(dateModified);
-                                            currentUserDb.child("dateCreated").setValue(dateCreated);
-                                            currentUserDb.child("password").setValue(pwd);
-                                            //currentUserDb.setValue("Type", Type);
+                                            Patient patient = new Patient(name, surname, email, dob, mStatus, sex, blood, dateModified,
+                                                    dateCreated, pwd, type);
+                                            patientDatabaseReference.push().setValue(patient);
 
-                                            Intent intent = new Intent(CreatePatientAccountActivity.this, PatientHomeBottonActivity.class);
+                                            Intent intent = new Intent(CreatePatientAccountActivity.this, PatientHomeActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
                                             Toast.makeText(CreatePatientAccountActivity.this, "Conta Criada", Toast.LENGTH_LONG).show();

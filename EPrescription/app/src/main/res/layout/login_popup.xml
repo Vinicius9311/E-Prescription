@@ -22,8 +22,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="31dp"
-                android:textSize="17sp"
-                android:text="@string/login_popup_text" />
+                android:text="@string/login_popup_text"
+                android:textSize="17sp" />
 
             <EditText
                 android:id="@+id/emailEditTextID"
@@ -52,13 +52,33 @@
                 android:id="@+id/loginButtonID"
                 android:layout_width="127dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
                 android:paddingBottom="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_below="@id/passwordEditTextID"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="165dp"
                 android:text="@string/login_text" />
+
+            <RadioGroup
+                android:id="@+id/loginRadioGroupID"
+                android:layout_width="262dp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="178dp">
+
+                <RadioButton
+                    android:id="@+id/patientRadioButtonID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/patient" />
+
+                <RadioButton
+                    android:id="@+id/doctorRadioButtonID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/doctor" />
+            </RadioGroup>
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

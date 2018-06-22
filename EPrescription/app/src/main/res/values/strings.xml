@@ -108,4 +108,11 @@
     <string name="title_notifications">Notifications</string>
     <string name="specialty">Especialidade</string>
     <string name="title_activity_doctor_home_bottom">DoctorHomeBottomActivity</string>
+    <string name="patient">Paciente</string>
+    <string name="doctor">Médico</string>
+    <string name="appointment_text">Selecione a especialidade:</string>
+    <string name="address">Endereço</string>
+    <string name="phone">Telefone</string>
+    <string name="doctorNameID">Nome do Médico</string>
+    <string name="make_appointment">Marcar Consulta</string>
 </resources>

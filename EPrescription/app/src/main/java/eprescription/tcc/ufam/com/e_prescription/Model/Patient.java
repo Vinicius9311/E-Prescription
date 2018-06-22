@@ -11,11 +11,14 @@ public class Patient {
     private String dateModified; // user modification date
     private String dateCreated;
     private String password;
-    //private String userID;
+    private String user;
+
+    public Patient() {
+    }
 
     public Patient(String firstName, String lastName, String email, String dateOfBirth,
                    String maritalStatus, String sex, String bloodType, String dateModified,
-                   String dateCreated, String password) {
+                   String dateCreated, String password, String user) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -26,7 +29,7 @@ public class Patient {
         this.dateModified = dateModified;
         this.dateCreated = dateCreated;
         this.password = password;
-        //this.userID = userID;
+        this.user = user;
     }
 
     public String getFirstName() {
@@ -109,11 +112,11 @@ public class Patient {
         this.password = password;
     }
 
-//    public String getUserID() {
-//        return userID;
-//    }
-//
-//    public void setUserID(String userID) {
-//        this.userID = userID;
-//    }
+    public String getUser() {
+        return user;
+    }
+
+    public void setUserID(String user) {
+        this.user = user;
+    }
 }
