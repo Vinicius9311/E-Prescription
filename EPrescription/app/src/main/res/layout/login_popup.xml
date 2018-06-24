@@ -8,7 +8,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="31dp"
+                android:layout_marginTop="14dp"
                 android:text="@string/login_popup_text"
                 android:textSize="17sp" />
 
@@ -29,9 +29,8 @@
                 android:id="@+id/emailEditTextID"
                 android:layout_width="333dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_below="@+id/loginPopuptextViewID"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="60dp"
                 android:ems="10"
                 android:hint="@string/email_hint"
                 android:inputType="textEmailAddress" />
@@ -40,30 +39,19 @@
                 android:id="@+id/passwordEditTextID"
                 android:layout_width="333dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_below="@id/emailEditTextID"
+                android:layout_below="@+id/emailEditTextID"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="112dp"
                 android:ems="10"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword" />
 
-            <Button
-                android:id="@+id/loginButtonID"
-                android:layout_width="127dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:paddingBottom="20dp"
-                android:text="@string/login_text" />
-
             <RadioGroup
                 android:id="@+id/loginRadioGroupID"
                 android:layout_width="262dp"
-                android:orientation="horizontal"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_below="@+id/passwordEditTextID"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="178dp">
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/patientRadioButtonID"
@@ -79,6 +67,15 @@
                     android:layout_weight="1"
                     android:text="@string/doctor" />
             </RadioGroup>
+
+            <Button
+                android:id="@+id/loginButtonID"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/loginRadioGroupID"
+                android:layout_centerHorizontal="true"
+                android:paddingBottom="20dp"
+                android:text="@string/login_text" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

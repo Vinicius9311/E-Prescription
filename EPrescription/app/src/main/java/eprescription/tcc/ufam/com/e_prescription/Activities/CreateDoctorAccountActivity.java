@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -51,7 +52,7 @@ public class CreateDoctorAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_doctor);
 
         database = FirebaseDatabase.getInstance();
-        doctorsDatabaseReference = database.getReference().child("users").child("doctor");
+        doctorsDatabaseReference = database.getReference();
         mAuth = FirebaseAuth.getInstance();
 
         firstName = (EditText) findViewById(R.id.doctorEditTextNameID);
@@ -124,10 +125,12 @@ public class CreateDoctorAccountActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                                         if (task.isSuccessful()) {
+                                            FirebaseUser user = mAuth.getCurrentUser();
+                                            String userID = user.getUid();
                                             Doctor doctor = new Doctor(name, surname, doctorSpecialty, doctorCrm, docAddress,
                                                     docPhone, email, dob, sex, dateModified, dateCreated, pwd, Type);
-                                            doctorsDatabaseReference.push().setValue(doctor);
-                                            Intent intent = new Intent(CreateDoctorAccountActivity.this, DoctorHomeBottomActivity.class);
+                                            doctorsDatabaseReference.child("users").child("doctor").child(userID).setValue(doctor);
+                                            Intent intent = new Intent(CreateDoctorAccountActivity.this, DoctorHomeActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
                                             Toast.makeText(CreateDoctorAccountActivity.this, "Conta Criada", Toast.LENGTH_LONG).show();

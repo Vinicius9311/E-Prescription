@@ -12,17 +12,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Model.Patient;
 import eprescription.tcc.ufam.com.e_prescription.R;
@@ -35,8 +40,10 @@ public class PatientHomeActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference patientDatabaseReference;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private ChildEventListener childEventListener;
 
-    private TextView text;
+    private TextView patientInfo;
+    private ListView patientListView;
 
     private String userID;
 
@@ -57,12 +64,14 @@ public class PatientHomeActivity extends AppCompatActivity {
             }
         });
 
-        text = (TextView) findViewById(R.id.textViewID);
-        Log.d(TAG, "patient signed in");
+        patientInfo = (TextView) findViewById(R.id.PatientInfo);
+        patientListView = (ListView) findViewById(R.id.listView);
+
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         patientDatabaseReference = database.getReference().child("users").child("patient");
+        // todo ver aqui os childs
         mUser = mAuth.getCurrentUser();
         userID = mUser.getUid();
 
@@ -72,49 +81,111 @@ public class PatientHomeActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                Log.d(TAG, "user: " + user.toString());
 
                 if (user != null) {
-                    // todo getUserID
-                    // user is signed in
-                    //mUser = mAuth.getCurrentUser();
-//                    userID = mUser.getUid();
-                    //Toast.makeText(PatientHomeActivity.this,"UserID" + userID.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(PatientHomeActivity.this,"Email: " + user.getEmail() + "UserID: " + userID, Toast.LENGTH_LONG).show();
                     Log.d(TAG, "patient signed in");
-                    Log.d(TAG, "username: " + user.toString());
-                    Log.d(TAG, "userID: " + user.getUid());
+                    Log.d(TAG, "username: " + user.getEmail());
+                    Log.d(TAG, "userID: " + userID);
 
                 } else {
                     // user is signed out
                     Log.d(TAG, "user signed out");
                     Toast.makeText(PatientHomeActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
-
+                    startActivity(new Intent(PatientHomeActivity.this, MainActivity.class));
                 }
             }
         };
 
-//        patientDatabaseReference.addValueEventListener(new ValueEventListener() {
+        patientDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                showData(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+//        childEventListener = new ChildEventListener() {
 //            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                showData(dataSnapshot);
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                Patient patient = dataSnapshot.getValue(Patient.class);
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
 //            }
 //
 //            @Override
 //            public void onCancelled(DatabaseError databaseError) {
 //
 //            }
-//        });
+//        };
+//        patientDatabaseReference.addChildEventListener(childEventListener);
 
     }
 
-//    private void showData(DataSnapshot dataSnapshot) {
-//        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//            Patient patient = new Patient();
-//            patient.setFirstName(ds.child(userID).getValue(Patient.class).getFirstName());
-////            text = (TextView) findViewById(R.id.textViewID);
-////            text.setText(patient.getFirstName().toString());
-//        }
-//    }
+    private void showData(DataSnapshot dataSnapshot) {
+        Log.d("HERE", "VALUE IS: " + dataSnapshot.getValue()) ;
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userID = user.getUid();
+        Log.d("HERE", "USERID: " + userID);
+
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            Patient patient = new Patient();
+            patient.setFirstName(dataSnapshot.child(userID).getValue(Patient.class).getFirstName());
+            patient.setLastName(dataSnapshot.child(userID).getValue(Patient.class).getLastName());
+            patient.setEmail(dataSnapshot.child(userID).getValue(Patient.class).getEmail());
+            patient.setDateOfBirth(dataSnapshot.child(userID).getValue(Patient.class).getDateOfBirth());
+            patient.setMaritalStatus(dataSnapshot.child(userID).getValue(Patient.class).getMaritalStatus());
+            patient.setSex(dataSnapshot.child(userID).getValue(Patient.class).getSex());
+            patient.setBloodType(dataSnapshot.child(userID).getValue(Patient.class).getBloodType());
+            patient.setDateModified(dataSnapshot.child(userID).getValue(Patient.class).getDateModified());
+            patient.setDateCreated(dataSnapshot.child(userID).getValue(Patient.class).getDateCreated());
+            patient.setPassword(dataSnapshot.child(userID).getValue(Patient.class).getPassword());
+
+            Log.d(TAG, "First Name: " + patient.getFirstName());
+            patientInfo.setText(patient.getFirstName().toString());
+            Log.d(TAG, "Last Name: " + patient.getLastName());
+            Log.d(TAG, "Email: " + patient.getEmail());
+            Log.d(TAG, "Date of Birth: " + patient.getDateOfBirth());
+            Log.d(TAG, "Marital Status: " + patient.getMaritalStatus());
+            Log.d(TAG, "Sex: " + patient.getSex());
+            Log.d(TAG, "Blood Type: " + patient.getBloodType());
+            Log.d(TAG, "Date Modified: " + patient.getDateModified());
+            Log.d(TAG, "Date Created: " + patient.getDateCreated());
+            Log.d(TAG, "Password: " + patient.getPassword());
+
+
+            ArrayList<String> arrayList = new ArrayList<>();
+            arrayList.add(patient.getFirstName());
+            arrayList.add(patient.getLastName());
+            arrayList.add(patient.getEmail());
+            arrayList.add(patient.getDateOfBirth());
+            arrayList.add(patient.getMaritalStatus());
+            arrayList.add(patient.getSex());
+            arrayList.add(patient.getBloodType());
+            arrayList.add(patient.getDateModified());
+            arrayList.add(patient.getDateCreated());
+            arrayList.add(patient.getPassword());
+            ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, R.layout.content_patient_home, R.id.PatientInfo, arrayList);
+            patientListView.setAdapter(arrayAdapter);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

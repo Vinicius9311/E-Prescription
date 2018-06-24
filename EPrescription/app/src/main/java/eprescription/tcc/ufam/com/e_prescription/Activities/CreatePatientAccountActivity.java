@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -50,7 +51,8 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_patient);
 
         database = FirebaseDatabase.getInstance();
-        patientDatabaseReference = database.getReference().child("users").child("patient");
+        patientDatabaseReference = database.getReference();
+                //.child("users").child("patient");
 
 
         patientDatabaseReference.keepSynced(true);
@@ -136,9 +138,12 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                                         if (task.isSuccessful()) {
+                                            FirebaseUser user = mAuth.getCurrentUser();
+                                            String userID = user.getUid();
+
                                             Patient patient = new Patient(name, surname, email, dob, mStatus, sex, blood, dateModified,
                                                     dateCreated, pwd, type);
-                                            patientDatabaseReference.push().setValue(patient);
+                                            patientDatabaseReference.child("users").child("patient").child(userID).setValue(patient);
 
                                             Intent intent = new Intent(CreatePatientAccountActivity.this, PatientHomeActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

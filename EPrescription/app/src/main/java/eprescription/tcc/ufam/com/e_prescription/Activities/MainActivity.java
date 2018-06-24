@@ -24,12 +24,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import eprescription.tcc.ufam.com.e_prescription.Model.User;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseDatabase database;
-    private DatabaseReference mUsersDatabaseReference;
+    private DatabaseReference usersDatabaseReference;
     private FirebaseUser mUser;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         createPatient = (Button) findViewById(R.id.createPatientID);
         createDoctor = (Button) findViewById(R.id.createDoctortID);
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -72,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
                    // Toast.makeText(MainActivity.this,"User Signed In", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "user signed in");
                     Log.d(TAG, "username: " + mUser.getEmail());
-                    startActivity(new Intent(MainActivity.this, PatientHomeActivity.class));
-                    finish();
+                    //startActivity(new Intent(MainActivity.this, PatientHomeActivity.class));
+                    //finish();
                 } else {
                     // user is signed out
                     Log.d(TAG, "user signed out");
@@ -182,6 +184,12 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
+                                        // Todo Correct this way to sign in different users
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        String userID = user.getUid();
+                                        //User userType = new User();
+
+
                                         Log.d("USERTYPE", String.valueOf(userType));
 
                                         if (userType.equals("patient")) {
@@ -191,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                                             // Todo a progress bar
                                         } else if (userType.equals("doctor")) {
                                             Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
-
+                                            startActivity(new Intent(MainActivity.this, DoctorHomeActivity.class));
                                             finish();
                                         }
                                             // Todo a progress bar

@@ -52,11 +52,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             context = ctx;
 
-            name = (TextView) view.findViewById(R.id.doctorNameID);
-            crm = (TextView) view.findViewById(R.id.doctorCRMID);
-            address = (TextView) view.findViewById(R.id.doctorAddressID);
-            phone = (TextView) view.findViewById(R.id.doctorPhoneID);
-            makeAppointment = (Button) view.findViewById(R.id.makeAppoinButtonID);
+//            name = (TextView) view.findViewById(R.id.doctorNameID);
+//            crm = (TextView) view.findViewById(R.id.doctorCRMID);
+//            address = (TextView) view.findViewById(R.id.doctorAddressID);
+//            phone = (TextView) view.findViewById(R.id.doctorPhoneID);
+//            makeAppointment = (Button) view.findViewById(R.id.makeAppoinButtonID);
         }
         @Override
         public void onClick(View v) {

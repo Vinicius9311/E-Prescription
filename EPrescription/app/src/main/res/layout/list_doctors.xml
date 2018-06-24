@@ -1,61 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:padding="5dp"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/doctorCardViewID"
+    <TextView
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:text="Patient Information"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:id="@+id/PatientInfo"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="117dp"
-            android:padding="15dp">
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listView"/>
 
-            <TextView
-                android:id="@+id/doctorNameID"
-                android:text="@string/doctorNameID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"/>
-
-            <TextView
-                android:id="@+id/doctorCRMID"
-                android:text="@string/hint_crm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/doctorNameID"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/doctorAddressID"
-                android:text="@string/address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/doctorCRMID"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/doctorPhoneID"
-                android:text="@string/phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/doctorAddressID"
-                android:textSize="16sp"/>
-
-            <Button
-                android:id="@+id/makeAppoinButtonID"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="#7588f2"
-                android:text="@string/make_appointment" />
-
-
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
 </LinearLayout>

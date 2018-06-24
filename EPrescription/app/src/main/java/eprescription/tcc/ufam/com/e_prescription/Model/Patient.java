@@ -16,6 +16,10 @@ public class Patient {
     public Patient() {
     }
 
+    public Patient(String user) {
+        this.user = user;
+    }
+
     public Patient(String firstName, String lastName, String email, String dateOfBirth,
                    String maritalStatus, String sex, String bloodType, String dateModified,
                    String dateCreated, String password, String user) {
