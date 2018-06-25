@@ -15,6 +15,14 @@ public class Doctor {
     private String password;
     private String user;
 
+    public Doctor(){
+    }
+
+    public Doctor(String firstName){
+        this.firstName = firstName;
+    }
+
+
     public Doctor(String firstName, String lastName, String specialty, String crm,
                   String address, String phone, String email, String dateOfBirth, String sex,
                   String dateModified, String dateCreated, String password, String user) {

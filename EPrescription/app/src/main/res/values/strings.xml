@@ -1,4 +1,5 @@
 <resources>
+    <string name="dr">Dr. </string>
     <string name="app_name">E-Prescription</string>
     <string name="hint_email">E-mail</string>
     <string name="hint_password">Senha</string>
@@ -115,4 +116,10 @@
     <string name="phone">Telefone</string>
     <string name="doctorNameID">Nome do Médico</string>
     <string name="make_appointment">Marcar Consulta</string>
+    <string name="reference_medicine">Referência</string>
+    <string name="ative_principle">Princípio Ativo</string>
+    <string name="interchangable">Intercambiável</string>
+    <string name="concentration">Concentração</string>
+    <string name="pharmaceutic_form">Forma Farmacêutica</string>
+    <string name="add">Adicionar</string>
 </resources>
