@@ -52,6 +52,33 @@ public class AddMedicineActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         medicineDatabaseReference = database.getReference().child("medicine");
 
+        /*
+
+            Database
+
+            medicine
+                tylenol
+                    principio ativo
+                    intercambiavel
+                    concentração
+                    forma farmaceutica
+
+                    principio ativo
+                    intercambiavel
+                    concentração
+                    forma farmaceutica
+                Aspirina
+                    principio ativo
+                    intercambiavel
+                    concentração
+                    forma farmaceutica
+
+                    principio ativo
+                    intercambiavel
+                    concentração
+                    forma farmaceutica
+
+         */
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -77,7 +104,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                 Medicine newMedicine = new Medicine(reference.getText().toString(), activePrinciple.getText().toString(),
                         interchangeable.getText().toString(), concentration.getText().toString(),
                         pharmaceuticForm.getText().toString());
-                medicineDatabaseReference.child("medicine").child(userID).setValue(newMedicine);
+                medicineDatabaseReference.child(reference.getText().toString()).push().setValue(newMedicine);
             }
         });
         

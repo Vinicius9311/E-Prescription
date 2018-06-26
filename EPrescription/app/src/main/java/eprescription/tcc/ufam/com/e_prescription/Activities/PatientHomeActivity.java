@@ -54,16 +54,6 @@ public class PatientHomeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PatientHomeActivity.this, MakeAppointmentActivity.class));
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         patientInfo = (TextView) findViewById(R.id.PatientInfo);
         patientListView = (ListView) findViewById(R.id.listView);
 
@@ -96,6 +86,17 @@ public class PatientHomeActivity extends AppCompatActivity {
                 }
             }
         };
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PatientHomeActivity.this, MakeAppointmentActivity.class));
+//                startActivity(new Intent(PatientHomeActivity.this, AddMedicineActivity.class));
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
         patientDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -173,6 +174,11 @@ public class PatientHomeActivity extends AppCompatActivity {
 //            case  R.id.action_make_appointment:
 //
 //                break;
+//        }
+//
+//        if (item.getItemId() == R.id.action_add){
+//            Toast.makeText(PatientHomeActivity.this, "Signed Out", Toast.LENGTH_LONG).show();
+//            startActivity(new Intent(PatientHomeActivity.this, AddMedicineActivity.class));
 //        }
 
         if (item.getItemId() == R.id.action_signout){

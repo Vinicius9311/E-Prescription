@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.ls.LSInput;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Adapter.DoctorsRecyclerViewAdapter;
@@ -34,8 +37,9 @@ public class MakeAppointmentActivity extends AppCompatActivity {
     private static final String TAG = "MakeAppointmentActivity";
     private TextView selectText;
     private Spinner specialtySpinner;
-    private RecyclerView recyclerView;
-    private DoctorsRecyclerViewAdapter doctorsRecyclerViewAdapter;
+    private ListView docListView;
+    private Button searchBtn;
+    //private DoctorsRecyclerViewAdapter doctorsRecyclerViewAdapter;
 
     private FirebaseDatabase database;
     private DatabaseReference docDatabaseReference;
@@ -44,8 +48,8 @@ public class MakeAppointmentActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private String userID;
-    private List<Doctor> doctorListFirebase;
-    private List<Doctor> doctorList;
+    //private List<Doctor> doctorListFirebase;
+    //private List<Doctor> doctorList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +58,11 @@ public class MakeAppointmentActivity extends AppCompatActivity {
 
         selectText = (TextView) findViewById(R.id.appointmentID);
         specialtySpinner = (Spinner) findViewById(R.id.appointmentSpinnerID);
-        recyclerView = (RecyclerView) findViewById(R.id.appointmentRecyclerViewID);
+        docListView = (ListView) findViewById(R.id.docListViewID);
+        searchBtn = (Button) findViewById(R.id.search);
 
-        recyclerView.setHasFixedSize(true);  // items are fixed correctly
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setHasFixedSize(true);  // items are fixed correctly
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
         ArrayAdapter<CharSequence> adapterSpecialty = ArrayAdapter.createFromResource(this,
@@ -65,6 +70,9 @@ public class MakeAppointmentActivity extends AppCompatActivity {
         adapterSpecialty.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         specialtySpinner.setAdapter(adapterSpecialty);
 
+        String docSpecialty = String.valueOf(specialtySpinner.getSelectedItem());
+
+        mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         userID = mUser.getUid();
         database = FirebaseDatabase.getInstance();
@@ -76,7 +84,12 @@ public class MakeAppointmentActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
-                    Toast.makeText(MakeAppointmentActivity.this,"Email: " + user.getEmail() + "UserID: " + userID, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MakeAppointmentActivity.this,"Email: " +
+                            user.getEmail() + "UserID: " + userID, Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "patient signed in");
+                    Log.d(TAG, "username: " + user.getEmail());
+                    Log.d(TAG, "userID: " + userID);
+
                 } else {
                     // user is signed out
                     Log.d(TAG, "user signed out");
@@ -86,10 +99,19 @@ public class MakeAppointmentActivity extends AppCompatActivity {
             }
         };
 
-        docDatabaseReference.addValueEventListener(new ValueEventListener() {
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String docSpecialty = String.valueOf(specialtySpinner.getSelectedItem());
+                Toast.makeText(MakeAppointmentActivity.this, docSpecialty, Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+        docDatabaseReference.child(docSpecialty).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                getDoctorListBySpecialty(dataSnapshot);
             }
 
             @Override
@@ -97,6 +119,21 @@ public class MakeAppointmentActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void getDoctorListBySpecialty(DataSnapshot dataSnapshot) {
+        ArrayList<String> doctorListFirebase = new ArrayList<String>();
+        //doctorList = new ArrayList<>();
+
+        Log.d(TAG, "VAAAAAALUUUUUEEEE IIIIIS: " + dataSnapshot.getValue());
+        Log.d(TAG, "VAAAAAALUUUUUEEEE IIIIIS: " + dataSnapshot.getChildren());
+
+
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            doctorListFirebase.add(String.valueOf(ds.getValue().toString()));
+            //doctorListFirebase
+        }
 
     }
 }
