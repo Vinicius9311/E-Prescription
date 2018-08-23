@@ -129,7 +129,8 @@ public class CreateDoctorAccountActivity extends AppCompatActivity {
                                             String userID = user.getUid();
                                             Doctor doctor = new Doctor(name, surname, doctorSpecialty, doctorCrm, docAddress,
                                                     docPhone, email, dob, sex, dateModified, dateCreated, pwd, Type);
-                                            doctorsDatabaseReference.child("users").child("doctor").child(doctorSpecialty).child(userID).setValue(doctor);
+                                            //doctorsDatabaseReference.child("users").child("doctor").child(doctorSpecialty).child(userID).setValue(doctor);
+                                            doctorsDatabaseReference.child("users").child("doctor").child(userID).setValue(doctor);
                                             Intent intent = new Intent(CreateDoctorAccountActivity.this, DoctorHomeActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);

@@ -37,9 +37,10 @@ public class MakeAppointmentActivity extends AppCompatActivity {
     private static final String TAG = "MakeAppointmentActivity";
     private TextView selectText;
     private Spinner specialtySpinner;
-    private ListView docListView;
+    private List<Doctor> docList;
     private Button searchBtn;
-    //private DoctorsRecyclerViewAdapter doctorsRecyclerViewAdapter;
+    private DoctorsRecyclerViewAdapter doctorsRecyclerViewAdapter;
+    private RecyclerView recyclerView;
 
     private FirebaseDatabase database;
     private DatabaseReference docDatabaseReference;
@@ -48,6 +49,7 @@ public class MakeAppointmentActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private String userID;
+    private String specialty = "ACUPUNTURA";
     //private List<Doctor> doctorListFirebase;
     //private List<Doctor> doctorList;
 
@@ -58,11 +60,11 @@ public class MakeAppointmentActivity extends AppCompatActivity {
 
         selectText = (TextView) findViewById(R.id.appointmentID);
         specialtySpinner = (Spinner) findViewById(R.id.appointmentSpinnerID);
-        docListView = (ListView) findViewById(R.id.docListViewID);
         searchBtn = (Button) findViewById(R.id.search);
 
-//        recyclerView.setHasFixedSize(true);  // items are fixed correctly
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView = (RecyclerView) findViewById(R.id.doctorRecyclerViewID);
+        recyclerView.setHasFixedSize(true);  // items are fixed correctly
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
         ArrayAdapter<CharSequence> adapterSpecialty = ArrayAdapter.createFromResource(this,
@@ -77,6 +79,8 @@ public class MakeAppointmentActivity extends AppCompatActivity {
         userID = mUser.getUid();
         database = FirebaseDatabase.getInstance();
         docDatabaseReference = database.getReference().child("users").child("doctor");
+
+        docList = new ArrayList<>();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -102,16 +106,52 @@ public class MakeAppointmentActivity extends AppCompatActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String docSpecialty = String.valueOf(specialtySpinner.getSelectedItem());
-                Toast.makeText(MakeAppointmentActivity.this, docSpecialty, Toast.LENGTH_LONG).show();
+                specialty = String.valueOf(specialtySpinner.getSelectedItem());
+                Toast.makeText(MakeAppointmentActivity.this, specialty, Toast.LENGTH_LONG).show();
             }
         });
 
 
-        docDatabaseReference.child(docSpecialty).addValueEventListener(new ValueEventListener() {
+
+
+    }
+
+    private void getDoctorListBySpecialty(DataSnapshot dataSnapshot) {
+        //ArrayList<String> doctorListFirebase = new ArrayList<String>();
+        //doctorList = new ArrayList<>();
+        Log.d(TAG, "VALUE IS: " + dataSnapshot.getValue()) ;
+
+        List<Doctor> doctorList = new ArrayList<>();
+
+        for (DataSnapshot docSnapshot: dataSnapshot.getChildren()) {
+            Doctor doctor = docSnapshot.getValue(Doctor.class);
+            doctorList.add(doctor);
+            Log.d(TAG, "DOCTOR NAME: " + doctor.getFirstName());
+        }
+
+        Log.d(TAG, "doctor list count: " + doctorList.size());
+
+
+        Log.d(TAG, "VAAAAAALUUUUUEEEE IIIIIS: " + dataSnapshot.getValue());
+        Log.d(TAG, "VAAAAAALUUUUUEEEE IIIIIS: " + dataSnapshot.getChildren());
+
+        doctorsRecyclerViewAdapter = new DoctorsRecyclerViewAdapter(MakeAppointmentActivity.this, doctorList);
+        recyclerView.setAdapter(doctorsRecyclerViewAdapter);
+        doctorsRecyclerViewAdapter.notifyDataSetChanged();
+
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+
+        docDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 getDoctorListBySpecialty(dataSnapshot);
+                // TODO Get doctors data to listView
+
             }
 
             @Override
@@ -119,21 +159,13 @@ public class MakeAppointmentActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
-    private void getDoctorListBySpecialty(DataSnapshot dataSnapshot) {
-        ArrayList<String> doctorListFirebase = new ArrayList<String>();
-        //doctorList = new ArrayList<>();
-
-        Log.d(TAG, "VAAAAAALUUUUUEEEE IIIIIS: " + dataSnapshot.getValue());
-        Log.d(TAG, "VAAAAAALUUUUUEEEE IIIIIS: " + dataSnapshot.getChildren());
-
-
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            doctorListFirebase.add(String.valueOf(ds.getValue().toString()));
-            //doctorListFirebase
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
         }
-
     }
 }

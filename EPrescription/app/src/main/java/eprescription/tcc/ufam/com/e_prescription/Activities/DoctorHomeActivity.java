@@ -85,9 +85,11 @@ public class DoctorHomeActivity extends AppCompatActivity {
     }
 
     private void getName(DataSnapshot dataSnapshot) {
-        Doctor doctor = new Doctor();
-        doctor.setFirstName(dataSnapshot.child(userID).getValue(Doctor.class).getFirstName());
-        doctorName.setText(doctor.getFirstName());
+        Doctor doctor = dataSnapshot.getValue(Doctor.class);
+        Log.d("HERE", "VALUE IS: " + dataSnapshot.getValue()) ;
+        // TODO a DoctorAdapter
+        //doctor.setFirstName(dataSnapshot.child(userID).getValue(Doctor.class).getFirstName());
+        //doctorName.setText(doctor.getFirstName());
     }
 
     @Override
