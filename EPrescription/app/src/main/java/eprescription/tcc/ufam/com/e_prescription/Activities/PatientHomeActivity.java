@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Model.Patient;
 import eprescription.tcc.ufam.com.e_prescription.R;
@@ -125,9 +123,7 @@ public class PatientHomeActivity extends AppCompatActivity {
             patient.setLastName(dataSnapshot.child(userID).getValue(Patient.class).getLastName());
             patient.setEmail(dataSnapshot.child(userID).getValue(Patient.class).getEmail());
             patient.setDateOfBirth(dataSnapshot.child(userID).getValue(Patient.class).getDateOfBirth());
-            patient.setMaritalStatus(dataSnapshot.child(userID).getValue(Patient.class).getMaritalStatus());
             patient.setSex(dataSnapshot.child(userID).getValue(Patient.class).getSex());
-            patient.setBloodType(dataSnapshot.child(userID).getValue(Patient.class).getBloodType());
             patient.setDateModified(dataSnapshot.child(userID).getValue(Patient.class).getDateModified());
             patient.setDateCreated(dataSnapshot.child(userID).getValue(Patient.class).getDateCreated());
             patient.setPassword(dataSnapshot.child(userID).getValue(Patient.class).getPassword());
@@ -139,7 +135,6 @@ public class PatientHomeActivity extends AppCompatActivity {
             Log.d(TAG, "Date of Birth: " + patient.getDateOfBirth());
             Log.d(TAG, "Marital Status: " + patient.getMaritalStatus());
             Log.d(TAG, "Sex: " + patient.getSex());
-            Log.d(TAG, "Blood Type: " + patient.getBloodType());
             Log.d(TAG, "Date Modified: " + patient.getDateModified());
             Log.d(TAG, "Date Created: " + patient.getDateCreated());
             Log.d(TAG, "Password: " + patient.getPassword());
@@ -150,9 +145,7 @@ public class PatientHomeActivity extends AppCompatActivity {
             arrayList.add(patient.getLastName());
             arrayList.add(patient.getEmail());
             arrayList.add(patient.getDateOfBirth());
-            arrayList.add(patient.getMaritalStatus());
             arrayList.add(patient.getSex());
-            arrayList.add(patient.getBloodType());
             arrayList.add(patient.getDateModified());
             arrayList.add(patient.getDateCreated());
             arrayList.add(patient.getPassword());

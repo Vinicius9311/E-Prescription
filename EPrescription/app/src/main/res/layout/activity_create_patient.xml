@@ -74,20 +74,13 @@
                 tools:layout_editor_absoluteX="84dp"
                 tools:layout_editor_absoluteY="231dp" />
 
-            <TextView
-                android:id="@+id/maritalStatusTextID"
+            <EditText
+                android:id="@+id/cpfEditTextID"
                 android:layout_width="match_parent"
-                android:paddingTop="20dp"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="@string/marital_status_text" />
-
-            <Spinner
-                android:id="@+id/patientSpinnerMaritalStateID"
-                android:paddingTop="30dp"
-                android:layout_width="fill_parent"
-                android:entries="@array/marital_status"
-                android:layout_height="wrap_content" />
+                android:ems="10"
+                android:hint="@string/cpf"
+                android:inputType="number" />
 
             <TextView
                 android:id="@+id/sexTextID"
@@ -122,29 +115,21 @@
 
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/bloodTypeTextID"
+            <EditText
+                android:id="@+id/SUSeditTextID"
                 android:layout_width="match_parent"
-                android:paddingTop="20dp"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="@string/blood_type" />
-
-            <Spinner
-                android:id="@+id/patientSpinnerBloodTypeID"
-                android:paddingTop="30dp"
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:entries="@array/blood_type"
-                android:layout_weight="1" />
+                android:ems="10"
+                android:hint="@string/sus_number"
+                android:inputType="number" />
 
             <TextView
                 android:id="@+id/passwordTextID"
                 android:layout_width="match_parent"
-                android:paddingTop="20dp"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="@string/create_password" />
+                android:paddingTop="20dp"
+                android:text="@string/create_password"
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/patientPasswordRegisterID"

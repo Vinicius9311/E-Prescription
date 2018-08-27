@@ -7,7 +7,7 @@ public class Patient {
     private String dateOfBirth;
     private String maritalStatus; // estado civil
     private String sex;
-    private String bloodType;
+    private String sus;
     private String dateModified; // user modification date
     private String dateCreated;
     private String password;
@@ -21,7 +21,7 @@ public class Patient {
     }
 
     public Patient(String firstName, String lastName, String email, String dateOfBirth,
-                   String maritalStatus, String sex, String bloodType, String dateModified,
+                   String maritalStatus, String sex, String sus, String dateModified,
                    String dateCreated, String password, String user) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,7 +29,7 @@ public class Patient {
         this.dateOfBirth = dateOfBirth;
         this.maritalStatus = maritalStatus;
         this.sex = sex;
-        this.bloodType = bloodType;
+        this.sus = sus;
         this.dateModified = dateModified;
         this.dateCreated = dateCreated;
         this.password = password;
@@ -84,12 +84,12 @@ public class Patient {
         this.sex = sex;
     }
 
-    public String getBloodType() {
-        return bloodType;
+    public String getSus() {
+        return sus;
     }
 
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
+    public void setSus(String sus) {
+        this.sus = sus;
     }
 
     public String getDateModified() {

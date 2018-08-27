@@ -32,11 +32,11 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
     private EditText lastName;
     private EditText patientEmail;
     private EditText dateOfBirth;
-    private Spinner maritalStatus;
+    private EditText cpf;
     private RadioGroup radioGroup;
     private RadioButton radioButton;
     public String sex;
-    private Spinner bloodType;
+    private EditText sus;
     private EditText password;
     private EditText passwordConfirmation;
     private Button registerButton;
@@ -63,9 +63,9 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
         lastName = (EditText) findViewById(R.id.patientEditTextSurnameID);
         patientEmail = (EditText) findViewById(R.id.patientEditTextEmailRegisterID);
         dateOfBirth = (EditText) findViewById(R.id.patientEditTextDateOfBirthID);
-        maritalStatus = (Spinner) findViewById(R.id.patientSpinnerMaritalStateID);
+        cpf = (EditText) findViewById(R.id.cpfEditTextID);
         radioGroup = (RadioGroup) findViewById(R.id.patientRadioGroupID);
-        bloodType = (Spinner) findViewById(R.id.patientSpinnerBloodTypeID);
+        sus = (EditText) findViewById(R.id.SUSeditTextID);
         password = (EditText) findViewById(R.id.patientPasswordRegisterID);
         passwordConfirmation = (EditText) findViewById(R.id.patientConfPasswordRegisterID);
         registerButton = (Button) findViewById(R.id.registerPatientButtonID);
@@ -90,26 +90,6 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
             }
         });
 
-        // Marital Sex
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapterMartialStatus = ArrayAdapter.createFromResource(this,
-                R.array.marital_status, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapterMartialStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        maritalStatus.setAdapter(adapterMartialStatus);
-        //maritalStatus.setOnItemSelectedListener(new SpinnerAdapter());
-
-        // Blood Type
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapterBloodType = ArrayAdapter.createFromResource(this,
-                R.array.blood_type, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapterBloodType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        bloodType.setAdapter(adapterBloodType);
-        //bloodType.setOnItemSelectedListener(new SpinnerAdapter());
-
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,18 +98,18 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                 final String surname = lastName.getText().toString();
                 final String email = patientEmail.getText().toString();
                 final String dob = dateOfBirth.getText().toString();
-                final String mStatus = String.valueOf(maritalStatus.getSelectedItem());
+                final String cpfNumber = cpf.getText().toString();
                 //String sex = String.valueOf(radioButton.getId());
-                final String blood = String.valueOf(bloodType.getSelectedItem());
                 final String dateCreated = String.valueOf(java.lang.System.currentTimeMillis());
                 final String dateModified = String.valueOf(java.lang.System.currentTimeMillis());
+                final String susNumber = sus.getText().toString();
                 final String pwd = password.getText().toString();
                 final String type = "Patient";
 
                 if (!password.getText().toString().equals("") &&
                         !passwordConfirmation.getText().toString().equals("") &&
                         !name.equals("") && !surname.equals("") && !email.equals("") &&
-                        !dob.equals("") && !mStatus.equals("") && !blood.equals("")) {
+                        !dob.equals("") && !cpfNumber.equals("") && !susNumber.equals("")) {
 
                     if (passwordConfirmation.getText().toString().equals(password.getText().toString())) {
                         mAuth.createUserWithEmailAndPassword(email,pwd).
@@ -141,7 +121,7 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                                             FirebaseUser user = mAuth.getCurrentUser();
                                             String userID = user.getUid();
 
-                                            Patient patient = new Patient(name, surname, email, dob, mStatus, sex, blood, dateModified,
+                                            Patient patient = new Patient(name, surname, email, dob, cpfNumber, sex, susNumber, dateModified,
                                                     dateCreated, pwd, type);
                                             patientDatabaseReference.child("users").child("patient").child(userID).setValue(patient);
 

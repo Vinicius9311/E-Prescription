@@ -27,12 +27,13 @@
         <activity
             android:name=".Activities.PatientHomeBottomActivity"
             android:label="@string/title_activity_patient_home_botton" />
-        <activity
-            android:name=".Activities.DoctorHomeBottomActivity"
-            android:label="@string/title_activity_doctor_home_bottom" />
         <activity android:name=".Activities.MakeAppointmentActivity" />
-        <activity android:name=".Activities.DoctorHomeActivity" />
-        <activity android:name=".Activities.AddMedicineActivity"></activity>
+        <activity android:name=".Activities.AddMedicineActivity" />
+        <activity
+            android:name=".Activities.DoctorHomeActivity"
+            android:label="@string/title_activity_doctor_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activities.AppointmentActivity"></activity>
     </application>
 
 </manifest>

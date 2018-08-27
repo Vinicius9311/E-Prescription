@@ -95,14 +95,18 @@ public class MainActivity extends AppCompatActivity {
         createPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, CreatePatientAccountActivity.class));
+                if (mUser == null) {
+                    startActivity(new Intent(MainActivity.this, CreatePatientAccountActivity.class));
+                }
             }
         });
 
         createDoctor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, CreateDoctorAccountActivity.class));
+                if (mUser == null) {
+                    startActivity(new Intent(MainActivity.this, CreateDoctorAccountActivity.class));
+                }
             }
         });
     }
