@@ -70,7 +70,7 @@
 
             <Button
                 android:id="@+id/loginButtonID"
-                android:layout_width="127dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/loginRadioGroupID"
                 android:layout_centerHorizontal="true"

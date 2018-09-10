@@ -33,7 +33,11 @@
             android:name=".Activities.DoctorHomeActivity"
             android:label="@string/title_activity_doctor_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.AppointmentActivity"></activity>
+        <activity
+            android:name=".Activities.PrescriptionActivity"
+            android:label="@string/title_activity_prescription"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activities.MedicineActivity"></activity>
     </application>
 
 </manifest>

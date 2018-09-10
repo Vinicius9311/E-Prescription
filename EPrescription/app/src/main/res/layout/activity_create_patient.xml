@@ -32,25 +32,14 @@
 
             <EditText
                 android:id="@+id/patientEditTextNameID"
-                android:paddingTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:hint="@string/full_name"
                 android:inputType="textPersonName"
-                android:hint="@string/hint_name"
+                android:paddingTop="20dp"
                 tools:layout_editor_absoluteX="84dp"
                 tools:layout_editor_absoluteY="65dp" />
-
-            <EditText
-                android:id="@+id/patientEditTextSurnameID"
-                android:paddingTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="@string/hint_surname"
-                tools:layout_editor_absoluteX="84dp"
-                tools:layout_editor_absoluteY="124dp" />
 
             <EditText
                 android:id="@+id/patientEditTextEmailRegisterID"

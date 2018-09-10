@@ -5,12 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +26,7 @@ import eprescription.tcc.ufam.com.e_prescription.R;
 public class CreatePatientAccountActivity extends AppCompatActivity {
 
     private TextView titlePatientRegister;
-    private EditText firstName;
-    private EditText lastName;
+    private EditText fullName;
     private EditText patientEmail;
     private EditText dateOfBirth;
     private EditText cpf;
@@ -59,8 +56,7 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         titlePatientRegister = (TextView) findViewById(R.id.patientTitleRegisterID);
-        firstName = (EditText) findViewById(R.id.patientEditTextNameID);
-        lastName = (EditText) findViewById(R.id.patientEditTextSurnameID);
+        fullName = (EditText) findViewById(R.id.patientEditTextNameID);
         patientEmail = (EditText) findViewById(R.id.patientEditTextEmailRegisterID);
         dateOfBirth = (EditText) findViewById(R.id.patientEditTextDateOfBirthID);
         cpf = (EditText) findViewById(R.id.cpfEditTextID);
@@ -94,8 +90,7 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final String name = firstName.getText().toString();
-                final String surname = lastName.getText().toString();
+                final String name = fullName.getText().toString();
                 final String email = patientEmail.getText().toString();
                 final String dob = dateOfBirth.getText().toString();
                 final String cpfNumber = cpf.getText().toString();
@@ -108,7 +103,7 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
 
                 if (!password.getText().toString().equals("") &&
                         !passwordConfirmation.getText().toString().equals("") &&
-                        !name.equals("") && !surname.equals("") && !email.equals("") &&
+                        !name.equals("") && !email.equals("") &&
                         !dob.equals("") && !cpfNumber.equals("") && !susNumber.equals("")) {
 
                     if (passwordConfirmation.getText().toString().equals(password.getText().toString())) {
@@ -121,7 +116,7 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                                             FirebaseUser user = mAuth.getCurrentUser();
                                             String userID = user.getUid();
 
-                                            Patient patient = new Patient(name, surname, email, dob, cpfNumber, sex, susNumber, dateModified,
+                                            Patient patient = new Patient(name, email, dob, cpfNumber, sex, susNumber, dateModified,
                                                     dateCreated, pwd, type);
                                             patientDatabaseReference.child("users").child("patient").child(userID).setValue(patient);
 

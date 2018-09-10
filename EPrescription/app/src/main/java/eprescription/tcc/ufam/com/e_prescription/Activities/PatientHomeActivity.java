@@ -119,8 +119,7 @@ public class PatientHomeActivity extends AppCompatActivity {
 
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             Patient patient = new Patient();
-            patient.setFirstName(dataSnapshot.child(userID).getValue(Patient.class).getFirstName());
-            patient.setLastName(dataSnapshot.child(userID).getValue(Patient.class).getLastName());
+            patient.setFullName(dataSnapshot.child(userID).getValue(Patient.class).getFullName());
             patient.setEmail(dataSnapshot.child(userID).getValue(Patient.class).getEmail());
             patient.setDateOfBirth(dataSnapshot.child(userID).getValue(Patient.class).getDateOfBirth());
             patient.setSex(dataSnapshot.child(userID).getValue(Patient.class).getSex());
@@ -128,9 +127,8 @@ public class PatientHomeActivity extends AppCompatActivity {
             patient.setDateCreated(dataSnapshot.child(userID).getValue(Patient.class).getDateCreated());
             patient.setPassword(dataSnapshot.child(userID).getValue(Patient.class).getPassword());
 
-            Log.d(TAG, "First Name: " + patient.getFirstName());
-            patientInfo.setText(patient.getFirstName().toString());
-            Log.d(TAG, "Last Name: " + patient.getLastName());
+            Log.d(TAG, "First Name: " + patient.getFullName());
+            patientInfo.setText(patient.getFullName().toString());
             Log.d(TAG, "Email: " + patient.getEmail());
             Log.d(TAG, "Date of Birth: " + patient.getDateOfBirth());
             Log.d(TAG, "Marital Status: " + patient.getMaritalStatus());
@@ -141,8 +139,7 @@ public class PatientHomeActivity extends AppCompatActivity {
 
 
             ArrayList<String> arrayList = new ArrayList<>();
-            arrayList.add(patient.getFirstName());
-            arrayList.add(patient.getLastName());
+            arrayList.add(patient.getFullName());
             arrayList.add(patient.getEmail());
             arrayList.add(patient.getDateOfBirth());
             arrayList.add(patient.getSex());

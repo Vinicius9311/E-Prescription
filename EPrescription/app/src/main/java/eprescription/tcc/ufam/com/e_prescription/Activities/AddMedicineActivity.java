@@ -22,7 +22,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
     private static final String TAG = "AddMedicineActivity";
 
-    private EditText reference;
+    private EditText medicament;
     private EditText activePrinciple;
     private EditText interchangeable;
     private EditText concentration;
@@ -41,12 +41,8 @@ public class AddMedicineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_medicine);
-        
-        reference = (EditText) findViewById(R.id.referenceID);
-        activePrinciple = (EditText) findViewById(R.id.ative_principle);
-        interchangeable = (EditText) findViewById(R.id.interchangeableID);
-        concentration = (EditText) findViewById(R.id.concentrationID);
-        pharmaceuticForm = (EditText) findViewById(R.id.pharmaceuticFormID);
+
+        medicament = (EditText) findViewById(R.id.medicamentID);
         add = (Button) findViewById(R.id.addButtonID);
 
         database = FirebaseDatabase.getInstance();
@@ -100,11 +96,9 @@ public class AddMedicineActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Medicine newMedicine = new Medicine(reference.getText().toString(), activePrinciple.getText().toString(),
-                        interchangeable.getText().toString(), concentration.getText().toString(),
-                        pharmaceuticForm.getText().toString());
-                medicineDatabaseReference.child(reference.getText().toString()).push().setValue(newMedicine);
+                // Nome do remédio, concentração via, principio ativo
+                Medicine newMedicine = new Medicine(medicament.getText().toString());
+                medicineDatabaseReference.push().setValue(newMedicine);
             }
         });
         

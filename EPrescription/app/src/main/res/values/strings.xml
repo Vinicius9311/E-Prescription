@@ -96,6 +96,20 @@
         <item>REUMATOLOGIA</item>
         <item>UROLOGIA</item>
     </string-array>
+    <string-array name="admin_via">
+        <item>Via oral</item>
+        <item>Via sublingual</item>
+        <item>Via retal</item>
+        <item>Via parenteral</item>
+        <item>Via intradérmica</item>
+        <item>Via subcutânea</item>
+        <item>Via intramuscular</item>
+        <item>Via endovenosa</item>
+        <item>Via respiratória</item>
+        <item>Via ocular</item>
+        <item>Via nasal</item>
+        <item>Via auricular</item>
+    </string-array>
     <string name="title_activity_patient_home_drawer">PatientHomeDrawerActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -129,4 +143,17 @@
     <string name="admin_via">Via de Administração</string>
     <string name="duration">Duração</string>
     <string name="frequence">Frequência</string>
+    <string name="each">A cada</string>
+    <string name="hours">horas</string>
+    <string name="duration_days">Duração em dias</string>
+    <string name="title_activity_prescription">PrescriptionActivity</string>
+    <string name="finish_prescription">Finalizar</string>
+    <string name="no_due_date">Sem data de término</string>
+    <string name="until_date">Até a data</string>
+    <string name="until">Até</string>
+    <string name="days_qty">Por X dias</string>
+    <string name="days">dias</string>
+    <string name="obs">Observações</string>
+    <string name="full_name">Nome Completo</string>
+    <string name="during">Durante</string>
 </resources>

@@ -1,8 +1,7 @@
 package eprescription.tcc.ufam.com.e_prescription.Model;
 
 public class Patient {
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private String email;
     private String dateOfBirth;
     private String maritalStatus; // estado civil
@@ -20,11 +19,10 @@ public class Patient {
         this.user = user;
     }
 
-    public Patient(String firstName, String lastName, String email, String dateOfBirth,
+    public Patient(String firstName, String email, String dateOfBirth,
                    String maritalStatus, String sex, String sus, String dateModified,
                    String dateCreated, String password, String user) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.fullName = firstName;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.maritalStatus = maritalStatus;
@@ -36,20 +34,12 @@ public class Patient {
         this.user = user;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {

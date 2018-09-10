@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import eprescription.tcc.ufam.com.e_prescription.Model.Doctor;
+import eprescription.tcc.ufam.com.e_prescription.Model.Prescription;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 public class DoctorHomeActivity extends AppCompatActivity {
@@ -38,6 +40,9 @@ public class DoctorHomeActivity extends AppCompatActivity {
 
     private TextView doctorName;
 
+    private Button med;
+    private Button signout;
+
     private String userID;
 
 
@@ -47,6 +52,8 @@ public class DoctorHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_doctor_home);
 
         doctorName = (TextView) findViewById(R.id.doctorTextHomeID);
+        med = (Button)  findViewById(R.id.addMedBtnID);
+        signout = (Button) findViewById(R.id.leaveBtnID);
 
         database = FirebaseDatabase.getInstance();
         mDoctorReference = database.getReference().child("users").child("doctor");
@@ -86,25 +93,33 @@ public class DoctorHomeActivity extends AppCompatActivity {
             }
         });
 
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Toast.makeText(DoctorHomeActivity.this, "Signed Out", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(DoctorHomeActivity.this, MainActivity.class));
+                finish();
+            }
+        });
+
+        med.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DoctorHomeActivity.this, AddMedicineActivity.class));
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(DoctorHomeActivity.this, AppointmentActivity.class));
+                startActivity(new Intent(DoctorHomeActivity.this, PrescriptionActivity.class));
 //                startActivity(new Intent(PatientHomeActivity.this, AddMedicineActivity.class));
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
-    }
-
-    private void getName(DataSnapshot dataSnapshot) {
-        Doctor doctor = dataSnapshot.getValue(Doctor.class);
-        Log.d("HERE", "VALUE IS: " + dataSnapshot.getValue()) ;
-        // TODO a DoctorAdapter
-        //doctor.setFirstName(dataSnapshot.child(userID).getValue(Doctor.class).getFirstName());
-        //doctorName.setText(doctor.getFirstName());
     }
 
     @Override
@@ -112,8 +127,6 @@ public class DoctorHomeActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_signout){
             mAuth.signOut();
             Toast.makeText(DoctorHomeActivity.this, "Signed Out", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(DoctorHomeActivity.this, MainActivity.class));
-            finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -122,5 +135,13 @@ public class DoctorHomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void getName(DataSnapshot dataSnapshot) {
+        Doctor doctor = dataSnapshot.getValue(Doctor.class);
+        Log.d("HERE", "VALUE IS: " + dataSnapshot.getValue()) ;
+        // TODO a DoctorAdapter
+        //doctor.setFirstName(dataSnapshot.child(userID).getValue(Doctor.class).getFirstName());
+        //doctorName.setText(doctor.getFirstName());
     }
 }
