@@ -156,4 +156,5 @@
     <string name="obs">Observações</string>
     <string name="full_name">Nome Completo</string>
     <string name="during">Durante</string>
+    <string name="hour_s">hora(s)</string>
 </resources>

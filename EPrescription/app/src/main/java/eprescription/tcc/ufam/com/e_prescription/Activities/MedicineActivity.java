@@ -1,5 +1,6 @@
 package eprescription.tcc.ufam.com.e_prescription.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,11 +52,17 @@ public class MedicineActivity extends AppCompatActivity {
     private List<Medicine> medicineList;
     private AlertDialog daysDialog;
     private AlertDialog.Builder daysDialogBuilder;
+    private AlertDialog freqDialog;
+    private AlertDialog.Builder freqDialogBuilder;
     private NumberPicker daysPicker;
+    private NumberPicker freqPicker;
     private TextView during;
     private TextView days;
     private TextView ok;
     private TextView cancel;
+    private TextView each;
+    private TextView hourS;
+    private TextView okFreq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +94,7 @@ public class MedicineActivity extends AppCompatActivity {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+
                 radioButton = (RadioButton) findViewById(checkedId);
                 switch (radioButton.getId()) {
                     case R.id.noDueDateButtonID: {
@@ -106,6 +114,55 @@ public class MedicineActivity extends AppCompatActivity {
                 }
             }
         });
+
+        frequenceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseFrequency();
+            }
+        });
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MedicineActivity.this, PrescriptionActivity.class);
+                Log.d(TAG, "Medicine: " +medicineAutoComplete.getText().toString());
+                intent.putExtra("medicine", medicineAutoComplete.getText().toString());
+                Log.d(TAG, "Medicine: " +String.valueOf(daysPicker.getValue()));
+                intent.putExtra("duration", String.valueOf(daysPicker.getValue()));
+                Log.d(TAG, "Medicine: " +String.valueOf(freqPicker.getValue()));
+                intent.putExtra("frequency", String.valueOf(freqPicker.getValue()));
+                Log.d(TAG, "Medicine: " +String.valueOf(viaSpinner.getSelectedItem()));
+                intent.putExtra("via", String.valueOf(viaSpinner.getSelectedItem()));
+                Log.d(TAG, "Medicine: " +obsEditText.getText().toString());
+                intent.putExtra("obs", obsEditText.getText().toString());
+                startActivity(intent);
+
+            }
+        });
+    }
+
+    private void chooseFrequency() {
+        freqDialogBuilder = new AlertDialog.Builder(this);
+        final View view = getLayoutInflater().inflate(R.layout.frequency, null);
+        freqPicker = (NumberPicker) view.findViewById(R.id.frequencyPickerID);
+        each = (TextView) view.findViewById(R.id.eachHourID);
+        hourS = (TextView) view.findViewById(R.id.hourSID);
+        okFreq = (TextView) view.findViewById(R.id.okFreqID);
+
+        freqPicker.setMinValue(0);
+        freqPicker.setMaxValue(24);
+        freqPicker.setWrapSelectorWheel(true);
+        freqPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                frequenceBtn.setText("A cada " + newVal + " hora(s)");
+            }
+        });
+
+        freqDialogBuilder.setView(view);
+        freqDialog = freqDialogBuilder.create();
+        freqDialog.show();
     }
 
     private void chooseDaysQty() {

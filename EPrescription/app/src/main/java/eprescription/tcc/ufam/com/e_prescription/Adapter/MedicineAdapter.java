@@ -22,9 +22,8 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
     public LayoutInflater inflater;
     private List<PrescriptionItem> medicines;
 
-    public MedicineAdapter(Context context, LayoutInflater inflater, List<PrescriptionItem> medicines) {
+    public MedicineAdapter(Context context,  List<PrescriptionItem> medicines) {
         this.context = context;
-        this.inflater = inflater;
         this.medicines = medicines;
     }
 
@@ -44,7 +43,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
         holder.medicine.setText(prescriptionItem.getMedicament());
         holder.via.setText(prescriptionItem.getVia());
         holder.duration.setText(prescriptionItem.getDuration());
-        holder.frequency.setText(prescriptionItem.getFrequence());
+        holder.frequency.setText(prescriptionItem.getFrequency());
         holder.observation.setText(prescriptionItem.getObservation());
     }
 

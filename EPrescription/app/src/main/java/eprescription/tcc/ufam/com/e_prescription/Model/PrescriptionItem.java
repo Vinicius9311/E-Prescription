@@ -4,14 +4,14 @@ public class PrescriptionItem {
     private String medicament;
     private String via;
     private String duration;
-    private String frequence;
+    private String frequency;
     private String observation;
 
-    public PrescriptionItem(String medicament, String via, String duration, String frequence, String observation) {
+    public PrescriptionItem(String medicament, String via, String duration, String frequency, String observation) {
         this.medicament = medicament;
         this.via = via;
         this.duration = duration;
-        this.frequence = frequence;
+        this.frequency = frequency;
         this.observation = observation;
     }
 
@@ -39,12 +39,12 @@ public class PrescriptionItem {
         this.duration = duration;
     }
 
-    public String getFrequence() {
-        return frequence;
+    public String getFrequency() {
+        return frequency;
     }
 
-    public void setFrequence(String frequence) {
-        this.frequence = frequence;
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
     }
 
     public String getObservation() {

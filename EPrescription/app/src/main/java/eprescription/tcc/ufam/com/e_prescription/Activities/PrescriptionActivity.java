@@ -26,6 +26,7 @@ import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Adapter.MedicineAdapter;
 import eprescription.tcc.ufam.com.e_prescription.Model.Patient;
+import eprescription.tcc.ufam.com.e_prescription.Model.PrescriptionItem;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 public class PrescriptionActivity extends AppCompatActivity {
@@ -38,6 +39,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private MedicineAdapter medicineAdapter;
     private Button finishBtn;
     private List<Patient> patientList;
+    public List<PrescriptionItem> itemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,11 @@ public class PrescriptionActivity extends AppCompatActivity {
 
         medicineRecycler.setHasFixedSize(true);
         medicineRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+
+        medicineAdapter = new MedicineAdapter(this, itemList);
+        medicineRecycler.setAdapter(medicineAdapter);
+        medicineAdapter.notifyDataSetChanged();
     }
 
     @Override
