@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Model.PrescriptionItem;
@@ -49,7 +50,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return medicines.size();
+        return medicines != null ? medicines.size(): 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

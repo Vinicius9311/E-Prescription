@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Adapter.MedicineAdapter;
@@ -39,7 +40,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private MedicineAdapter medicineAdapter;
     private Button finishBtn;
     private List<Patient> patientList;
-    public List<PrescriptionItem> itemList;
+    private List<PrescriptionItem> itemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        itemList = new ArrayList<PrescriptionItem>();
         patientName = (AutoCompleteTextView) findViewById(R.id.patientID);
         medicineRecycler = (RecyclerView) findViewById(R.id.medicineRecyclerID);
         finishBtn = (Button) findViewById(R.id.finishPrescriptionID);
@@ -65,10 +67,33 @@ public class PrescriptionActivity extends AppCompatActivity {
         medicineRecycler.setHasFixedSize(true);
         medicineRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-
         medicineAdapter = new MedicineAdapter(this, itemList);
+        addToRecyclerView();
         medicineRecycler.setAdapter(medicineAdapter);
         medicineAdapter.notifyDataSetChanged();
+
+
+    }
+
+    private void addToRecyclerView() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            HashMap<String, String> med = new HashMap<>();
+            med.put("medicine", bundle.getString("medicine"));
+            med.put("duration", bundle.getString("duration"));
+            med.put("frequency", bundle.getString("frequency"));
+            med.put("via", bundle.getString("via"));
+            med.put("obs", bundle.getString("obs"));
+            Log.d(TAG, "MEDICINE " + bundle.getString("medicine"));
+            PrescriptionItem newItem = new PrescriptionItem(
+                    bundle.getString("medicine"),
+                    bundle.getString("via"),
+                    bundle.getString("duration"),
+                    bundle.getString("frequency"),
+                    bundle.getString("obs"));
+            itemList.add(newItem);
+        }
+
     }
 
     @Override

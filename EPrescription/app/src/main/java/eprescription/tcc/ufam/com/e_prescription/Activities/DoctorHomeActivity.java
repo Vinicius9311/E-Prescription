@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.w3c.dom.Text;
 
@@ -38,7 +39,6 @@ public class DoctorHomeActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference mDoctorReference;
 
-    private TextView doctorName;
 
     private Button med;
     private Button signout;
@@ -51,7 +51,6 @@ public class DoctorHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_home);
 
-        doctorName = (TextView) findViewById(R.id.doctorTextHomeID);
         med = (Button)  findViewById(R.id.addMedBtnID);
         signout = (Button) findViewById(R.id.leaveBtnID);
 
@@ -144,4 +143,16 @@ public class DoctorHomeActivity extends AppCompatActivity {
         //doctor.setFirstName(dataSnapshot.child(userID).getValue(Doctor.class).getFirstName());
         //doctorName.setText(doctor.getFirstName());
     }
+
+//    @Override
+//    public void onTokenRefresh() {
+//        // Get updated InstanceID token.
+//        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+//        Log.d(TAG, "Refreshed token: " + refreshedToken);
+//
+        // If you want to send messages to this application instance or
+        // manage this apps subscriptions on the server side, send the
+        // Instance ID token to your app server.
+        //sendRegistrationToServer(refreshedToken);
+//    }
 }

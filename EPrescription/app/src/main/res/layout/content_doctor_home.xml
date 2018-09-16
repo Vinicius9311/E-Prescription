@@ -8,20 +8,6 @@
     tools:context=".Activities.DoctorHomeActivity"
     tools:showIn="@layout/activity_doctor_home">
 
-    <TextView
-        android:id="@+id/doctorTextHomeID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/leaveBtnID"
         android:layout_width="wrap_content"
@@ -34,7 +20,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/doctorTextHomeID" />
+        app:layout_constraintTop_toBottomOf="@+id/messageID" />
 
     <Button
         android:id="@+id/addMedBtnID"
@@ -45,7 +31,21 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Adicionar medicamento"
-        app:layout_constraintBottom_toTopOf="@+id/doctorTextHomeID"
+        app:layout_constraintBottom_toTopOf="@+id/messageID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/messageID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/message"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
