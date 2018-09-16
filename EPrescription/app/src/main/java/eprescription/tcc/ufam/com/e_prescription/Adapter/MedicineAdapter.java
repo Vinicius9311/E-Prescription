@@ -43,8 +43,14 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
 
         holder.medicine.setText(prescriptionItem.getMedicament());
         holder.via.setText(prescriptionItem.getVia());
-        holder.duration.setText(prescriptionItem.getDuration());
-        holder.frequency.setText(prescriptionItem.getFrequency());
+        if (prescriptionItem.getDuration() == null) {
+            holder.duration.setText(prescriptionItem.getDuration());
+        } else if (prescriptionItem.getDuration() == String.valueOf(R.string.symptoms)){
+            holder.duration.setText(R.string.symptoms);
+        } else {
+            holder.duration.setText("Durante " + prescriptionItem.getDuration() + " dias");
+        }
+        holder.frequency.setText("A cada " + prescriptionItem.getFrequency() + " horas");
         holder.observation.setText(prescriptionItem.getObservation());
     }
 

@@ -22,8 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +61,7 @@ public class MedicineActivity extends AppCompatActivity {
     private TextView each;
     private TextView hourS;
     private TextView okFreq;
+    public String duration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +95,11 @@ public class MedicineActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
                 radioButton = (RadioButton) findViewById(checkedId);
+
                 switch (radioButton.getId()) {
                     case R.id.noDueDateButtonID: {
                         durationTextView.setVisibility(View.INVISIBLE);
+                        duration = null;
                     }
                     break;
                     case R.id.daysQtyID: {
@@ -109,6 +110,13 @@ public class MedicineActivity extends AppCompatActivity {
                                 chooseDaysQty();
                             }
                         });
+                        //duration = String.valueOf(daysPicker.getValue());
+                    }
+                    break;
+                    case R.id.symptomID: {
+                        durationTextView.setVisibility(View.VISIBLE);
+                        duration = "Até o desaparecimento dos sintomas";
+                        durationTextView.setText(duration);
                     }
                     break;
                 }
@@ -128,16 +136,24 @@ public class MedicineActivity extends AppCompatActivity {
                 Intent intent = new Intent(MedicineActivity.this, PrescriptionActivity.class);
                 Log.d(TAG, "Medicine: " +medicineAutoComplete.getText().toString());
                 intent.putExtra("medicine", medicineAutoComplete.getText().toString());
-                Log.d(TAG, "Medicine: " +String.valueOf(daysPicker.getValue()));
-                intent.putExtra("duration", String.valueOf(daysPicker.getValue()));
-                Log.d(TAG, "Medicine: " +String.valueOf(freqPicker.getValue()));
+
+                Log.d(TAG, "duration: " + duration);
+                if (duration != null || duration!= "Até o desaparecimento dos sintomas") {
+                    intent.putExtra("duration", String.valueOf(daysPicker.getValue()));
+                    Log.d(TAG, "duration: " + String.valueOf(daysPicker.getValue()));
+                } else {
+                    intent.putExtra("duration", duration);
+                    Log.d(TAG, "duration: " + duration);
+                }
+                Log.d(TAG, "frequency: " +String.valueOf(freqPicker.getValue()));
                 intent.putExtra("frequency", String.valueOf(freqPicker.getValue()));
-                Log.d(TAG, "Medicine: " +String.valueOf(viaSpinner.getSelectedItem()));
+
+                Log.d(TAG, "via: " +String.valueOf(viaSpinner.getSelectedItem()));
                 intent.putExtra("via", String.valueOf(viaSpinner.getSelectedItem()));
-                Log.d(TAG, "Medicine: " +obsEditText.getText().toString());
+
+                Log.d(TAG, "obs: " +obsEditText.getText().toString());
                 intent.putExtra("obs", obsEditText.getText().toString());
                 startActivity(intent);
-
             }
         });
     }
@@ -157,6 +173,7 @@ public class MedicineActivity extends AppCompatActivity {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 frequenceBtn.setText("A cada " + newVal + " hora(s)");
+                Log.d(TAG, "FREQUENCY PICKER: " +newVal);
             }
         });
 
@@ -181,6 +198,7 @@ public class MedicineActivity extends AppCompatActivity {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 durationTextView.setText("Durante " + newVal + " dias");
+                Log.d(TAG, "DAYS PICKER: " +newVal);
             }
         });
 

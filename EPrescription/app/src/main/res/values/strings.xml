@@ -152,10 +152,11 @@
     <string name="until_date">Até a data</string>
     <string name="until">Até</string>
     <string name="days_qty">Por X dias</string>
-    <string name="days">dias</string>
+    <string name="days">Por X dias</string>
     <string name="obs">Observações</string>
     <string name="full_name">Nome Completo</string>
     <string name="during">Durante</string>
     <string name="hour_s">hora(s)</string>
     <string name="message">Mensagens</string>
+    <string name="symptoms">Até o desaparecimento dos sintomas</string>
 </resources>
