@@ -138,6 +138,7 @@ public class MedicineActivity extends AppCompatActivity {
                 intent.putExtra("medicine", medicineAutoComplete.getText().toString());
 
                 Log.d(TAG, "duration: " + duration);
+                // TODO Correct this part
                 if (duration != null || duration!= "Até o desaparecimento dos sintomas") {
                     intent.putExtra("duration", String.valueOf(daysPicker.getValue()));
                     Log.d(TAG, "duration: " + String.valueOf(daysPicker.getValue()));

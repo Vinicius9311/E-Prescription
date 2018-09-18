@@ -3,6 +3,7 @@ package eprescription.tcc.ufam.com.e_prescription.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +15,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Adapter.MedicineAdapter;
+import eprescription.tcc.ufam.com.e_prescription.FirebaseEntities.DoctorPatient;
 import eprescription.tcc.ufam.com.e_prescription.Model.Patient;
 import eprescription.tcc.ufam.com.e_prescription.Model.PrescriptionItem;
 import eprescription.tcc.ufam.com.e_prescription.R;
@@ -33,7 +38,13 @@ import eprescription.tcc.ufam.com.e_prescription.R;
 public class PrescriptionActivity extends AppCompatActivity {
 
     private static final String TAG = "PrescriptionActivity";
-    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mDocRef = mRootRef.child("users").child("doctor");
+    private DatabaseReference mPatRef = mRootRef.child("users").child("patient");
+    private DatabaseReference mPresc = mRootRef.child("prescription");
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseUser mUser;
+    private FirebaseAuth mAuth;
 
     private AutoCompleteTextView patientName;
     private RecyclerView medicineRecycler;
@@ -54,6 +65,30 @@ public class PrescriptionActivity extends AppCompatActivity {
         medicineRecycler = (RecyclerView) findViewById(R.id.medicineRecyclerID);
         finishBtn = (Button) findViewById(R.id.finishPrescriptionID);
 
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        final String userID = mUser.getUid();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                if (user != null) {
+                    Toast.makeText(PrescriptionActivity.this,"UserID: " + userID, Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "doctor signed in");
+                    Log.d(TAG, "username: " + user.getEmail());
+                    Log.d(TAG, "userID: " + userID);
+
+                } else {
+                    // user is signed out
+                    Log.d(TAG, "user signed out");
+                    Toast.makeText(PrescriptionActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(PrescriptionActivity.this, MainActivity.class));
+                }
+            }
+        };
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +107,35 @@ public class PrescriptionActivity extends AppCompatActivity {
         medicineRecycler.setAdapter(medicineAdapter);
         medicineAdapter.notifyDataSetChanged();
 
+        finishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!patientName.equals("") || itemList.size() != 0) {
+                    // TODO save realtime database
+                    //mPresc.child(userID).child(patientName.getText().toString()).setValue(true);
+                    mRootRef.child("users").child("patient").orderByChild("fullName")
+                            .equalTo(patientName.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                                String patientKey = snap.getKey();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                    //DoctorPatient doctorPatient = new DoctorPatient(userID, getPatientKey());
+                    mPresc.push().setValue(true);
+                }
+            }
+        });
+
 
     }
+
 
     private void addToRecyclerView() {
         Bundle bundle = getIntent().getExtras();
@@ -99,6 +161,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
 
         DatabaseReference patientRef = mRootRef.child("users").child("patient");
 
@@ -129,6 +192,10 @@ public class PrescriptionActivity extends AppCompatActivity {
             Log.d(TAG, "NAME ADDED");
             patientList.add(patient);
             Log.d(TAG, "PATIENT ADDED");
+
+            for (Patient pat : patientList) {
+                Log.d(TAG, "Patient " + snap.getKey());
+            }
 
         }
         ArrayAdapter<String> patientNameAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, names);
