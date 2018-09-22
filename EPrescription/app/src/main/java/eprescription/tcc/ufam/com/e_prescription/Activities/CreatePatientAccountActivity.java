@@ -117,7 +117,7 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                                             String userID = user.getUid();
 
                                             Patient patient = new Patient(name, email, dob, cpfNumber, sex, susNumber, dateModified,
-                                                    dateCreated, pwd, type);
+                                                    dateCreated, pwd, type, userID);
                                             patientDatabaseReference.child("users").child("patient").child(userID).setValue(patient);
 
                                             Intent intent = new Intent(CreatePatientAccountActivity.this, PatientHomeActivity.class);

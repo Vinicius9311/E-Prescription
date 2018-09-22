@@ -11,6 +11,7 @@ public class Patient {
     private String dateCreated;
     private String password;
     private String user;
+    private String key;
 
     public Patient() {
     }
@@ -21,7 +22,7 @@ public class Patient {
 
     public Patient(String firstName, String email, String dateOfBirth,
                    String maritalStatus, String sex, String sus, String dateModified,
-                   String dateCreated, String password, String user) {
+                   String dateCreated, String password, String user, String key) {
         this.fullName = firstName;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
@@ -32,6 +33,7 @@ public class Patient {
         this.dateCreated = dateCreated;
         this.password = password;
         this.user = user;
+        this.key = key;
     }
 
     public String getFullName() {
@@ -112,5 +114,13 @@ public class Patient {
 
     public void setUserID(String user) {
         this.user = user;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

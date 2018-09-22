@@ -31,7 +31,11 @@ import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Adapter.MedicineAdapter;
 import eprescription.tcc.ufam.com.e_prescription.FirebaseEntities.DoctorPatient;
+import eprescription.tcc.ufam.com.e_prescription.Model.Doctor;
+import eprescription.tcc.ufam.com.e_prescription.Model.DoctorPrescription;
 import eprescription.tcc.ufam.com.e_prescription.Model.Patient;
+import eprescription.tcc.ufam.com.e_prescription.Model.PatientPrescription;
+import eprescription.tcc.ufam.com.e_prescription.Model.Prescription;
 import eprescription.tcc.ufam.com.e_prescription.Model.PrescriptionItem;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
@@ -42,6 +46,8 @@ public class PrescriptionActivity extends AppCompatActivity {
     private DatabaseReference mDocRef = mRootRef.child("users").child("doctor");
     private DatabaseReference mPatRef = mRootRef.child("users").child("patient");
     private DatabaseReference mPresc = mRootRef.child("prescription");
+    private DatabaseReference mDocPresc = mRootRef.child("doctorPrescriptions");
+    private DatabaseReference mPatPresc = mRootRef.child("patientPrescriptions");
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mUser;
     private FirebaseAuth mAuth;
@@ -52,6 +58,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private Button finishBtn;
     private List<Patient> patientList;
     private List<PrescriptionItem> itemList;
+    private String doctorName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +75,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         final String userID = mUser.getUid();
+
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -119,6 +127,18 @@ public class PrescriptionActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot snap : dataSnapshot.getChildren()) {
                                 String patientKey = snap.getKey();
+                                Log.d(TAG, "Patient Key: " + patientKey);
+                                // mPresc.push().setValue(patientKey);  funciona
+                                String prescID = mPresc.push().getKey();
+                                Log.d(TAG, "Prescription Key: " + prescID);
+                                mPresc.child(prescID).setValue(itemList);
+                                DoctorPrescription doctorPrescription = new DoctorPrescription(
+                                        patientName.getText().toString(), patientKey, prescID);
+                                mDocPresc.child(userID).setValue(doctorPrescription);
+                                PatientPrescription patientPrescription = new PatientPrescription(
+                                    doctorName, userID, prescID
+                                );
+                                mPatPresc.child(patientKey).setValue(patientPrescription);
                             }
                         }
 
@@ -128,7 +148,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                         }
                     });
                     //DoctorPatient doctorPatient = new DoctorPatient(userID, getPatientKey());
-                    mPresc.push().setValue(true);
+
                 }
             }
         });
@@ -176,8 +196,27 @@ public class PrescriptionActivity extends AppCompatActivity {
 
             }
         });
+
+        mDocRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                getPatientInfo(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
+    private void getPatientInfo(DataSnapshot dataSnapshot) {
+        for (DataSnapshot snap : dataSnapshot.getChildren()) {
+            Doctor doctor = snap.getValue(Doctor.class);
+            Log.d(TAG, "Doctor Name: " + doctor.getFirstName());
+            doctorName = doctor.getFirstName();
+        }
+    }
 
 
     private void getPatientList(DataSnapshot dataSnapshot) {
