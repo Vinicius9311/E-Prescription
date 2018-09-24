@@ -37,7 +37,11 @@
             android:name=".Activities.PrescriptionActivity"
             android:label="@string/title_activity_prescription"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.MedicineActivity"></activity>
+        <activity android:name=".Activities.MedicineActivity" />
+        <activity
+            android:name=".Activities.TestTabActivity"
+            android:label="@string/title_activity_test_tab"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

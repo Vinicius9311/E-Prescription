@@ -159,4 +159,7 @@
     <string name="hour_s">hora(s)</string>
     <string name="message">Mensagens</string>
     <string name="symptoms">Até o desaparecimento dos sintomas</string>
+    <string name="title_activity_test_tab">TestTabActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="patients">Pacientes</string>
 </resources>

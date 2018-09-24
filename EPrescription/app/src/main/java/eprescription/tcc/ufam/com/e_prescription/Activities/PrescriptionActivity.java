@@ -48,6 +48,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private DatabaseReference mPresc = mRootRef.child("prescription");
     private DatabaseReference mDocPresc = mRootRef.child("doctorPrescriptions");
     private DatabaseReference mPatPresc = mRootRef.child("patientPrescriptions");
+    private DatabaseReference mDocPat = mRootRef.child("doctorPatients");
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mUser;
     private FirebaseAuth mAuth;
@@ -134,11 +135,13 @@ public class PrescriptionActivity extends AppCompatActivity {
                                 mPresc.child(prescID).setValue(itemList);
                                 DoctorPrescription doctorPrescription = new DoctorPrescription(
                                         patientName.getText().toString(), patientKey, prescID);
-                                mDocPresc.child(userID).setValue(doctorPrescription);
+                                mDocPresc.child(userID).push().setValue(doctorPrescription);
                                 PatientPrescription patientPrescription = new PatientPrescription(
                                     doctorName, userID, prescID
                                 );
                                 mPatPresc.child(patientKey).setValue(patientPrescription);
+                                DoctorPatient doctorPatient = new DoctorPatient(patientName.getText().toString(), patientKey);
+                                mDocPat.child(userID).child("patients").push().setValue(doctorPatient);
                             }
                         }
 

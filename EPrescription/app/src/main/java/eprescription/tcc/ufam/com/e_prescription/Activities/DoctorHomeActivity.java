@@ -105,7 +105,7 @@ public class DoctorHomeActivity extends AppCompatActivity {
         med.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DoctorHomeActivity.this, AddMedicineActivity.class));
+                startActivity(new Intent(DoctorHomeActivity.this, TestTabActivity.class));
             }
         });
 
