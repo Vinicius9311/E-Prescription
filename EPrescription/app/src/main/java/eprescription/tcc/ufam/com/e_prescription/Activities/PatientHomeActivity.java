@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,7 @@ public class PatientHomeActivity extends AppCompatActivity {
 
     private TextView patientInfo;
     private ListView patientListView;
+    private Button prescBtn;
 
     private String userID;
 
@@ -52,9 +54,7 @@ public class PatientHomeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        patientInfo = (TextView) findViewById(R.id.PatientInfo);
-        patientListView = (ListView) findViewById(R.id.listView);
-
+        prescBtn = (Button) findViewById(R.id.prescriptID);
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -96,60 +96,67 @@ public class PatientHomeActivity extends AppCompatActivity {
             }
         });
 
-        patientDatabaseReference.addValueEventListener(new ValueEventListener() {
+        prescBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                showData(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onClick(View v) {
+                startActivity(new Intent(PatientHomeActivity.this, PatientPrescription.class));
             }
         });
 
+//        patientDatabaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                showData(dataSnapshot);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
 
     }
 
-    private void showData(DataSnapshot dataSnapshot) {
-        Log.d("HERE", "VALUE IS: " + dataSnapshot.getValue()) ;
-        FirebaseUser user = mAuth.getCurrentUser();
-        String userID = user.getUid();
-        Log.d("HERE", "USERID: " + userID);
-
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            Patient patient = new Patient();
-            patient.setFullName(dataSnapshot.child(userID).getValue(Patient.class).getFullName());
-            patient.setEmail(dataSnapshot.child(userID).getValue(Patient.class).getEmail());
-            patient.setDateOfBirth(dataSnapshot.child(userID).getValue(Patient.class).getDateOfBirth());
-            patient.setSex(dataSnapshot.child(userID).getValue(Patient.class).getSex());
-            patient.setDateModified(dataSnapshot.child(userID).getValue(Patient.class).getDateModified());
-            patient.setDateCreated(dataSnapshot.child(userID).getValue(Patient.class).getDateCreated());
-            patient.setPassword(dataSnapshot.child(userID).getValue(Patient.class).getPassword());
-
-            Log.d(TAG, "First Name: " + patient.getFullName());
-            patientInfo.setText(patient.getFullName().toString());
-            Log.d(TAG, "Email: " + patient.getEmail());
-            Log.d(TAG, "Date of Birth: " + patient.getDateOfBirth());
-            Log.d(TAG, "Marital Status: " + patient.getMaritalStatus());
-            Log.d(TAG, "Sex: " + patient.getSex());
-            Log.d(TAG, "Date Modified: " + patient.getDateModified());
-            Log.d(TAG, "Date Created: " + patient.getDateCreated());
-            Log.d(TAG, "Password: " + patient.getPassword());
-
-
-            ArrayList<String> arrayList = new ArrayList<>();
-            arrayList.add(patient.getFullName());
-            arrayList.add(patient.getEmail());
-            arrayList.add(patient.getDateOfBirth());
-            arrayList.add(patient.getSex());
-            arrayList.add(patient.getDateModified());
-            arrayList.add(patient.getDateCreated());
-            arrayList.add(patient.getPassword());
-            ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, R.layout.content_patient_home, R.id.PatientInfo, arrayList);
-            patientListView.setAdapter(arrayAdapter);
-        }
-    }
+//    private void showData(DataSnapshot dataSnapshot) {
+//        Log.d("HERE", "VALUE IS: " + dataSnapshot.getValue()) ;
+//        FirebaseUser user = mAuth.getCurrentUser();
+//        String userID = user.getUid();
+//        Log.d("HERE", "USERID: " + userID);
+//
+//        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//            Patient patient = new Patient();
+//            patient.setFullName(dataSnapshot.child(userID).getValue(Patient.class).getFullName());
+//            patient.setEmail(dataSnapshot.child(userID).getValue(Patient.class).getEmail());
+//            patient.setDateOfBirth(dataSnapshot.child(userID).getValue(Patient.class).getDateOfBirth());
+//            patient.setSex(dataSnapshot.child(userID).getValue(Patient.class).getSex());
+//            patient.setDateModified(dataSnapshot.child(userID).getValue(Patient.class).getDateModified());
+//            patient.setDateCreated(dataSnapshot.child(userID).getValue(Patient.class).getDateCreated());
+//            patient.setPassword(dataSnapshot.child(userID).getValue(Patient.class).getPassword());
+//
+//            Log.d(TAG, "First Name: " + patient.getFullName());
+//            patientInfo.setText(patient.getFullName().toString());
+//            Log.d(TAG, "Email: " + patient.getEmail());
+//            Log.d(TAG, "Date of Birth: " + patient.getDateOfBirth());
+//            Log.d(TAG, "Marital Status: " + patient.getMaritalStatus());
+//            Log.d(TAG, "Sex: " + patient.getSex());
+//            Log.d(TAG, "Date Modified: " + patient.getDateModified());
+//            Log.d(TAG, "Date Created: " + patient.getDateCreated());
+//            Log.d(TAG, "Password: " + patient.getPassword());
+//
+//
+//            ArrayList<String> arrayList = new ArrayList<>();
+//            arrayList.add(patient.getFullName());
+//            arrayList.add(patient.getEmail());
+//            arrayList.add(patient.getDateOfBirth());
+//            arrayList.add(patient.getSex());
+//            arrayList.add(patient.getDateModified());
+//            arrayList.add(patient.getDateCreated());
+//            arrayList.add(patient.getPassword());
+//            ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, R.layout.content_patient_home, R.id.PatientInfo, arrayList);
+//            patientListView.setAdapter(arrayAdapter);
+//        }
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

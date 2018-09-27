@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,6 +55,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     private AutoCompleteTextView patientName;
+    private EditText description;
     private RecyclerView medicineRecycler;
     private MedicineAdapter medicineAdapter;
     private Button finishBtn;
@@ -72,6 +74,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         patientName = (AutoCompleteTextView) findViewById(R.id.patientID);
         medicineRecycler = (RecyclerView) findViewById(R.id.medicineRecyclerID);
         finishBtn = (Button) findViewById(R.id.finishPrescriptionID);
+        description = (EditText) findViewById(R.id.descriptionID);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -132,14 +135,22 @@ public class PrescriptionActivity extends AppCompatActivity {
                                 // mPresc.push().setValue(patientKey);  funciona
                                 String prescID = mPresc.push().getKey();
                                 Log.d(TAG, "Prescription Key: " + prescID);
-                                mPresc.child(prescID).setValue(itemList);
+
+                                Prescription prescription = new Prescription(
+                                        String.valueOf(java.lang.System.currentTimeMillis()),
+                                        description.getText().toString(),
+                                        itemList);
+                                mPresc.child(prescID).setValue(prescription);
+
                                 DoctorPrescription doctorPrescription = new DoctorPrescription(
                                         patientName.getText().toString(), patientKey, prescID);
                                 mDocPresc.child(userID).push().setValue(doctorPrescription);
+
                                 PatientPrescription patientPrescription = new PatientPrescription(
-                                    doctorName, userID, prescID
+                                    doctorName, userID, prescID, description.getText().toString()
                                 );
                                 mPatPresc.child(patientKey).setValue(patientPrescription);
+
                                 DoctorPatient doctorPatient = new DoctorPatient(patientName.getText().toString(), patientKey);
                                 mDocPat.child(userID).child("patients").push().setValue(doctorPatient);
                             }

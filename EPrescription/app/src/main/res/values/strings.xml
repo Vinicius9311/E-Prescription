@@ -162,4 +162,8 @@
     <string name="title_activity_test_tab">TestTabActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="patients">Pacientes</string>
+    <string name="prescriptions">Receitas</string>
+    <string name="description">Descrição</string>
+    <string name="my_prescr">Minhas Receitas Médicas</string>
+    <string name="date_prescripted">Data de Prescrição</string>
 </resources>

@@ -4,14 +4,19 @@ public class PatientPrescription {
     public String doctorName;
     public String doctorKey;
     public String prescriptionID;
+    public String description;
+    public String datePrescripted;
 
     public PatientPrescription() {
     }
 
-    public PatientPrescription(String doctorName, String doctorKey, String prescriptionID) {
+    public PatientPrescription(String doctorName, String doctorKey, String prescriptionID,
+                               String description, String datePrescripted) {
         this.doctorName = doctorName;
         this.doctorKey = doctorKey;
         this.prescriptionID = prescriptionID;
+        this.description = description;
+        this.datePrescripted = datePrescripted;
     }
 
     public String getDoctorName() {
@@ -36,5 +41,21 @@ public class PatientPrescription {
 
     public void setPrescriptionID(String prescriptionID) {
         this.prescriptionID = prescriptionID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDatePrescripted() {
+        return datePrescripted;
+    }
+
+    public void setDatePrescripted(String datePrescripted) {
+        this.datePrescripted = datePrescripted;
     }
 }
