@@ -147,7 +147,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                                 mDocPresc.child(userID).push().setValue(doctorPrescription);
 
                                 PatientPrescription patientPrescription = new PatientPrescription(
-                                    doctorName, userID, prescID, description.getText().toString()
+                                    doctorName, userID, prescID, description.getText().toString(), String.valueOf(java.lang.System.currentTimeMillis())
                                 );
                                 mPatPresc.child(patientKey).setValue(patientPrescription);
 
