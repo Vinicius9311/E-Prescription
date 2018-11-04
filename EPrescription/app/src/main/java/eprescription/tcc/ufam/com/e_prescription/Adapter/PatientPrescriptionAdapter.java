@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Model.PatientPrescription;
@@ -35,7 +36,9 @@ public class PatientPrescriptionAdapter extends RecyclerView.Adapter<PatientPres
         PatientPrescription patientPrescription = patientPrescriptions.get(position);
 
         holder.doctorName.setText(patientPrescription.getDoctorName());
-        holder.datePrescripted.setText(patientPrescription.getDatePrescripted());
+        java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
+        String FormatDate = dateFormat.format(new Date(Long.parseLong(patientPrescription.getDatePrescripted())).getTime());
+        holder.datePrescripted.setText(FormatDate);
         holder.description.setText(patientPrescription.getDescription());
     }
 
@@ -58,6 +61,7 @@ public class PatientPrescriptionAdapter extends RecyclerView.Adapter<PatientPres
             super(view);
 
             doctorName = (TextView) view.findViewById(R.id.DoctorNameID);
+
             datePrescripted = (TextView) view.findViewById(R.id.datePrescID);
             description = (TextView) view.findViewById(R.id.prescrDescID);
 
