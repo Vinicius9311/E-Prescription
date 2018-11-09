@@ -1,8 +1,10 @@
 package eprescription.tcc.ufam.com.e_prescription.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,10 @@ import android.widget.TextView;
 import java.util.Date;
 import java.util.List;
 
+import eprescription.tcc.ufam.com.e_prescription.Activities.PatientPrescriptionActivity;
 import eprescription.tcc.ufam.com.e_prescription.Model.PatientPrescription;
 import eprescription.tcc.ufam.com.e_prescription.R;
+
 
 public class PatientPrescriptionAdapter extends RecyclerView.Adapter<PatientPrescriptionAdapter.ViewHolder> {
 
@@ -57,15 +61,26 @@ public class PatientPrescriptionAdapter extends RecyclerView.Adapter<PatientPres
 
         }
 
-        public ViewHolder(View view, Context context) {
+        public ViewHolder(View view, final Context context) {
             super(view);
 
             doctorName = (TextView) view.findViewById(R.id.DoctorNameID);
-
             datePrescripted = (TextView) view.findViewById(R.id.datePrescID);
             description = (TextView) view.findViewById(R.id.prescrDescID);
 
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    PatientPrescription patientPrescription = patientPrescriptions.get(position);
 
+                    Intent intent = new Intent(context, PatientPrescriptionActivity.class);
+                    // TODO  Put intent to get prescription
+                    intent.putExtra("prescriptionKey", patientPrescription.getPrescriptionID());
+                    Log.d("HEREEEE", "PRESC KEY" + patientPrescription.getPrescriptionID());
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

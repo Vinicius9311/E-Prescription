@@ -42,6 +42,7 @@
             android:name=".Activities.TestTabActivity"
             android:label="@string/title_activity_test_tab"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activities.PatientPrescriptionListsActivity" />
         <activity android:name=".Activities.PatientPrescriptionActivity"></activity>
     </application>
 

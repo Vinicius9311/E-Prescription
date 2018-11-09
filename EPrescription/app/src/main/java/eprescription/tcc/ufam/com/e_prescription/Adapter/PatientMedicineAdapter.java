@@ -7,20 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
+import eprescription.tcc.ufam.com.e_prescription.Activities.DoctorHomeActivity;
 import eprescription.tcc.ufam.com.e_prescription.Model.PrescriptionItem;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
-
-public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHolder> {
+public class PatientMedicineAdapter extends RecyclerView.Adapter<PatientMedicineAdapter.ViewHolder> {
     /*
 
-        ADAPTER USED ON DOCTOR VIEW
+        ADAPTER USED ON PATIENT VIEW
 
      */
 
@@ -28,21 +26,21 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
     public LayoutInflater inflater;
     private List<PrescriptionItem> medicines;
 
-    public MedicineAdapter(Context context,  List<PrescriptionItem> medicines) {
+    public PatientMedicineAdapter(Context context,  List<PrescriptionItem> medicines) {
         this.context = context;
         this.medicines = medicines;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PatientMedicineAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.list_medicine_prescription, parent, false);
-        return new ViewHolder(view, context);
+        return new PatientMedicineAdapter.ViewHolder(view, context);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PatientMedicineAdapter.ViewHolder holder, int position) {
 
         PrescriptionItem prescriptionItem = medicines.get(position);
 
@@ -73,7 +71,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
         public TextView observation;
         public int id;
 
-        public ViewHolder(View view, Context ctx) {
+        public ViewHolder(final View view, Context ctx) {
             super(view);
 
             context = ctx;
@@ -82,6 +80,15 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
             duration = (TextView) view.findViewById(R.id.durationID);
             frequency = (TextView) view.findViewById(R.id.frequenceID);
             observation = (TextView) view.findViewById(R.id.obsRecyclerID);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Toast.makeText(view.getContext(), "position: "+ position, Toast.LENGTH_LONG).show();
+
+                }
+            });
         }
     }
 }

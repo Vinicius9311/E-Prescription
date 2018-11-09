@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Prescription {
 
-    private String datePrescripted;
-    private String description;
+    public String datePrescripted;
+    public String description;
     public List<PrescriptionItem> prescriptionItems;
 
     public Prescription() {
@@ -39,5 +39,9 @@ public class Prescription {
 
     public void setPrescriptionItems(List<PrescriptionItem> prescriptionItems) {
         this.prescriptionItems = prescriptionItems;
+    }
+
+    public int medicinesCount (List<PrescriptionItem> prescriptionItems) {
+        return  prescriptionItems.size();
     }
 }

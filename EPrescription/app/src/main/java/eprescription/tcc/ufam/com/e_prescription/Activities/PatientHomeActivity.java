@@ -92,7 +92,7 @@ public class PatientHomeActivity extends AppCompatActivity {
         prescBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PatientHomeActivity.this, PatientPrescriptionActivity.class));
+                startActivity(new Intent(PatientHomeActivity.this, PatientPrescriptionListsActivity.class));
             }
         });
 

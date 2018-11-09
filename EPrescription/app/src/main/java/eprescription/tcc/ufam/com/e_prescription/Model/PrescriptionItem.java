@@ -7,6 +7,9 @@ public class PrescriptionItem {
     private String frequency;
     private String observation;
 
+    public PrescriptionItem() {
+    }
+
     public PrescriptionItem(String medicament, String via, String duration, String frequency, String observation) {
         this.medicament = medicament;
         this.via = via;
