@@ -40,6 +40,11 @@ import eprescription.tcc.ufam.com.e_prescription.Model.Prescription;
 import eprescription.tcc.ufam.com.e_prescription.Model.PrescriptionItem;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
+
+/*
+    Activity that shows when doctor prescripts to patient
+ */
+
 public class PrescriptionActivity extends AppCompatActivity {
 
     private static final String TAG = "PrescriptionActivity";
