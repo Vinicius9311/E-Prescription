@@ -1,6 +1,7 @@
 package eprescription.tcc.ufam.com.e_prescription.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Activities.DoctorHomeActivity;
+import eprescription.tcc.ufam.com.e_prescription.Activities.TakeMedicineActivity;
 import eprescription.tcc.ufam.com.e_prescription.Model.PrescriptionItem;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
@@ -71,7 +73,7 @@ public class PatientMedicineAdapter extends RecyclerView.Adapter<PatientMedicine
         public TextView observation;
         public int id;
 
-        public ViewHolder(final View view, Context ctx) {
+        public ViewHolder(final View view, final Context ctx) {
             super(view);
 
             context = ctx;
@@ -86,6 +88,9 @@ public class PatientMedicineAdapter extends RecyclerView.Adapter<PatientMedicine
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     Toast.makeText(view.getContext(), "position: "+ position, Toast.LENGTH_LONG).show();
+                    // TODO GO TO TIME TO TAKE PILLS
+                    Intent intent = new Intent(context, TakeMedicineActivity.class);
+                    ctx.startActivity(intent);
 
                 }
             });

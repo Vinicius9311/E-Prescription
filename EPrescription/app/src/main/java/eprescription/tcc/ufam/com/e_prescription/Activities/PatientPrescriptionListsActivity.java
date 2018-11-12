@@ -1,12 +1,17 @@
 package eprescription.tcc.ufam.com.e_prescription.Activities;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +32,11 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
     private RecyclerView prescRecycler;
     private PatientPrescriptionAdapter prescriptionAdapter;
     private List<PatientPrescription> patientPrescriptions;
+    private String userID;
+
+    private FirebaseUser mUser;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mPatRef = mRootRef.child("users").child("patient");
@@ -40,15 +50,42 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
         patientPrescriptions = new ArrayList<>();
         myPrescription = (TextView) findViewById(R.id.myPrescID);
 
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        userID = mUser.getUid();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                if (user != null) {
+                    Toast.makeText(PatientPrescriptionListsActivity.this,"UserID: " + userID, Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "patient signed in");
+                    Log.d(TAG, "username: " + user.getEmail());
+                    Log.d(TAG, "userID: " + userID);
+
+                } else {
+                    // user is signed out
+                    Log.d(TAG, "user signed out");
+                    Toast.makeText(PatientPrescriptionListsActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(PatientPrescriptionListsActivity.this, MainActivity.class));
+                }
+            }
+        };
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        mPatPresc.addValueEventListener(new ValueEventListener() {
+        mAuth.addAuthStateListener(mAuthListener);
+
+        mPatPresc.orderByKey().equalTo(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "FOUND CHILD" + dataSnapshot);
                 getPrescriptions(dataSnapshot);
             }
 
@@ -59,23 +96,38 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
     private void getPrescriptions(DataSnapshot dataSnapshot) {
         patientPrescriptions = new ArrayList<>();
         prescRecycler = (RecyclerView) findViewById(R.id.prescriptionsRecyclerID);
 
-        prescRecycler.setHasFixedSize(true);
-        prescRecycler.setLayoutManager(new LinearLayoutManager(this));
-        Log.d(TAG, "ITEM COUNT HERE: " + patientPrescriptions.size());
-        prescriptionAdapter = new PatientPrescriptionAdapter(this, patientPrescriptions);
-        prescRecycler.setAdapter(prescriptionAdapter);
-        prescriptionAdapter.notifyDataSetChanged();
 
+        Log.d(TAG, "ITEM COUNT HERE: " + patientPrescriptions.size());
         for (DataSnapshot snap : dataSnapshot.getChildren()) {
-            PatientPrescription patientPrescription = snap.getValue(PatientPrescription.class);
-            Log.d(TAG, "PrescriptionID: " + patientPrescription.getPrescriptionID());
-            patientPrescriptions.add(patientPrescription);
+            for (DataSnapshot childSnap : snap.getChildren()) {
+                PatientPrescription patientPrescription = childSnap.getValue(PatientPrescription.class);
+                Log.d(TAG, "DataSnapshot: " + childSnap);
+                Log.d(TAG, "PrescriptionID: " + patientPrescription.getPrescriptionID());
+                patientPrescriptions.add(patientPrescription);
+            }
+
+            prescRecycler.setHasFixedSize(true);
+            prescRecycler.setLayoutManager(new LinearLayoutManager(this));
+            prescriptionAdapter = new PatientPrescriptionAdapter(this, patientPrescriptions);
+            prescRecycler.setAdapter(prescriptionAdapter);
+            prescriptionAdapter.notifyDataSetChanged();
         }
         Log.d(TAG, "ITEM COUNT: " + patientPrescriptions.size());
+
+
+
 
     }
 }

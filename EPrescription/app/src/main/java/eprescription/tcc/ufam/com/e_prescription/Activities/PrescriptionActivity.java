@@ -154,8 +154,9 @@ public class PrescriptionActivity extends AppCompatActivity {
                                 PatientPrescription patientPrescription = new PatientPrescription(
                                     doctorName, userID, prescID, description.getText().toString(), String.valueOf(java.lang.System.currentTimeMillis())
                                 );
-                                mPatPresc.child(patientKey).setValue(patientPrescription);
+                                mPatPresc.child(patientKey).push().setValue(patientPrescription);
 
+                                // TODO Treat when there is a already a patient doctor
                                 DoctorPatient doctorPatient = new DoctorPatient(patientName.getText().toString(), patientKey);
                                 mDocPat.child(userID).child("patients").push().setValue(doctorPatient);
                             }
