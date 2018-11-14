@@ -169,4 +169,5 @@
     <string name="initial_date">Data de Início</string>
     <string name="pick_date">Escolha a data de Início</string>
     <string name="Ok">Ok</string>
+    <string name="initial_time">Hora de Início</string>
 </resources>
