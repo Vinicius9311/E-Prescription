@@ -1,6 +1,7 @@
 package eprescription.tcc.ufam.com.e_prescription.Activities;
 
 import android.annotation.TargetApi;
+import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -36,8 +37,6 @@ public class TakeMedicineActivity extends AppCompatActivity {
     private Button setTime;
     private AlertDialog calendarDialog;
     private AlertDialog.Builder calendarDialogBuilder;
-    private AlertDialog clockDialog;
-    private AlertDialog.Builder clockDialogBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,34 +64,30 @@ public class TakeMedicineActivity extends AppCompatActivity {
     }
 
     private void createCalendarPopUp() {
-        calendarDialogBuilder = new AlertDialog.Builder(this);
-        final View view = getLayoutInflater().inflate(R.layout.calendar_popup, null);
-        // TODO FINISH CALENDAR POPUP
-        datePicker = (DatePicker) view.findViewById(R.id.datePickerID);
-        calendarDialogBuilder.setView(view);
-        calendarDialog = calendarDialogBuilder.create();
-        calendarDialog.show();
+//        calendarDialogBuilder = new AlertDialog.Builder(this);
+//        final View view = getLayoutInflater().inflate(R.layout.calendar_popup, null);
+//        // TODO FINISH CALENDAR POPUP
+//        datePicker = (DatePicker) view.findViewById(R.id.datePickerID);
+//        calendarDialogBuilder.setView(view);
+//        calendarDialog = calendarDialogBuilder.create();
+//        calendarDialog.show();
 
         Calendar calendar = Calendar.getInstance();
-        datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                new DatePicker.OnDateChangedListener() {
-                    @Override
-                    public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        initialDay.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
-                    }
-                });
-
-        simpleNotification(view);
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                initialDay.setText(dayOfMonth + "/" + month + "/" + year);
+            }
+        }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+        simpleNotification();
 
     }
 
     private void createClockPopUp() {
-        clockDialogBuilder = new AlertDialog.Builder(this);
-        final View view = getLayoutInflater().inflate(R.layout.clock_popup, null);
-        timePicker = (TimePicker) view.findViewById(R.id.timePickerID);
-        clockDialogBuilder.setView(view);
-        clockDialog = clockDialogBuilder.create();
-        clockDialog.show();
 
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -107,7 +102,7 @@ public class TakeMedicineActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
-    private void simpleNotification(View view) {
+    private void simpleNotification() {
 
         String CHANNEL_ID = "my_channel";
         createNotificationChannel(CHANNEL_ID);
@@ -122,7 +117,7 @@ public class TakeMedicineActivity extends AppCompatActivity {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(notificationID, mBuilder.build());
         Log.d(TAG, "user signed in");
-        }
+    }
 
     private void createNotificationChannel(String channel_id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
