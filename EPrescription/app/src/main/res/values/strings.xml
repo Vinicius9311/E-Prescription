@@ -170,4 +170,6 @@
     <string name="pick_date">Escolha a data de Início</string>
     <string name="Ok">Ok</string>
     <string name="initial_time">Hora de Início</string>
+    <string name="channel_name">Medicines Notification</string>
+    <string name="channel_description">Time to take the pills</string>
 </resources>
