@@ -172,4 +172,5 @@
     <string name="initial_time">Hora de Início</string>
     <string name="channel_name">Medicines Notification</string>
     <string name="channel_description">Time to take the pills</string>
+    <string name="slash">/</string>
 </resources>

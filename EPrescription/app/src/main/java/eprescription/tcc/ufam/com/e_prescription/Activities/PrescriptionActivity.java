@@ -159,6 +159,10 @@ public class PrescriptionActivity extends AppCompatActivity {
                                 // TODO Treat when there is a already a patient doctor
                                 DoctorPatient doctorPatient = new DoctorPatient(patientName.getText().toString(), patientKey);
                                 mDocPat.child(userID).child("patients").push().setValue(doctorPatient);
+
+                                Toast.makeText(PrescriptionActivity.this, "Receita prescrita com sucesso", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(PrescriptionActivity.this, DoctorHomeActivity.class));
+                                finish();
                             }
                         }
 

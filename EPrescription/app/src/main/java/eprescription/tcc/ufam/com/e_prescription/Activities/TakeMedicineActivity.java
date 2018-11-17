@@ -64,13 +64,6 @@ public class TakeMedicineActivity extends AppCompatActivity {
     }
 
     private void createCalendarPopUp() {
-//        calendarDialogBuilder = new AlertDialog.Builder(this);
-//        final View view = getLayoutInflater().inflate(R.layout.calendar_popup, null);
-//        // TODO FINISH CALENDAR POPUP
-//        datePicker = (DatePicker) view.findViewById(R.id.datePickerID);
-//        calendarDialogBuilder.setView(view);
-//        calendarDialog = calendarDialogBuilder.create();
-//        calendarDialog.show();
 
         Calendar calendar = Calendar.getInstance();
         int mYear = calendar.get(Calendar.YEAR);
@@ -79,7 +72,7 @@ public class TakeMedicineActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                initialDay.setText(dayOfMonth + "/" + month + "/" + year);
+                initialDay.setText(dayOfMonth + R.string.slash + (month + 1) + R.string.slash + year);
             }
         }, mYear, mMonth, mDay);
         datePickerDialog.show();
@@ -131,5 +124,4 @@ public class TakeMedicineActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-    // TODO TIMEPICKER
 }
