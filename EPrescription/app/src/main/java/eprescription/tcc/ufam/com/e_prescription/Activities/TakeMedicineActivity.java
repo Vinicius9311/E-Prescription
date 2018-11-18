@@ -1,13 +1,17 @@
 package eprescription.tcc.ufam.com.e_prescription.Activities;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
@@ -38,6 +42,9 @@ public class TakeMedicineActivity extends AppCompatActivity {
     private AlertDialog calendarDialog;
     private AlertDialog.Builder calendarDialogBuilder;
 
+    private AlarmManager alarmManager;
+    private PendingIntent alarmIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +68,19 @@ public class TakeMedicineActivity extends AppCompatActivity {
                 createClockPopUp();
             }
         });
+
+        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, MainActivity.class);
+        alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 60 * 1000, alarmIntent);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY,12);
+        calendar.set(Calendar.MINUTE, 56);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  60 * 1000 * 1, alarmIntent);
     }
 
     private void createCalendarPopUp() {

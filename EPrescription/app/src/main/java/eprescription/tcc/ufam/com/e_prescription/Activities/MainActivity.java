@@ -21,15 +21,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import eprescription.tcc.ufam.com.e_prescription.Adapter.DoctorsRecyclerViewAdapter;
+import eprescription.tcc.ufam.com.e_prescription.Model.Doctor;
+import eprescription.tcc.ufam.com.e_prescription.Model.Patient;
 import eprescription.tcc.ufam.com.e_prescription.Model.User;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseDatabase database;
     private DatabaseReference usersDatabaseReference;
     private FirebaseUser mUser;
     private FirebaseAuth mAuth;
@@ -58,11 +63,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        usersDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+
         loginButton = (Button) findViewById(R.id.loginID);
         createPatient = (Button) findViewById(R.id.createPatientID);
         createDoctor = (Button) findViewById(R.id.createDoctortID);
         mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -151,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         loginButton = (Button) view.findViewById(R.id.loginButtonID);
 
 
-
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -188,11 +193,12 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
+
                                         // Todo Correct this way to sign in different users
+
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         String userID = user.getUid();
-                                        //User userType = new User();
-
+                                        getUser(user.getEmail());
 
                                         Log.d("USERTYPE", String.valueOf(userType));
 
@@ -217,6 +223,41 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                 }
+            }
+        });
+    }
+
+    private void getUser(String email) {
+
+        usersDatabaseReference.child("patient").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "PATIENT: " +snap);
+                    Patient patient = snap.getValue(Patient.class);
+                    Log.d(TAG, "PATIENT: " + patient.getEmail());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        usersDatabaseReference.child("doctor").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "DOCTOR: " +snap);
+                    Doctor doctor = snap.getValue(Doctor.class);
+                    Log.d(TAG, "DOCTOR: " + doctor.getEmail());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "Load Cancelled");
             }
         });
     }
