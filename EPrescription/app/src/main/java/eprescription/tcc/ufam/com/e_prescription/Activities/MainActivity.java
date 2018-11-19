@@ -9,8 +9,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -54,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private Button loginButton;
     private AlertDialog loginDialog;
     private AlertDialog.Builder loginDialogBuilder;
-
-    //private ProgressBar mBar;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -155,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
         passwordLogin = (EditText) view.findViewById(R.id.passwordEditTextID);
         radioGroup = (RadioGroup) view.findViewById(R.id.loginRadioGroupID);
         loginButton = (Button) view.findViewById(R.id.loginButtonID);
+        progressBar = (ProgressBar) view.findViewById(R.id.loginProgressBar);
+        progressBar.setVisibility(View.GONE);
 
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -186,6 +189,8 @@ public class MainActivity extends AppCompatActivity {
                 String emailString = emailLogin.getText().toString();
                 String pwdString = passwordLogin.getText().toString();
 
+                progressBar.setVisibility(View.VISIBLE);
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
                 if (!emailString.equals("") && !pwdString.equals("")) {
                     mAuth.signInWithEmailAndPassword(emailString, pwdString)
@@ -213,10 +218,10 @@ public class MainActivity extends AppCompatActivity {
                                             finish();
                                         }
                                             // Todo a progress bar
-                                        //Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
-//                                        startActivity(new Intent(MainActivity.this, PatientHomeBottomActivity.class));
-//                                        finish();
-//
+                                        progressBar.setVisibility(View.GONE);
+                                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+
                                     } else {
                                         Toast.makeText(MainActivity.this, "Failed to sign in", Toast.LENGTH_LONG).show();
                                     }

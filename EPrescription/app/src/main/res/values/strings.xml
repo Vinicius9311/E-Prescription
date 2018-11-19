@@ -1,5 +1,5 @@
 <resources>
-    <string name="dr">Dr. </string>
+    <string name="dr">Dr(a). </string>
     <string name="app_name">E-Prescription</string>
     <string name="hint_email">E-mail</string>
     <string name="hint_password">Senha</string>
@@ -173,4 +173,5 @@
     <string name="channel_name">Medicines Notification</string>
     <string name="channel_description">Time to take the pills</string>
     <string name="slash">/</string>
+    <string name="medic_prescription">Receita Médica</string>
 </resources>

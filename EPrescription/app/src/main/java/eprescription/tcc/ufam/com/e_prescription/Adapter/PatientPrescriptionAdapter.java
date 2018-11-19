@@ -38,12 +38,13 @@ public class PatientPrescriptionAdapter extends RecyclerView.Adapter<PatientPres
     @Override
     public void onBindViewHolder(@NonNull PatientPrescriptionAdapter.ViewHolder holder, int position) {
         PatientPrescription patientPrescription = patientPrescriptions.get(position);
-
-        holder.doctorName.setText(patientPrescription.getDoctorName());
+        String doctor = "Dr(a). " + patientPrescription.getDoctorName();
+        holder.doctorName.setText(doctor);
         java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
-        String FormatDate = dateFormat.format(new Date(Long.parseLong(patientPrescription.getDatePrescripted())).getTime());
+        String FormatDate = "Data prescrita: " + dateFormat.format(new Date(Long.parseLong(patientPrescription.getDatePrescripted())).getTime());
         holder.datePrescripted.setText(FormatDate);
-        holder.description.setText(patientPrescription.getDescription());
+        String description = "Descrição: " + patientPrescription.getDescription();
+        holder.description.setText(description);
     }
 
     @Override

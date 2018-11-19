@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.util.Date;
 import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Adapter.PatientMedicineAdapter;
@@ -124,8 +125,13 @@ public class PatientPrescriptionActivity extends AppCompatActivity {
 
                                 PatientPrescription patientPrescription = snap.getValue(PatientPrescription.class);
                                 Log.d(TAG, "Doctor Name: " + patientPrescription.getDoctorName());
-                                docName.setText(patientPrescription.getDoctorName());
-
+                                String doctor = "Dr(a). " + patientPrescription.getDoctorName();
+                                docName.setText(doctor);
+                                java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
+                                String FormatDate = "Data prescrita: " + dateFormat.format(new Date(Long.parseLong(patientPrescription.getDatePrescripted())).getTime());
+                                datePresc.setText(FormatDate);
+                                String description = "Descrição: " + patientPrescription.getDescription();
+                                descPresc.setText(description);
                             }
                         }
 

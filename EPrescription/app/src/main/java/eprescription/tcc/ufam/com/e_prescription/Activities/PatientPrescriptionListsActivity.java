@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
     private RecyclerView prescRecycler;
     private PatientPrescriptionAdapter prescriptionAdapter;
     private List<PatientPrescription> patientPrescriptions;
+    private ProgressBar progressBar;
     private String userID;
 
     private FirebaseUser mUser;
@@ -49,6 +52,8 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
 
         patientPrescriptions = new ArrayList<>();
         myPrescription = (TextView) findViewById(R.id.myPrescID);
+        progressBar = (ProgressBar) findViewById(R.id.prescsProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -125,7 +130,7 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
             prescriptionAdapter.notifyDataSetChanged();
         }
         Log.d(TAG, "ITEM COUNT: " + patientPrescriptions.size());
-
+        progressBar.setVisibility(View.GONE);
 
 
 

@@ -1,6 +1,7 @@
 package eprescription.tcc.ufam.com.e_prescription.Activities;
 
 import android.content.Intent;
+import android.net.wifi.hotspot2.omadm.PpsMoParser;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -67,6 +69,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private List<Patient> patientList;
     private List<PrescriptionItem> itemList;
     private String doctorName;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +83,8 @@ public class PrescriptionActivity extends AppCompatActivity {
         medicineRecycler = (RecyclerView) findViewById(R.id.medicineRecyclerID);
         finishBtn = (Button) findViewById(R.id.finishPrescriptionID);
         description = (EditText) findViewById(R.id.descriptionID);
-
+        progressBar = (ProgressBar) findViewById(R.id.prescProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         final String userID = mUser.getUid();
@@ -263,5 +267,6 @@ public class PrescriptionActivity extends AppCompatActivity {
         }
         ArrayAdapter<String> patientNameAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, names);
         patientName.setAdapter(patientNameAdapter);
+        progressBar.setVisibility(View.GONE);
     }
 }
