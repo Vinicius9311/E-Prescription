@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="eprescription.tcc.ufam.com.e_prescription">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -45,6 +46,12 @@
         <activity android:name=".Activities.PatientPrescriptionListsActivity" />
         <activity android:name=".Activities.PatientPrescriptionActivity" />
         <activity android:name=".Activities.TakeMedicineActivity"></activity>
+        <receiver android:name=".Util.NotificationUpdate"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

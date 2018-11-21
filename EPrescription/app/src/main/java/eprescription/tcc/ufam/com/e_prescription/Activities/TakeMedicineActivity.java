@@ -8,8 +8,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
@@ -24,10 +26,14 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import org.w3c.dom.Text;
+
 import java.sql.Time;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import eprescription.tcc.ufam.com.e_prescription.R;
+import eprescription.tcc.ufam.com.e_prescription.Util.NotificationUpdate;
 
 public class TakeMedicineActivity extends AppCompatActivity {
 
@@ -36,6 +42,9 @@ public class TakeMedicineActivity extends AppCompatActivity {
     private DatePicker datePicker;
     private TimePicker timePicker;
     private Button okButton;
+    private TextView medicine;
+    private TextView frequency;
+    private TextView duration;
     private TextView initialDay;
     private TextView initialHour;
     private Button setTime;
@@ -54,6 +63,27 @@ public class TakeMedicineActivity extends AppCompatActivity {
         initialHour = (TextView) findViewById(R.id.timeTextID);
         setTime = (Button) findViewById(R.id.timePickerBtn);
         setDate = (Button) findViewById(R.id.pickDateBtnID);
+        medicine = (TextView) findViewById(R.id.medID);
+        frequency = (TextView) findViewById(R.id.freqTextID);
+        duration = (TextView) findViewById(R.id.durationTextID);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            HashMap<String, String> med = new HashMap<>();
+            med.put("medicine", bundle.getString("medicine"));
+            med.put("frequency", bundle.getString("frequency"));
+            med.put("duration", bundle.getString("duration"));
+            Log.d(TAG, "medicine: " + bundle.getString("medicine"));
+            Log.d(TAG, "frequency: " + bundle.getString("frequency"));
+            Log.d(TAG, "duration: " + bundle.getString("duration"));
+        }
+
+        medicine.setText(bundle.getString("medicine"));
+        frequency.setText("A cada " + bundle.getString("frequency")+ " hora(s)");
+        duration.setText("Durante " + bundle.getString("duration") + " dias");
+        NotificationUpdate notificationUpdate = new NotificationUpdate();
+        Intent intent = new Intent(this, NotificationUpdate.class);
+        notificationUpdate.onReceive(this, intent);
 
         setDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,18 +99,33 @@ public class TakeMedicineActivity extends AppCompatActivity {
             }
         });
 
-        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, MainActivity.class);
-        alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+       /*
 
-        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 60 * 1000, alarmIntent);
+        Notice that in the manifest, the boot receiver is set to android:enabled="false".
+        This means that the receiver will not be called unless the application explicitly
+        enables it. This prevents the boot receiver from being called unnecessarily. You can
+        enable a receiver (for example, if the user sets an alarm) as follows:
+         */
+//        ComponentName receiver = new ComponentName(this, NotificationUpdate.class);
+//        PackageManager pm = this.getPackageManager();
+//
+//        pm.setComponentEnabledSetting(receiver,
+//                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+//                PackageManager.DONT_KILL_APP);
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY,12);
-        calendar.set(Calendar.MINUTE, 56);
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  60 * 1000 * 1, alarmIntent);
+//        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(this, NotificationUpdate.class);
+//        alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+//
+//        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 60 * 1000, alarmIntent);
+//
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTimeInMillis(System.currentTimeMillis());
+//        calendar.set(Calendar.HOUR_OF_DAY,20);
+//        calendar.set(Calendar.MINUTE, 06);
+//        Log.d(TAG, "ENTROU AQUI");
+//
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  60 * 1000 * 1, alarmIntent);
     }
 
     private void createCalendarPopUp() {
@@ -92,7 +137,7 @@ public class TakeMedicineActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                initialDay.setText(dayOfMonth + R.string.slash + (month + 1) + R.string.slash + year);
+                initialDay.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
             }
         }, mYear, mMonth, mDay);
         datePickerDialog.show();

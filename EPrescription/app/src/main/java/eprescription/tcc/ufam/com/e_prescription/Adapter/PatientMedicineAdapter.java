@@ -89,7 +89,11 @@ public class PatientMedicineAdapter extends RecyclerView.Adapter<PatientMedicine
                     int position = getAdapterPosition();
                     Toast.makeText(view.getContext(), "position: "+ position, Toast.LENGTH_LONG).show();
                     // TODO GO TO TIME TO TAKE PILLS
+                    PrescriptionItem prescriptionItem = medicines.get(position);
                     Intent intent = new Intent(context, TakeMedicineActivity.class);
+                    intent.putExtra("medicine", prescriptionItem.getMedicament());
+                    intent.putExtra("frequency", prescriptionItem.getFrequency());
+                    intent.putExtra("duration", prescriptionItem.getDuration());
                     ctx.startActivity(intent);
 
                 }
