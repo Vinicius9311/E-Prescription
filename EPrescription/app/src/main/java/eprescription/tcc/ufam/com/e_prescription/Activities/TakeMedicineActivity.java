@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -38,7 +39,6 @@ import eprescription.tcc.ufam.com.e_prescription.Util.NotificationUpdate;
 public class TakeMedicineActivity extends AppCompatActivity {
 
     private static final String TAG = "TAKEMEDICINE";
-    private Button setDate;
     private DatePicker datePicker;
     private TimePicker timePicker;
     private Button okButton;
@@ -47,9 +47,15 @@ public class TakeMedicineActivity extends AppCompatActivity {
     private TextView duration;
     private TextView initialDay;
     private TextView initialHour;
-    private Button setTime;
+    private Button setAlarm;
     private AlertDialog calendarDialog;
     private AlertDialog.Builder calendarDialogBuilder;
+
+    private int fYear;
+    private int fMonth;
+    private int fDay;
+    private int fHour;
+    private int fMinute;
 
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
@@ -57,15 +63,13 @@ public class TakeMedicineActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_take_medicine);
+        setContentView(R.layout.activity_take_medicine_1);
 
-        initialDay = (TextView) findViewById(R.id.initialDayID);
-        initialHour = (TextView) findViewById(R.id.timeTextID);
-        setTime = (Button) findViewById(R.id.timePickerBtn);
-        setDate = (Button) findViewById(R.id.pickDateBtnID);
-        medicine = (TextView) findViewById(R.id.medID);
-        frequency = (TextView) findViewById(R.id.freqTextID);
-        duration = (TextView) findViewById(R.id.durationTextID);
+//        initialDay = (TextView) findViewById(R.id.initialDayID);
+        medicine = (TextView) findViewById(R.id.medName);
+        frequency = (TextView) findViewById(R.id.freqQtyID);
+        duration = (TextView) findViewById(R.id.durNameID);
+        setAlarm = (Button) findViewById(R.id.finishDateID);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -81,23 +85,8 @@ public class TakeMedicineActivity extends AppCompatActivity {
         medicine.setText(bundle.getString("medicine"));
         frequency.setText("A cada " + bundle.getString("frequency")+ " hora(s)");
         duration.setText("Durante " + bundle.getString("duration") + " dias");
-        NotificationUpdate notificationUpdate = new NotificationUpdate();
-        Intent intent = new Intent(this, NotificationUpdate.class);
-        notificationUpdate.onReceive(this, intent);
 
-        setDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createCalendarPopUp();
-            }
-        });
 
-        setTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createClockPopUp();
-            }
-        });
 
        /*
 
@@ -126,39 +115,58 @@ public class TakeMedicineActivity extends AppCompatActivity {
 //        Log.d(TAG, "ENTROU AQUI");
 //
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  60 * 1000 * 1, alarmIntent);
-    }
-
-    private void createCalendarPopUp() {
-
-        Calendar calendar = Calendar.getInstance();
-        int mYear = calendar.get(Calendar.YEAR);
-        int mMonth = calendar.get(Calendar.MONTH);
-        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        setAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                initialDay.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+            public void onClick(View v) {
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(TakeMedicineActivity.this, NotificationUpdate.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(TakeMedicineActivity.this, 0, intent, 0);
+                Calendar calendar = Calendar.getInstance();
+
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                Toast.makeText(TakeMedicineActivity.this, "Alarm set to " , Toast.LENGTH_SHORT).show();
+
             }
-        }, mYear, mMonth, mDay);
-        datePickerDialog.show();
-        simpleNotification();
+        });
 
     }
 
-    private void createClockPopUp() {
-
-        Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int mMinute = calendar.get(Calendar.MINUTE);
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                initialHour.setText(hourOfDay + ":" + minute);
-            }
-        }, hour, mMinute, true);
-        timePickerDialog.show();
-    }
+//    private void createCalendarPopUp() {
+//
+//        Calendar calendar = Calendar.getInstance();
+//        int mYear = calendar.get(Calendar.YEAR);
+//        int mMonth = calendar.get(Calendar.MONTH);
+//        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+//        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+//            @Override
+//            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+//                initialDay.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+//                fYear = year;
+//                fMonth = month;
+//                fDay = dayOfMonth;
+//            }
+//        }, mYear, mMonth, mDay);
+//        datePickerDialog.show();
+//        simpleNotification();
+//
+//    }
+//
+//    private void createClockPopUp() {
+//
+//        Calendar calendar = Calendar.getInstance();
+//        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+//        int mMinute = calendar.get(Calendar.MINUTE);
+//
+//        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+//            @Override
+//            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+//                initialHour.setText(hourOfDay + ":" + minute);
+//                fHour = hourOfDay;
+//                fMinute = minute;
+//            }
+//        }, hour, mMinute, true);
+//        timePickerDialog.show();
+//    }
 
     private void simpleNotification() {
 

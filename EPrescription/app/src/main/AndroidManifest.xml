@@ -47,7 +47,8 @@
         <activity android:name=".Activities.PatientPrescriptionActivity" />
         <activity android:name=".Activities.TakeMedicineActivity"></activity>
         <receiver android:name=".Util.NotificationUpdate"
-            android:enabled="false">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>
