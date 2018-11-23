@@ -1,19 +1,12 @@
 package eprescription.tcc.ufam.com.e_prescription.Activities;
 
-import android.annotation.TargetApi;
 import android.app.AlarmManager;
-import android.app.DatePickerDialog;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
@@ -27,9 +20,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.sql.Time;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -47,7 +37,7 @@ public class TakeMedicineActivity extends AppCompatActivity {
     private TextView duration;
     private TextView initialDay;
     private TextView initialHour;
-    private Button setAlarm;
+    private Button setAlarmButton;
     private AlertDialog calendarDialog;
     private AlertDialog.Builder calendarDialogBuilder;
 
@@ -69,7 +59,8 @@ public class TakeMedicineActivity extends AppCompatActivity {
         medicine = (TextView) findViewById(R.id.medName);
         frequency = (TextView) findViewById(R.id.freqQtyID);
         duration = (TextView) findViewById(R.id.durNameID);
-        setAlarm = (Button) findViewById(R.id.finishDateID);
+        setAlarmButton = (Button) findViewById(R.id.finishDateID);
+        timePicker = (TimePicker) findViewById(R.id.timePicker);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -115,16 +106,43 @@ public class TakeMedicineActivity extends AppCompatActivity {
 //        Log.d(TAG, "ENTROU AQUI");
 //
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  60 * 1000 * 1, alarmIntent);
-        setAlarm.setOnClickListener(new View.OnClickListener() {
+        setAlarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+
+                if (Build.VERSION.SDK_INT >= 23) {
+                    calendar.set(
+                            calendar.get(Calendar.YEAR),
+                            calendar.get(Calendar.MONTH),
+                            calendar.get(Calendar.DAY_OF_MONTH),
+                            timePicker.getHour(),
+                            timePicker.getMinute(),
+                            0
+                    );
+                } else {
+                    calendar.set(
+                            calendar.get(Calendar.YEAR),
+                            calendar.get(Calendar.MONTH),
+                            calendar.get(Calendar.DAY_OF_MONTH),
+                            timePicker.getCurrentHour(),
+                            timePicker.getCurrentMinute(),
+                            0
+                    );
+                }
+
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 Intent intent = new Intent(TakeMedicineActivity.this, NotificationUpdate.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(TakeMedicineActivity.this, 0, intent, 0);
-                Calendar calendar = Calendar.getInstance();
 
                 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-                Toast.makeText(TakeMedicineActivity.this, "Alarm set to " , Toast.LENGTH_SHORT).show();
+                if (Build.VERSION.SDK_INT >= 23) {
+                    Toast.makeText(TakeMedicineActivity.this,
+                            "Alarm set to " + timePicker.getHour() + ":" + timePicker.getMinute(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(TakeMedicineActivity.this,
+                            "Alarm set to " + timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute(), Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
