@@ -40,6 +40,8 @@ public class MedicineActivity extends AppCompatActivity {
     private TextView durationText;
     private RadioGroup radioGroup;
     private RadioButton radioButton;
+    private RadioButton rbSymptoms;
+    private RadioButton rbDaysQty;
     private TextView durationTextView;
     private TextView frequenceText;
     private TextView frequenceBtn;
@@ -74,6 +76,8 @@ public class MedicineActivity extends AppCompatActivity {
         viaSpinner = (Spinner) findViewById(R.id.viaSpinnerID);
         durationText = (TextView) findViewById(R.id.duratioTextID);
         radioGroup = (RadioGroup) findViewById(R.id.prescriptionRadioGroupID);
+        rbSymptoms = (RadioButton) findViewById(R.id.symptomID);
+        rbDaysQty = (RadioButton) findViewById(R.id.daysQtyID);
         durationTextView = (TextView) findViewById(R.id.durationTextID);
         frequenceText = (TextView) findViewById(R.id.frequenceTextID);
         frequenceBtn = (TextView) findViewById(R.id.frequenceBtnID);
@@ -90,38 +94,33 @@ public class MedicineActivity extends AppCompatActivity {
 
         durationTextView.setVisibility(View.INVISIBLE);
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-                radioButton = (RadioButton) findViewById(checkedId);
-
-                switch (radioButton.getId()) {
-                    case R.id.noDueDateButtonID: {
-                        durationTextView.setVisibility(View.INVISIBLE);
-                        duration = null;
-                    }
-                    break;
-                    case R.id.daysQtyID: {
-                        durationTextView.setVisibility(View.VISIBLE);
-                        durationTextView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                chooseDaysQty();
-                            }
-                        });
-                        //duration = String.valueOf(daysPicker.getValue());
-                    }
-                    break;
-                    case R.id.symptomID: {
-                        durationTextView.setVisibility(View.VISIBLE);
-                        duration = "Até o desaparecimento dos sintomas";
-                        durationTextView.setText(duration);
-                    }
-                    break;
-                }
-            }
-        });
+//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//
+//                radioButton = (RadioButton) findViewById(checkedId);
+//
+//                switch (radioButton.getId()) {
+//                    case R.id.daysQtyID: {
+//                        durationTextView.setVisibility(View.VISIBLE);
+//                        durationTextView.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                chooseDaysQty();
+//                            }
+//                        });
+//                        //duration = String.valueOf(daysPicker.getValue());
+//                    }
+//                    break;
+//                    case R.id.symptomID: {
+//                        durationTextView.setVisibility(View.VISIBLE);
+//                        duration = "Até o desaparecimento dos sintomas";
+//                        durationTextView.setText(duration);
+//                    }
+//                    break;
+//                }
+//            }
+//        });
 
         frequenceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,14 +136,13 @@ public class MedicineActivity extends AppCompatActivity {
                 Log.d(TAG, "Medicine: " +medicineAutoComplete.getText().toString());
                 intent.putExtra("medicine", medicineAutoComplete.getText().toString());
 
-                Log.d(TAG, "duration: " + duration);
-                // TODO Correct this part
-                if (duration != null || duration!= "Até o desaparecimento dos sintomas") {
-                    intent.putExtra("duration", String.valueOf(daysPicker.getValue()));
-                    Log.d(TAG, "duration: " + String.valueOf(daysPicker.getValue()));
-                } else {
+
+                if (duration.equals("Até o desaparecimento dos sintomas")) {
                     intent.putExtra("duration", duration);
                     Log.d(TAG, "duration: " + duration);
+                } else {
+                    intent.putExtra("duration", String.valueOf(daysPicker.getValue()));
+                    Log.d(TAG, "duration: " + String.valueOf(daysPicker.getValue()));
                 }
                 Log.d(TAG, "frequency: " +String.valueOf(freqPicker.getValue()));
                 intent.putExtra("frequency", String.valueOf(freqPicker.getValue()));
@@ -247,5 +245,28 @@ public class MedicineActivity extends AppCompatActivity {
 
         ArrayAdapter<String> medicineAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, meds);
         medicineAutoComplete.setAdapter(medicineAdapter);
+    }
+
+    public void onRadioButtonClicked(View view) {
+
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch (view.getId()) {
+            case R.id.symptomID:
+                if (checked) {
+                    duration = "Até o desaparecimento dos sintomas";
+                    durationTextView.setText(duration);
+                    durationTextView.setVisibility(View.VISIBLE);
+                    Log.d(TAG, "symptom");
+                }
+                break;
+            case R.id.daysQtyID:
+                if (checked) {
+                    durationTextView.setText(R.string.days_qty);
+                    Log.d(TAG, "days");
+                    chooseDaysQty();
+                }
+                break;
+        }
     }
 }

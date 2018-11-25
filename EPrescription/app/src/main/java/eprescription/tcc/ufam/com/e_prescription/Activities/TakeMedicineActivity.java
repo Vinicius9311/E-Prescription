@@ -41,11 +41,9 @@ public class TakeMedicineActivity extends AppCompatActivity {
     private AlertDialog calendarDialog;
     private AlertDialog.Builder calendarDialogBuilder;
 
-    private int fYear;
-    private int fMonth;
-    private int fDay;
-    private int fHour;
-    private int fMinute;
+    private String med;
+    private String freq;
+    private String dur;
 
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
@@ -64,48 +62,22 @@ public class TakeMedicineActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            HashMap<String, String> med = new HashMap<>();
-            med.put("medicine", bundle.getString("medicine"));
-            med.put("frequency", bundle.getString("frequency"));
-            med.put("duration", bundle.getString("duration"));
-            Log.d(TAG, "medicine: " + bundle.getString("medicine"));
-            Log.d(TAG, "frequency: " + bundle.getString("frequency"));
-            Log.d(TAG, "duration: " + bundle.getString("duration"));
+            HashMap<String, String> presc = new HashMap<>();
+            presc.put("medicine", bundle.getString("medicine"));
+            presc.put("frequency", bundle.getString("frequency"));
+            presc.put("duration", bundle.getString("duration"));
+            med = bundle.getString("medicine");
+            freq = bundle.getString("frequency");
+            dur = bundle.getString("duration");
+            Log.d(TAG, "medicine: " + med);
+            Log.d(TAG, "frequency: " + freq);
+            Log.d(TAG, "duration: " + dur);
         }
 
         medicine.setText(bundle.getString("medicine"));
         frequency.setText("A cada " + bundle.getString("frequency")+ " hora(s)");
         duration.setText("Durante " + bundle.getString("duration") + " dias");
 
-
-
-       /*
-
-        Notice that in the manifest, the boot receiver is set to android:enabled="false".
-        This means that the receiver will not be called unless the application explicitly
-        enables it. This prevents the boot receiver from being called unnecessarily. You can
-        enable a receiver (for example, if the user sets an alarm) as follows:
-         */
-//        ComponentName receiver = new ComponentName(this, NotificationUpdate.class);
-//        PackageManager pm = this.getPackageManager();
-//
-//        pm.setComponentEnabledSetting(receiver,
-//                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-//                PackageManager.DONT_KILL_APP);
-
-//        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-//        Intent intent = new Intent(this, NotificationUpdate.class);
-//        alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-//
-//        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 60 * 1000, alarmIntent);
-//
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-//        calendar.set(Calendar.HOUR_OF_DAY,20);
-//        calendar.set(Calendar.MINUTE, 06);
-//        Log.d(TAG, "ENTROU AQUI");
-//
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  60 * 1000 * 1, alarmIntent);
         setAlarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,11 +103,30 @@ public class TakeMedicineActivity extends AppCompatActivity {
                     );
                 }
 
+                /*
+
+                    1 day = 86.400 s
+                    1 hour = 3.600 s
+
+                 */
+                int repetition = (24 * Integer.parseInt(dur))/(Integer.parseInt(freq));
+
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 Intent intent = new Intent(TakeMedicineActivity.this, NotificationUpdate.class);
+                intent.putExtra("med", med);
+                intent.putExtra("freq", freq);
+                intent.putExtra("dur", dur);
+                intent.putExtra("repetition", repetition);
+                Log.d(TAG, "medicine: " + med);
+                Log.d(TAG, "frequency: " + freq);
+                Log.d(TAG, "duration: " + dur);
+                Log.d(TAG, "repetition: " + repetition);
+                sendBroadcast(intent);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(TakeMedicineActivity.this, 0, intent, 0);
+//                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * Long.parseLong(freq), pendingIntent);
                 if (Build.VERSION.SDK_INT >= 23) {
                     Toast.makeText(TakeMedicineActivity.this,
                             "Alarm set to " + timePicker.getHour() + ":" + timePicker.getMinute(), Toast.LENGTH_SHORT).show();

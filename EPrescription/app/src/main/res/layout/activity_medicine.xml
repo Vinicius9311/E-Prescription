@@ -103,13 +103,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/duratioTextID">
 
+                <!--<RadioButton-->
+                    <!--android:id="@+id/noDueDateButtonID"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="@string/no_due_date"-->
+                    <!--android:textSize="16sp" />-->
+
                 <RadioButton
-                    android:id="@+id/noDueDateButtonID"
+                    android:id="@+id/symptomID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/no_due_date"
-                    android:textSize="16sp" />
+                    android:checked="true"
+                    android:text="@string/symptoms"
+                    android:textSize="16sp"
+                    android:onClick="onRadioButtonClicked"/>
 
                 <RadioButton
                     android:id="@+id/daysQtyID"
@@ -117,15 +127,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/days_qty"
-                    android:textSize="16sp" />
-
-                <RadioButton
-                    android:id="@+id/symptomID"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/symptoms"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:onClick="onRadioButtonClicked"/>
 
             </RadioGroup>
 
@@ -137,7 +140,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:text="@string/days"
+                android:text="@string/days_qty"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

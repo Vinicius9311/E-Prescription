@@ -3,6 +3,7 @@ package eprescription.tcc.ufam.com.e_prescription.Adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
         ADAPTER USED ON DOCTOR VIEW
 
      */
-
+    private static final String TAG = "MedicineAdapter";
     private Context context;
     public LayoutInflater inflater;
     private List<PrescriptionItem> medicines;
@@ -48,12 +49,10 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
 
         holder.medicine.setText(prescriptionItem.getMedicament());
         holder.via.setText(prescriptionItem.getVia());
-        if (prescriptionItem.getDuration() == null) {
-            holder.duration.setText(prescriptionItem.getDuration());
-        } else if (prescriptionItem.getDuration() == String.valueOf(R.string.symptoms)){
-            holder.duration.setText(R.string.symptoms);
-        } else {
+        if (prescriptionItem.getDuration() != null && !prescriptionItem.getDuration().equals("Até o desaparecimento dos sintomas")) {
             holder.duration.setText("Durante " + prescriptionItem.getDuration() + " dias");
+        } else if (prescriptionItem.getDuration().equals("Até o desaparecimento dos sintomas")) {
+            holder.duration.setText(prescriptionItem.getDuration());
         }
         holder.frequency.setText("A cada " + prescriptionItem.getFrequency() + " horas");
         holder.observation.setText(prescriptionItem.getObservation());
