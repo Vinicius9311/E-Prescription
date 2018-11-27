@@ -1,6 +1,7 @@
 package eprescription.tcc.ufam.com.e_prescription.Activities;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ import eprescription.tcc.ufam.com.e_prescription.Model.Doctor;
 import eprescription.tcc.ufam.com.e_prescription.Model.Patient;
 import eprescription.tcc.ufam.com.e_prescription.Model.User;
 import eprescription.tcc.ufam.com.e_prescription.R;
+import eprescription.tcc.ufam.com.e_prescription.Util.Test;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -78,11 +80,12 @@ public class MainActivity extends AppCompatActivity {
 
                 if (mUser != null) {
                     // user is signed in
-                   // Toast.makeText(MainActivity.this,"User Signed In", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this,"Signed In", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "user signed in");
                     Log.d(TAG, "username: " + mUser.getEmail());
                     //startActivity(new Intent(MainActivity.this, PatientHomeActivity.class));
-                    //finish();
+                    startActivity(new Intent(MainActivity.this, DoctorHomeActivity.class));
+                    finish();
                 } else {
                     // user is signed out
                     Log.d(TAG, "user signed out");
@@ -189,10 +192,11 @@ public class MainActivity extends AppCompatActivity {
                 String emailString = emailLogin.getText().toString();
                 String pwdString = passwordLogin.getText().toString();
 
-                progressBar.setVisibility(View.VISIBLE);
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
                 if (!emailString.equals("") && !pwdString.equals("")) {
+                    progressBar.setVisibility(View.VISIBLE);
+
                     mAuth.signInWithEmailAndPassword(emailString, pwdString)
                             .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -224,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     } else {
                                         Toast.makeText(MainActivity.this, "Failed to sign in", Toast.LENGTH_LONG).show();
+                                        progressBar.setVisibility(View.GONE);
                                     }
                                 }
                             });
@@ -231,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void getUser(String email) {
 

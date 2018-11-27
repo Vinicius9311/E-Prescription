@@ -74,7 +74,7 @@ public class MedicineActivity extends AppCompatActivity {
         medicineAutoComplete = (AutoCompleteTextView) findViewById(R.id.medicineAutoTextviewID);
         adminVia = (TextView) findViewById(R.id.viaID);
         viaSpinner = (Spinner) findViewById(R.id.viaSpinnerID);
-        durationText = (TextView) findViewById(R.id.duratioTextID);
+        durationText = (TextView) findViewById(R.id.durationID);
         radioGroup = (RadioGroup) findViewById(R.id.prescriptionRadioGroupID);
         rbSymptoms = (RadioButton) findViewById(R.id.symptomID);
         rbDaysQty = (RadioButton) findViewById(R.id.daysQtyID);
@@ -93,6 +93,7 @@ public class MedicineActivity extends AppCompatActivity {
         viaSpinner.setAdapter(viaSpecialty);
 
         durationTextView.setVisibility(View.INVISIBLE);
+        duration = "Até o desaparecimento dos sintomas";
 
 //        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 //            @Override
@@ -181,7 +182,7 @@ public class MedicineActivity extends AppCompatActivity {
         freqDialog.show();
     }
 
-    private void chooseDaysQty() {
+    private void chooseDaysQty(View v) {
         daysDialogBuilder = new AlertDialog.Builder(this);
         final View view = getLayoutInflater().inflate(R.layout.days, null);
         daysPicker = (NumberPicker) view.findViewById(R.id.numberPickerID);
@@ -198,6 +199,7 @@ public class MedicineActivity extends AppCompatActivity {
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 durationTextView.setText("Durante " + newVal + " dias");
                 Log.d(TAG, "DAYS PICKER: " +newVal);
+                duration = String.valueOf(daysPicker.getValue());
             }
         });
 
@@ -221,7 +223,7 @@ public class MedicineActivity extends AppCompatActivity {
         medRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                getMedicaments(dataSnapshot);
+                getMedicines(dataSnapshot);
             }
 
             @Override
@@ -231,7 +233,7 @@ public class MedicineActivity extends AppCompatActivity {
         });
     }
 
-    private void getMedicaments(DataSnapshot dataSnapshot) {
+    private void getMedicines(DataSnapshot dataSnapshot) {
 
         medicineList = new ArrayList<>();
         ArrayList<String> meds = new ArrayList<String>();
@@ -264,7 +266,13 @@ public class MedicineActivity extends AppCompatActivity {
                 if (checked) {
                     durationTextView.setText(R.string.days_qty);
                     Log.d(TAG, "days");
-                    chooseDaysQty();
+                    durationTextView.setVisibility(View.VISIBLE);
+                    durationTextView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            chooseDaysQty(v);
+                        }
+                    });
                 }
                 break;
         }

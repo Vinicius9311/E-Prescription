@@ -15,6 +15,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -34,7 +35,7 @@ public class NotificationUpdate extends BroadcastReceiver {
 //        MediaPlayer mediaPlayer = MediaPlayer.create(context, Settings.System.DEFAULT_RINGTONE_URI);
 //        mediaPlayer.start();
         Bundle bundle = intent.getExtras();
-        Log.i(TAG, "Receiver: " + intent);
+
         if (bundle != null) {
             HashMap<String, String> presc = new HashMap<>();
             presc.put("medicine", bundle.getString("medicine"));
@@ -60,8 +61,8 @@ public class NotificationUpdate extends BroadcastReceiver {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                .setContentTitle("Test")
-                .setContentText("Test")
+                .setContentTitle(med)
+                .setContentText(freq)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
