@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import eprescription.tcc.ufam.com.e_prescription.Model.Patient;
+import eprescription.tcc.ufam.com.e_prescription.Model.UsersRole;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 public class CreatePatientAccountActivity extends AppCompatActivity {
@@ -38,9 +39,10 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
     private EditText passwordConfirmation;
     private Button registerButton;
 
+    private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference patientDatabaseReference;
-    private FirebaseAuth mAuth;
+    private DatabaseReference roleDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
 
 
         patientDatabaseReference.keepSynced(true);
+        roleDatabaseReference = database.getReference().child("usersRole");
         mAuth = FirebaseAuth.getInstance();
 
         titlePatientRegister = (TextView) findViewById(R.id.patientTitleRegisterID);
@@ -119,6 +122,8 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                                             Patient patient = new Patient(name, email, dob, cpfNumber, sex, susNumber, dateModified,
                                                     dateCreated, pwd, type, userID);
                                             patientDatabaseReference.child("users").child("patient").child(userID).setValue(patient);
+                                            UsersRole usersRole = new UsersRole(email, false);
+                                            roleDatabaseReference.push().setValue(usersRole);
 
                                             Intent intent = new Intent(CreatePatientAccountActivity.this, PatientHomeActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

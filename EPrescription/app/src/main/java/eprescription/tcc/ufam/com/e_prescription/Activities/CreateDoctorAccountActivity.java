@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import eprescription.tcc.ufam.com.e_prescription.Model.Doctor;
+import eprescription.tcc.ufam.com.e_prescription.Model.UsersRole;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 public class CreateDoctorAccountActivity extends AppCompatActivity {
@@ -41,10 +42,10 @@ public class CreateDoctorAccountActivity extends AppCompatActivity {
     private EditText passwordConfirmation;
     private Button register;
 
+    private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference doctorsDatabaseReference;
-    private FirebaseAuth mAuth;
-
+    private DatabaseReference roleDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class CreateDoctorAccountActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         doctorsDatabaseReference = database.getReference();
+        roleDatabaseReference = database.getReference().child("usersRole");
         mAuth = FirebaseAuth.getInstance();
 
         firstName = (EditText) findViewById(R.id.doctorEditTextNameID);
@@ -129,8 +131,11 @@ public class CreateDoctorAccountActivity extends AppCompatActivity {
                                             String userID = user.getUid();
                                             Doctor doctor = new Doctor(name, surname, doctorSpecialty, doctorCrm, docAddress,
                                                     docPhone, email, dob, sex, dateModified, dateCreated, pwd, Type);
-                                            //doctorsDatabaseReference.child("users").child("doctor").child(doctorSpecialty).child(userID).setValue(doctor);
+
                                             doctorsDatabaseReference.child("users").child("doctor").child(userID).setValue(doctor);
+                                            UsersRole usersRole = new UsersRole(email, true);
+                                            roleDatabaseReference.push().setValue(usersRole);
+
                                             Intent intent = new Intent(CreateDoctorAccountActivity.this, DoctorHomeActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);

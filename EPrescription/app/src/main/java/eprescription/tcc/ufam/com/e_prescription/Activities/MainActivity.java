@@ -34,18 +34,21 @@ import eprescription.tcc.ufam.com.e_prescription.Adapter.DoctorsRecyclerViewAdap
 import eprescription.tcc.ufam.com.e_prescription.Model.Doctor;
 import eprescription.tcc.ufam.com.e_prescription.Model.Patient;
 import eprescription.tcc.ufam.com.e_prescription.Model.User;
+import eprescription.tcc.ufam.com.e_prescription.Model.UsersRole;
 import eprescription.tcc.ufam.com.e_prescription.R;
 import eprescription.tcc.ufam.com.e_prescription.Util.Test;
 
 public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference usersDatabaseReference;
+    private DatabaseReference roleDatabaseReference;
     private FirebaseUser mUser;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private static final String TAG = "MainActivity";
     private String userType;
+    private boolean isDoctor;
 
     private Button createPatient;
     private Button createDoctor;
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         usersDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        roleDatabaseReference = FirebaseDatabase.getInstance().getReference().child("usersRole");
 
         loginButton = (Button) findViewById(R.id.loginID);
         createPatient = (Button) findViewById(R.id.createPatientID);
@@ -83,9 +87,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,"Signed In", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "user signed in");
                     Log.d(TAG, "username: " + mUser.getEmail());
+                    getUser(mUser.getEmail());
+
                     //startActivity(new Intent(MainActivity.this, PatientHomeActivity.class));
-                    startActivity(new Intent(MainActivity.this, DoctorHomeActivity.class));
-                    finish();
+//                    startActivity(new Intent(MainActivity.this, DoctorHomeActivity.class));
+//                    finish();
                 } else {
                     // user is signed out
                     Log.d(TAG, "user signed out");
@@ -203,27 +209,24 @@ public class MainActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
 
-                                        // Todo Correct this way to sign in different users
 
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         String userID = user.getUid();
                                         getUser(user.getEmail());
 
-                                        Log.d("USERTYPE", String.valueOf(userType));
+                                        Log.d("isDOCTOR", String.valueOf(isDoctor));
 
-                                        if (userType.equals("patient")) {
-                                            Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
-                                            startActivity(new Intent(MainActivity.this, PatientHomeActivity.class));
-                                            finish();
-                                            // Todo a progress bar
-                                        } else if (userType.equals("doctor")) {
-                                            Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
-                                            startActivity(new Intent(MainActivity.this, DoctorHomeActivity.class));
-                                            finish();
-                                        }
-                                            // Todo a progress bar
-                                        progressBar.setVisibility(View.GONE);
-                                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+//                                        if (isDoctor) {
+//                                            Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
+//                                            startActivity(new Intent(MainActivity.this, DoctorHomeActivity.class));
+//                                            finish();
+//                                        } else {
+//                                            Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
+//                                            startActivity(new Intent(MainActivity.this, PatientHomeActivity.class));
+//                                            finish();
+//                                        }
+//                                        progressBar.setVisibility(View.GONE);
+//                                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
 
                                     } else {
@@ -240,35 +243,32 @@ public class MainActivity extends AppCompatActivity {
 
     private void getUser(String email) {
 
-        usersDatabaseReference.child("patient").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+        roleDatabaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "PATIENT: " +snap);
-                    Patient patient = snap.getValue(Patient.class);
-                    Log.d(TAG, "PATIENT: " + patient.getEmail());
+                    Log.d(TAG, "USER: " + snap);
+                    UsersRole usersRole = snap.getValue(UsersRole.class);
+                    Log.d(TAG, "USER: " + usersRole.getEmail());
+                    Log.d(TAG, "USER: " + usersRole.isDoctor());
+                    isDoctor = usersRole.isDoctor();
+                    if (isDoctor) {
+                        Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(MainActivity.this, DoctorHomeActivity.class));
+                        finish();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(MainActivity.this, PatientHomeActivity.class));
+                        finish();
+                    }
+//                    progressBar.setVisibility(View.GONE);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
-        usersDatabaseReference.child("doctor").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "DOCTOR: " +snap);
-                    Doctor doctor = snap.getValue(Doctor.class);
-                    Log.d(TAG, "DOCTOR: " + doctor.getEmail());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG, "Load Cancelled");
             }
         });
     }
