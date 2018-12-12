@@ -3,33 +3,29 @@ package eprescription.tcc.ufam.com.e_prescription.Adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Model.PrescriptionItem;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 
-public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHolder> {
+public class DoctorMedicineAdapter extends RecyclerView.Adapter<DoctorMedicineAdapter.ViewHolder> {
     /*
 
         ADAPTER USED ON DOCTOR VIEW
 
      */
-    private static final String TAG = "MedicineAdapter";
+    private static final String TAG = "DoctorMedicineAdapter";
     private Context context;
     public LayoutInflater inflater;
     private List<PrescriptionItem> medicines;
 
-    public MedicineAdapter(Context context,  List<PrescriptionItem> medicines) {
+    public DoctorMedicineAdapter(Context context, List<PrescriptionItem> medicines) {
         this.context = context;
         this.medicines = medicines;
     }

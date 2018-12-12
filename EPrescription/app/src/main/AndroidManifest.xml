@@ -28,7 +28,6 @@
         <activity
             android:name=".Activities.PatientHomeBottomActivity"
             android:label="@string/title_activity_patient_home_botton" />
-        <activity android:name=".Activities.MakeAppointmentActivity" />
         <activity android:name=".Activities.AddMedicineActivity" />
         <activity
             android:name=".Activities.DoctorHomeActivity"
@@ -57,7 +56,9 @@
         <receiver
             android:name=".Util.Test"
             android:enabled="true"
-            android:exported="false"></receiver>
+            android:exported="false" />
+
+        <activity android:name=".Activities.PatientsActivity"></activity>
     </application>
 
 </manifest>

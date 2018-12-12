@@ -82,7 +82,7 @@ public class PatientHomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(PatientHomeActivity.this, MakeAppointmentActivity.class));
+//                startActivity(new Intent(PatientHomeActivity.this, MakeAppointmentActivity.class));
 //                startActivity(new Intent(PatientHomeActivity.this, AddMedicineActivity.class));
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();

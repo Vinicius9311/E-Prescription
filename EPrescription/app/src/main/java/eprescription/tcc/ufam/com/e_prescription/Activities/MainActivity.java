@@ -163,30 +163,30 @@ public class MainActivity extends AppCompatActivity {
         loginMsg = (TextView) view.findViewById(R.id.loginPopuptextViewID);
         emailLogin = (EditText) view.findViewById(R.id.emailEditTextID);
         passwordLogin = (EditText) view.findViewById(R.id.passwordEditTextID);
-        radioGroup = (RadioGroup) view.findViewById(R.id.loginRadioGroupID);
+//        radioGroup = (RadioGroup) view.findViewById(R.id.loginRadioGroupID);
         loginButton = (Button) view.findViewById(R.id.loginButtonID);
         progressBar = (ProgressBar) view.findViewById(R.id.loginProgressBar);
         progressBar.setVisibility(View.GONE);
-
-
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                radioButton = (RadioButton) view.findViewById(checkedId);
-                switch (radioButton.getId()) {
-                    case R.id.patientRadioButtonID:
-                        userType = "patient";
-                        String selectedID = radioButton.getText().toString();
-                        Log.d("RADIOBUTTON", String.valueOf(selectedID));
-                        break;
-                    case R.id.doctorRadioButtonID:
-                        selectedID = radioButton.getText().toString();
-                        userType = "doctor";
-                        Log.d("RADIOBUTTON", String.valueOf(selectedID));
-                        break;
-                }
-            }
-        });
+//
+//
+//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                radioButton = (RadioButton) view.findViewById(checkedId);
+//                switch (radioButton.getId()) {
+//                    case R.id.patientRadioButtonID:
+//                        userType = "patient";
+//                        String selectedID = radioButton.getText().toString();
+//                        Log.d("RADIOBUTTON", String.valueOf(selectedID));
+//                        break;
+//                    case R.id.doctorRadioButtonID:
+//                        selectedID = radioButton.getText().toString();
+//                        userType = "doctor";
+//                        Log.d("RADIOBUTTON", String.valueOf(selectedID));
+//                        break;
+//                }
+//            }
+//        });
 
         loginDialogBuilder.setView(view);
         loginDialog = loginDialogBuilder.create();

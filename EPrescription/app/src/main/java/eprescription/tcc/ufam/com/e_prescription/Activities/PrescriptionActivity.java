@@ -1,9 +1,7 @@
 package eprescription.tcc.ufam.com.e_prescription.Activities;
 
 import android.content.Intent;
-import android.net.wifi.hotspot2.omadm.PpsMoParser;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -32,7 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import eprescription.tcc.ufam.com.e_prescription.Adapter.MedicineAdapter;
+import eprescription.tcc.ufam.com.e_prescription.Adapter.DoctorMedicineAdapter;
 import eprescription.tcc.ufam.com.e_prescription.FirebaseEntities.DoctorPatient;
 import eprescription.tcc.ufam.com.e_prescription.Model.Doctor;
 import eprescription.tcc.ufam.com.e_prescription.Model.DoctorPrescription;
@@ -64,7 +61,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private AutoCompleteTextView patientName;
     private EditText description;
     private RecyclerView medicineRecycler;
-    private MedicineAdapter medicineAdapter;
+    private DoctorMedicineAdapter doctorMedicineAdapter;
     private Button finishBtn;
     private List<Patient> patientList;
     private List<PrescriptionItem> itemList;
@@ -123,10 +120,10 @@ public class PrescriptionActivity extends AppCompatActivity {
         medicineRecycler.setHasFixedSize(true);
         medicineRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        medicineAdapter = new MedicineAdapter(this, itemList);
+        doctorMedicineAdapter = new DoctorMedicineAdapter(this, itemList);
         addToRecyclerView();
-        medicineRecycler.setAdapter(medicineAdapter);
-        medicineAdapter.notifyDataSetChanged();
+        medicineRecycler.setAdapter(doctorMedicineAdapter);
+        doctorMedicineAdapter.notifyDataSetChanged();
 
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -175,4 +175,5 @@
     <string name="slash">/</string>
     <string name="medic_prescription">Receita Médica</string>
     <string name="pick_hour">Escolha a hora de início</string>
+    <string name="advance">Avançar</string>
 </resources>

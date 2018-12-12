@@ -42,6 +42,7 @@ public class DoctorHomeActivity extends AppCompatActivity {
 
     private Button med;
     private Button signout;
+    private Button patients;
 
     private String userID;
 
@@ -53,6 +54,7 @@ public class DoctorHomeActivity extends AppCompatActivity {
 
         med = (Button)  findViewById(R.id.addMedBtnID);
         signout = (Button) findViewById(R.id.leaveBtnID);
+        patients = (Button) findViewById(R.id.patientsID);
 
         database = FirebaseDatabase.getInstance();
         mDoctorReference = database.getReference().child("users").child("doctor");
@@ -117,6 +119,13 @@ public class DoctorHomeActivity extends AppCompatActivity {
 //                startActivity(new Intent(PatientHomeActivity.this, AddMedicineActivity.class));
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
+            }
+        });
+
+        patients.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DoctorHomeActivity.this, PatientsActivity.class));
             }
         });
     }
