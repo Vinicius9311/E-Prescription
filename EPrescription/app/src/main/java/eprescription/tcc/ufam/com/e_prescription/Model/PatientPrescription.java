@@ -6,17 +6,19 @@ public class PatientPrescription {
     public String prescriptionID;
     public String description;
     public String datePrescripted;
+    public String patKey;
 
     public PatientPrescription() {
     }
 
     public PatientPrescription(String doctorName, String doctorKey, String prescriptionID,
-                               String description, String datePrescripted) {
+                               String description, String datePrescripted, String patKey) {
         this.doctorName = doctorName;
         this.doctorKey = doctorKey;
         this.prescriptionID = prescriptionID;
         this.description = description;
         this.datePrescripted = datePrescripted;
+        this.patKey = patKey;
     }
 
     public String getDoctorName() {
@@ -57,5 +59,13 @@ public class PatientPrescription {
 
     public void setDatePrescripted(String datePrescripted) {
         this.datePrescripted = datePrescripted;
+    }
+
+    public String getPatKey() {
+        return patKey;
+    }
+
+    public void setPatKey(String patKey) {
+        this.patKey = patKey;
     }
 }

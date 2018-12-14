@@ -81,6 +81,7 @@ public class DoctorPrescriptionsAdapter extends RecyclerView.Adapter<DoctorPresc
                     Intent intent = new Intent(context, DoctorPrescriptionActivity.class);
                     // TODO  Put intent to get prescription
                     intent.putExtra("prescriptionKey", patientPrescription.getPrescriptionID());
+                    intent.putExtra("patientKey", patientPrescription.getPatKey());
                     Log.d("HEREEEE", "PRESC KEY" + patientPrescription.getPrescriptionID());
                     context.startActivity(intent);
                 }

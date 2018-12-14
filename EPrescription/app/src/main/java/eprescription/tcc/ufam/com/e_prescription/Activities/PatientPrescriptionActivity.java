@@ -101,7 +101,9 @@ public class PatientPrescriptionActivity extends AppCompatActivity {
             Toast.makeText(PatientPrescriptionActivity.this, "Prescription Key: "
                     + bundle.getString("prescriptionKey"), Toast.LENGTH_LONG).show();
 
-            mPresc.orderByKey().equalTo(bundle.getString("prescriptionKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+            mPresc.orderByKey()
+                    .equalTo(bundle.getString("prescriptionKey"))
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     getMedicines(dataSnapshot);
@@ -117,7 +119,10 @@ public class PatientPrescriptionActivity extends AppCompatActivity {
 
 
 
-            mRootRef.child("patientPrescriptions").child(userID).orderByChild("prescriptionID").equalTo(bundle.getString("prescriptionKey"))
+            mRootRef.child("patientPrescriptions")
+                    .child(userID)
+                    .orderByChild("prescriptionID")
+                    .equalTo(bundle.getString("prescriptionKey"))
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {

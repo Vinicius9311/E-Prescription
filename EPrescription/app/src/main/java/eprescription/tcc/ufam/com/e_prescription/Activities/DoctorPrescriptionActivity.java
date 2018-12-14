@@ -96,8 +96,11 @@ public class DoctorPrescriptionActivity extends AppCompatActivity {
             Log.d(TAG, "Prescription Key: " + bundle.getString("prescriptionKey"));
             Toast.makeText(DoctorPrescriptionActivity.this, "Prescription Key: "
                     + bundle.getString("prescriptionKey"), Toast.LENGTH_LONG).show();
+            Log.d(TAG, "Patient Key: " + bundle.getString("patientKey"));
 
-            mPresc.orderByKey().equalTo(bundle.getString("prescriptionKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+            mPresc.orderByKey()
+                    .equalTo(bundle.getString("prescriptionKey"))
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     getMedicines(dataSnapshot);
@@ -114,7 +117,10 @@ public class DoctorPrescriptionActivity extends AppCompatActivity {
             // TODO change medicine adapter
 
 
-            mRootRef.child("patientPrescriptions").child(userID).orderByChild("prescriptionID").equalTo(bundle.getString("prescriptionKey"))
+            mRootRef.child("patientPrescriptions")
+                    .child(bundle.getString("patientKey"))
+                    .orderByChild("prescriptionID")
+                    .equalTo(bundle.getString("prescriptionKey"))
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {

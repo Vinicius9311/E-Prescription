@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 
 import eprescription.tcc.ufam.com.e_prescription.Model.Patient;
+import eprescription.tcc.ufam.com.e_prescription.Model.Prescription;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 public class DocPatientActionActivity extends AppCompatActivity {
@@ -49,6 +50,7 @@ public class DocPatientActionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_doc_patient_action);
 
         receiptsListBtn = (Button) findViewById(R.id.docPrescsBtnID);
+        prescript = (Button) findViewById(R.id.prescrBtnID);
 
         database = FirebaseDatabase.getInstance();
         mPatientsReference = database.getReference().child("users").child("patient");
@@ -81,6 +83,15 @@ public class DocPatientActionActivity extends AppCompatActivity {
                 Intent intent = new Intent(DocPatientActionActivity.this, DoctorPrescriptionsActivity.class);
                 intent.putExtra("patKey", patKey);
                 startActivity(intent);
+            }
+        });
+
+        prescript.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(DocPatientActionActivity.this, PrescriptionActivity.class);
+                //intent.putExtra("patientKey", patKey);
+                //startActivity(intent);
             }
         });
     }

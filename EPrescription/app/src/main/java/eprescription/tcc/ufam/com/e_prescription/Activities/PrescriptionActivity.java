@@ -15,6 +15,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,7 +59,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private FirebaseUser mUser;
     private FirebaseAuth mAuth;
 
-    private AutoCompleteTextView patientName;
+    private TextView patientName;
     private EditText description;
     private RecyclerView medicineRecycler;
     private DoctorMedicineAdapter doctorMedicineAdapter;
@@ -66,6 +67,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private List<Patient> patientList;
     private List<PrescriptionItem> itemList;
     private String doctorName;
+    private String patKey;
     private ProgressBar progressBar;
 
     @Override
@@ -76,7 +78,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         itemList = new ArrayList<PrescriptionItem>();
-        patientName = (AutoCompleteTextView) findViewById(R.id.patientID);
+        patientName = (TextView) findViewById(R.id.patientID);
         medicineRecycler = (RecyclerView) findViewById(R.id.medicineRecyclerID);
         finishBtn = (Button) findViewById(R.id.finishPrescriptionID);
         description = (EditText) findViewById(R.id.descriptionID);
@@ -149,16 +151,25 @@ public class PrescriptionActivity extends AppCompatActivity {
                                 mPresc.child(prescID).setValue(prescription);
 
                                 DoctorPrescription doctorPrescription = new DoctorPrescription(
-                                        patientName.getText().toString(), patientKey, prescID);
+                                        patientName.getText().toString(),
+                                        patientKey,
+                                        prescID);
                                 mDocPresc.child(userID).push().setValue(doctorPrescription);
 
                                 PatientPrescription patientPrescription = new PatientPrescription(
-                                    doctorName, userID, prescID, description.getText().toString(), String.valueOf(java.lang.System.currentTimeMillis())
+                                        doctorName,
+                                        userID,
+                                        prescID,
+                                        description.getText().toString(),
+                                        String.valueOf(java.lang.System.currentTimeMillis()),
+                                        patientKey
                                 );
                                 mPatPresc.child(patientKey).push().setValue(patientPrescription);
 
                                 // TODO Treat when there is a already a patient doctor
-                                DoctorPatient doctorPatient = new DoctorPatient(patientName.getText().toString(), patientKey);
+                                DoctorPatient doctorPatient = new DoctorPatient(
+                                        patientName.getText().toString(),
+                                        patientKey);
                                 mDocPat.child(userID).child("patients").push().setValue(doctorPatient);
 
                                 Toast.makeText(PrescriptionActivity.this, "Receita prescrita com sucesso", Toast.LENGTH_SHORT).show();
@@ -210,22 +221,44 @@ public class PrescriptionActivity extends AppCompatActivity {
 
         DatabaseReference patientRef = mRootRef.child("users").child("patient");
 
-        patientRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                getPatientList(dataSnapshot);
-            }
+//        patientRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                getPatientList(dataSnapshot);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            HashMap<String, String> pat = new HashMap<>();
+            pat.put("patient", bundle.getString("patient"));
+            patKey = bundle.getString("patientKey");
+            Log.d(TAG, "Patient " + bundle.getString("patient"));
+            Log.d(TAG, "Patient Key " + patKey);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            patientRef.orderByChild("fullName")
+                    .equalTo(bundle.getString("patient"))
+                    .addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    getPatientInfo(dataSnapshot);
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 
         mDocRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                getPatientInfo(dataSnapshot);
+                getPatInfo(dataSnapshot);
             }
 
             @Override
@@ -233,6 +266,15 @@ public class PrescriptionActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void getPatInfo(DataSnapshot dataSnapshot) {
+
+        for (DataSnapshot snap : dataSnapshot.getChildren()) {
+            Patient patient = snap.getValue(Patient.class);
+            patientName.setText(patient.getFullName());
+            Log.d(TAG, "Patient Full Name " + patient.getFullName());
+        }
     }
 
     private void getPatientInfo(DataSnapshot dataSnapshot) {
@@ -244,26 +286,26 @@ public class PrescriptionActivity extends AppCompatActivity {
     }
 
 
-    private void getPatientList(DataSnapshot dataSnapshot) {
-
-        List<String> names = new ArrayList<String>();
-        patientList = new ArrayList<>();
-
-        for (DataSnapshot snap: dataSnapshot.getChildren()) {
-            Patient patient = snap.getValue(Patient.class);
-            Log.d(TAG, "PATIENT NAME: " + patient.getFullName());
-            names.add(patient.getFullName());
-            Log.d(TAG, "NAME ADDED");
-            patientList.add(patient);
-            Log.d(TAG, "PATIENT ADDED");
-
-            for (Patient pat : patientList) {
-                Log.d(TAG, "Patient " + snap.getKey());
-            }
-
-        }
-        ArrayAdapter<String> patientNameAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, names);
-        patientName.setAdapter(patientNameAdapter);
-        progressBar.setVisibility(View.GONE);
-    }
+//    private void getPatientList(DataSnapshot dataSnapshot) {
+//
+//        List<String> names = new ArrayList<String>();
+//        patientList = new ArrayList<>();
+//
+//        for (DataSnapshot snap: dataSnapshot.getChildren()) {
+//            Patient patient = snap.getValue(Patient.class);
+//            Log.d(TAG, "PATIENT NAME: " + patient.getFullName());
+//            names.add(patient.getFullName());
+//            Log.d(TAG, "NAME ADDED");
+//            patientList.add(patient);
+//            Log.d(TAG, "PATIENT ADDED");
+//
+//            for (Patient pat : patientList) {
+//                Log.d(TAG, "Patient " + snap.getKey());
+//            }
+//
+//        }
+//        ArrayAdapter<String> patientNameAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, names);
+//        patientName.setAdapter(patientNameAdapter);
+//        progressBar.setVisibility(View.GONE);
+//    }
 }
