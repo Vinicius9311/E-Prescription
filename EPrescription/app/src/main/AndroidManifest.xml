@@ -58,7 +58,10 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".Activities.PatientsActivity"></activity>
+        <activity android:name=".Activities.DoctorPatientsActivity" />
+        <activity android:name=".Activities.DocPatientActionActivity" />
+        <activity android:name=".Activities.DoctorPrescriptionsActivity" />
+        <activity android:name=".Activities.DoctorPrescriptionActivity"></activity>
     </application>
 
 </manifest>

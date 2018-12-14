@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -32,7 +33,7 @@ import eprescription.tcc.ufam.com.e_prescription.R;
         Activity to show search patients
         by name
      */
-public class PatientsActivity extends AppCompatActivity {
+public class DoctorPatientsActivity extends AppCompatActivity {
 
     private static final String TAG = "PATIENTSACTIVITY";
 
@@ -43,6 +44,7 @@ public class PatientsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     private AutoCompleteTextView patientName;
+    private Button advance;
 
     private List<Patient> patientList;
     private List<PrescriptionItem> itemList;
@@ -55,6 +57,7 @@ public class PatientsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_patients);
 
         patientName = (AutoCompleteTextView) findViewById(R.id.patientNameID);
+        advance = (Button) findViewById(R.id.nextID);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -67,18 +70,30 @@ public class PatientsActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
-                    Toast.makeText(PatientsActivity.this,"UserID: " + userID, Toast.LENGTH_LONG).show();
+                    Toast.makeText(DoctorPatientsActivity.this,"UserID: " + userID, Toast.LENGTH_LONG).show();
                     Log.d(TAG, "username: " + user.getEmail());
                     Log.d(TAG, "userID: " + userID);
 
                 } else {
                     // user is signed out
                     Log.d(TAG, "user signed out");
-                    Toast.makeText(PatientsActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(PatientsActivity.this, MainActivity.class));
+                    Toast.makeText(DoctorPatientsActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(DoctorPatientsActivity.this, MainActivity.class));
                 }
             }
         };
+
+        advance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!patientName.equals("")) {
+                    Intent intent = new Intent(DoctorPatientsActivity.this, DocPatientActionActivity.class);
+                    intent.putExtra("patient", patientName.getText().toString());
+                    Log.d(TAG, "Patient " + patientName.getText());
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override

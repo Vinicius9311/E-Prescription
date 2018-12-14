@@ -3,7 +3,6 @@ package eprescription.tcc.ufam.com.e_prescription.Activities;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,12 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import org.w3c.dom.Text;
 
 import eprescription.tcc.ufam.com.e_prescription.Model.Doctor;
-import eprescription.tcc.ufam.com.e_prescription.Model.Prescription;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 public class DoctorHomeActivity extends AppCompatActivity {
@@ -125,7 +119,7 @@ public class DoctorHomeActivity extends AppCompatActivity {
         patients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DoctorHomeActivity.this, PatientsActivity.class));
+                startActivity(new Intent(DoctorHomeActivity.this, DoctorPatientsActivity.class));
             }
         });
     }

@@ -176,4 +176,7 @@
     <string name="medic_prescription">Receita Médica</string>
     <string name="pick_hour">Escolha a hora de início</string>
     <string name="advance">Avançar</string>
+    <string name="sexo">Sexo</string>
+    <string name="prescript">Prescrever</string>
+    <string name="patient_prescriptions">Receitas Médicas do(a) Pacient</string>
 </resources>

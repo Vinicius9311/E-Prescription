@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,30 +18,28 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.util.Date;
 import java.util.List;
 
+import eprescription.tcc.ufam.com.e_prescription.Adapter.DoctorMedicineAdapter;
 import eprescription.tcc.ufam.com.e_prescription.Adapter.PatientMedicineAdapter;
-import eprescription.tcc.ufam.com.e_prescription.Adapter.PatientPrescriptionAdapter;
 import eprescription.tcc.ufam.com.e_prescription.Model.PatientPrescription;
 import eprescription.tcc.ufam.com.e_prescription.Model.Prescription;
 import eprescription.tcc.ufam.com.e_prescription.Model.PrescriptionItem;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
-public class PatientPrescriptionActivity extends AppCompatActivity {
+public class DoctorPrescriptionActivity extends AppCompatActivity {
 
     /*
-        Activity to show patient prescription detail on Patient View
+        Activity to display one patient Prescription on Doctor View
      */
 
-    private static final String TAG = "PATIENTPRESCRIPTION";
+    private static final String TAG = "DOCTORPRESCRIPTION";
     private TextView docName;
     private TextView datePresc;
     private TextView descPresc;
     private RecyclerView medRecyclerView;
-    private PatientMedicineAdapter medicineAdapter;
+    private DoctorMedicineAdapter medicineAdapter;
     private Prescription prescription;
     private List<PrescriptionItem> medicines;
     private String userID;
@@ -56,12 +53,11 @@ public class PatientPrescriptionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_prescription);
-
-        docName = (TextView) findViewById(R.id.docNameID);
-        datePresc = (TextView) findViewById(R.id.datePrescID);
+        setContentView(R.layout.activity_doctor_prescription);
+        docName = (TextView) findViewById(R.id.docID);
+        datePresc = (TextView) findViewById(R.id.date);
         descPresc = (TextView) findViewById(R.id.prescDescID);
-        medRecyclerView = (RecyclerView) findViewById(R.id.patPrescRecID);
+        medRecyclerView = (RecyclerView) findViewById(R.id.docPrescRecID);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -73,7 +69,7 @@ public class PatientPrescriptionActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
-                    Toast.makeText(PatientPrescriptionActivity.this,"UserID: " + userID, Toast.LENGTH_LONG).show();
+                    Toast.makeText(DoctorPrescriptionActivity.this,"UserID: " + userID, Toast.LENGTH_LONG).show();
                     Log.d(TAG, "patient signed in");
                     Log.d(TAG, "username: " + user.getEmail());
                     Log.d(TAG, "userID: " + userID);
@@ -81,8 +77,8 @@ public class PatientPrescriptionActivity extends AppCompatActivity {
                 } else {
                     // user is signed out
                     Log.d(TAG, "user signed out");
-                    Toast.makeText(PatientPrescriptionActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(PatientPrescriptionActivity.this, MainActivity.class));
+                    Toast.makeText(DoctorPrescriptionActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(DoctorPrescriptionActivity.this, MainActivity.class));
                 }
             }
         };
@@ -98,7 +94,7 @@ public class PatientPrescriptionActivity extends AppCompatActivity {
 
         if (bundle != null) {
             Log.d(TAG, "Prescription Key: " + bundle.getString("prescriptionKey"));
-            Toast.makeText(PatientPrescriptionActivity.this, "Prescription Key: "
+            Toast.makeText(DoctorPrescriptionActivity.this, "Prescription Key: "
                     + bundle.getString("prescriptionKey"), Toast.LENGTH_LONG).show();
 
             mPresc.orderByKey().equalTo(bundle.getString("prescriptionKey")).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -115,6 +111,7 @@ public class PatientPrescriptionActivity extends AppCompatActivity {
                 }
             });
 
+            // TODO change medicine adapter
 
 
             mRootRef.child("patientPrescriptions").child(userID).orderByChild("prescriptionID").equalTo(bundle.getString("prescriptionKey"))
@@ -163,7 +160,7 @@ public class PatientPrescriptionActivity extends AppCompatActivity {
             Log.d(TAG, "Prescription Items: " + prescription.medicinesCount(prescription.prescriptionItems));
             medRecyclerView.setHasFixedSize(true);
             medRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            medicineAdapter = new PatientMedicineAdapter(this, prescription.prescriptionItems);
+            medicineAdapter = new DoctorMedicineAdapter(this, prescription.prescriptionItems);
             medRecyclerView.setAdapter(medicineAdapter);
             medicineAdapter.notifyDataSetChanged();
 

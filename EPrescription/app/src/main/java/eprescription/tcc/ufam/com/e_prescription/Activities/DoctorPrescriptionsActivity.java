@@ -23,19 +23,21 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import eprescription.tcc.ufam.com.e_prescription.Adapter.DoctorPrescriptionsAdapter;
 import eprescription.tcc.ufam.com.e_prescription.Adapter.PatientPrescriptionAdapter;
 import eprescription.tcc.ufam.com.e_prescription.Model.PatientPrescription;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
-public class PatientPrescriptionListsActivity extends AppCompatActivity {
+public class DoctorPrescriptionsActivity extends AppCompatActivity {
 
     /*
-        Activity to show patient prescriptions on Patient View
+        Activity to show patient Prescriptions List from Doctor View
      */
-    private static final String TAG = "PatientPrescription";
+
+    private static final String TAG = "DocPrescsActivity";
     private TextView myPrescription;
     private RecyclerView prescRecycler;
-    private PatientPrescriptionAdapter prescriptionAdapter;
+    private DoctorPrescriptionsAdapter prescriptionAdapter;
     private List<PatientPrescription> patientPrescriptions;
     private ProgressBar progressBar;
     private String userID;
@@ -51,11 +53,11 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_prescription_list);
+        setContentView(R.layout.activity_doctor_prescriptions);
 
         patientPrescriptions = new ArrayList<>();
         myPrescription = (TextView) findViewById(R.id.myPrescID);
-        progressBar = (ProgressBar) findViewById(R.id.prescsProgressBar);
+        progressBar = (ProgressBar) findViewById(R.id.ProgressBar);
         progressBar.setVisibility(View.VISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
@@ -68,7 +70,7 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
-                    Toast.makeText(PatientPrescriptionListsActivity.this,"UserID: " + userID, Toast.LENGTH_LONG).show();
+                    Toast.makeText(DoctorPrescriptionsActivity.this,"UserID: " + userID, Toast.LENGTH_LONG).show();
                     Log.d(TAG, "patient signed in");
                     Log.d(TAG, "username: " + user.getEmail());
                     Log.d(TAG, "userID: " + userID);
@@ -76,8 +78,8 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
                 } else {
                     // user is signed out
                     Log.d(TAG, "user signed out");
-                    Toast.makeText(PatientPrescriptionListsActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(PatientPrescriptionListsActivity.this, MainActivity.class));
+                    Toast.makeText(DoctorPrescriptionsActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(DoctorPrescriptionsActivity.this, MainActivity.class));
                 }
             }
         };
@@ -90,18 +92,23 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
 
         mAuth.addAuthStateListener(mAuthListener);
 
-        mPatPresc.orderByKey().equalTo(userID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "FOUND CHILD" + dataSnapshot);
-                getPrescriptions(dataSnapshot);
-            }
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            Log.d(TAG, "Patient Key: " + bundle.getString("patKey"));
+            mPatPresc.orderByKey().equalTo(bundle.getString("patKey")).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.d(TAG, "FOUND CHILD" + dataSnapshot);
+                    getPrescriptions(dataSnapshot);
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+
     }
 
     @Override
@@ -114,7 +121,7 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
 
     private void getPrescriptions(DataSnapshot dataSnapshot) {
         patientPrescriptions = new ArrayList<>();
-        prescRecycler = (RecyclerView) findViewById(R.id.prescriptionsRecyclerID);
+        prescRecycler = (RecyclerView) findViewById(R.id.patientPrescriptionsRecyclerID);
 
 
         Log.d(TAG, "ITEM COUNT HERE: " + patientPrescriptions.size());
@@ -128,7 +135,7 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
 
             prescRecycler.setHasFixedSize(true);
             prescRecycler.setLayoutManager(new LinearLayoutManager(this));
-            prescriptionAdapter = new PatientPrescriptionAdapter(this, patientPrescriptions);
+            prescriptionAdapter = new DoctorPrescriptionsAdapter(this, patientPrescriptions);
             prescRecycler.setAdapter(prescriptionAdapter);
             prescriptionAdapter.notifyDataSetChanged();
         }
