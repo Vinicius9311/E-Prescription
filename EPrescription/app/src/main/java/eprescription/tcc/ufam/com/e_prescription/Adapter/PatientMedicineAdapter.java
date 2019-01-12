@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,16 +46,27 @@ public class PatientMedicineAdapter extends RecyclerView.Adapter<PatientMedicine
     public void onBindViewHolder(@NonNull PatientMedicineAdapter.ViewHolder holder, int position) {
 
         PrescriptionItem prescriptionItem = medicines.get(position);
+        Log.d("RECYCLER ADAPTER", "PRESCRIPTION: " + prescriptionItem);
 
-        holder.medicine.setText(prescriptionItem.getMedicament());
-        holder.via.setText(prescriptionItem.getVia());
-        if (prescriptionItem.getDuration() != null && !prescriptionItem.getDuration().equals("Até o desaparecimento dos sintomas")) {
-            holder.duration.setText("Durante " + prescriptionItem.getDuration() + " dias");
-        } else if (prescriptionItem.getDuration().equals("Até o desaparecimento dos sintomas")) {
-            holder.duration.setText(prescriptionItem.getDuration());
+        if (prescriptionItem.getMedicament() != null && prescriptionItem.getVia() != null &&
+                prescriptionItem.getDuration() != null && prescriptionItem.getFrequency() != null &&
+                prescriptionItem.getObservation()!= null) {
+            holder.medicine.setText(prescriptionItem.getMedicament());
+            holder.via.setText(prescriptionItem.getVia());
+            Log.d("RECYCLER ADAPTER", "MEDICINE: " + prescriptionItem.getMedicament());
+            Log.d("RECYCLER ADAPTER", "VIA: " + prescriptionItem.getVia());
+            Log.d("RECYCLER ADAPTER", "DURATION: " + prescriptionItem.getDuration());
+            Log.d("RECYCLER ADAPTER", "FREQUENCY: " + prescriptionItem.getFrequency());
+            Log.d("RECYCLER ADAPTER", "OBS: " + prescriptionItem.getObservation());
+            if (prescriptionItem.getDuration() != null && !prescriptionItem.getDuration().equals("Até o desaparecimento dos sintomas")) {
+                holder.duration.setText("Durante " + prescriptionItem.getDuration() + " dias");
+            } else if (prescriptionItem.getDuration().equals("Até o desaparecimento dos sintomas")) {
+                holder.duration.setText(prescriptionItem.getDuration());
+            }
+            holder.frequency.setText("A cada " + prescriptionItem.getFrequency() + " horas");
+            holder.observation.setText(prescriptionItem.getObservation());
         }
-        holder.frequency.setText("A cada " + prescriptionItem.getFrequency() + " horas");
-        holder.observation.setText(prescriptionItem.getObservation());
+
     }
 
     @Override

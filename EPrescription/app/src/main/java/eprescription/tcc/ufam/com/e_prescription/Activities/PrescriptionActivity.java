@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Adapter.DoctorMedicineAdapter;
+import eprescription.tcc.ufam.com.e_prescription.Adapter.PatientMedicineAdapter;
 import eprescription.tcc.ufam.com.e_prescription.FirebaseEntities.DoctorPatient;
 import eprescription.tcc.ufam.com.e_prescription.Model.Doctor;
 import eprescription.tcc.ufam.com.e_prescription.Model.DoctorPrescription;
@@ -60,6 +61,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     private TextView patientName;
+    private TextView noItem;
     private EditText description;
     private RecyclerView medicineRecycler;
     private DoctorMedicineAdapter doctorMedicineAdapter;
@@ -68,6 +70,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private List<PrescriptionItem> itemList;
     private String doctorName;
     private String patKey;
+    private String patName;
     private ProgressBar progressBar;
 
     @Override
@@ -79,6 +82,7 @@ public class PrescriptionActivity extends AppCompatActivity {
 
         itemList = new ArrayList<PrescriptionItem>();
         patientName = (TextView) findViewById(R.id.patientID);
+        noItem = (TextView) findViewById(R.id.noItemID);
         medicineRecycler = (RecyclerView) findViewById(R.id.medicineRecyclerID);
         finishBtn = (Button) findViewById(R.id.finishPrescriptionID);
         description = (EditText) findViewById(R.id.descriptionID);
@@ -87,6 +91,9 @@ public class PrescriptionActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         final String userID = mUser.getUid();
+        DatabaseReference patientRef = mRootRef.child("users").child("patient");
+
+        Log.d(TAG, "Activity Created");
 
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -96,24 +103,68 @@ public class PrescriptionActivity extends AppCompatActivity {
 
                 if (user != null) {
                     Toast.makeText(PrescriptionActivity.this,"UserID: " + userID, Toast.LENGTH_LONG).show();
-                    Log.d(TAG, "doctor signed in");
-                    Log.d(TAG, "username: " + user.getEmail());
-                    Log.d(TAG, "userID: " + userID);
+//                    Log.d(TAG, "doctor signed in");
+//                    Log.d(TAG, "username: " + user.getEmail());
+//                    Log.d(TAG, "userID: " + userID);
 
                 } else {
-                    // user is signed out
-                    Log.d(TAG, "user signed out");
+//                    user is signed out
+//                    Log.d(TAG, "user signed out");
                     Toast.makeText(PrescriptionActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(PrescriptionActivity.this, MainActivity.class));
                 }
             }
         };
 
+        Bundle bundle = getIntent().getExtras();
+
+        if (bundle != null) {
+            HashMap<String, String> pat = new HashMap<>();
+            pat.put("patient", bundle.getString("patient"));
+            patKey = bundle.getString("patientKey");
+            patName = bundle.getString("patient");
+
+//            savedInstanceState.putString("PatientKey", bundle.getString("patientKey"));
+
+            Log.d(TAG, "Patient " + bundle.getString("patient"));
+            Log.d(TAG, "Patient Key " + patKey);
+            patientName.setText(bundle.getString("patient"));
+
+            patientRef.orderByChild("fullName")
+                    .equalTo(bundle.getString("patient"))
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            getPatInfo(dataSnapshot);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+        }
+
+//        mDocRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                getPatInfo(dataSnapshot);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(PrescriptionActivity.this, MedicineActivity.class));
+                Intent intent = new Intent(PrescriptionActivity.this, MedicineActivity.class);
+                intent.putExtra("patientKey", patKey);
+                intent.putExtra("patient", patName);
+                startActivity(intent);
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
             }
@@ -122,79 +173,87 @@ public class PrescriptionActivity extends AppCompatActivity {
         medicineRecycler.setHasFixedSize(true);
         medicineRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        doctorMedicineAdapter = new DoctorMedicineAdapter(this, itemList);
-        addToRecyclerView();
-        medicineRecycler.setAdapter(doctorMedicineAdapter);
-        doctorMedicineAdapter.notifyDataSetChanged();
+        if (itemList.size() > 0) {
 
-        finishBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!patientName.equals("") || itemList.size() != 0) {
-                    // TODO save realtime database
-                    //mPresc.child(userID).child(patientName.getText().toString()).setValue(true);
-                    mRootRef.child("users").child("patient").orderByChild("fullName")
-                            .equalTo(patientName.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                                String patientKey = snap.getKey();
-                                Log.d(TAG, "Patient Key: " + patientKey);
-                                // mPresc.push().setValue(patientKey);  funciona
-                                String prescID = mPresc.push().getKey();
-                                Log.d(TAG, "Prescription Key: " + prescID);
+            progressBar.setVisibility(View.GONE);
+            noItem.setVisibility(View.INVISIBLE);
+            doctorMedicineAdapter = new DoctorMedicineAdapter(this, itemList);
+            addToRecyclerView();
+            medicineRecycler.setAdapter(doctorMedicineAdapter);
+            doctorMedicineAdapter.notifyDataSetChanged();
 
-                                Prescription prescription = new Prescription(
-                                        String.valueOf(java.lang.System.currentTimeMillis()),
-                                        description.getText().toString(),
-                                        itemList);
-                                mPresc.child(prescID).setValue(prescription);
+            finishBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!patientName.equals("") || itemList.size() != 0) {
+                        // TODO save realtime database
+                        //mPresc.child(userID).child(patientName.getText().toString()).setValue(true);
+                        mRootRef.child("users").child("patient").orderByChild("fullName")
+                                .equalTo(patientName.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                                    String patientKey = snap.getKey();
+//                                Log.d(TAG, "Patient Key: " + patientKey);
+//                                mPresc.push().setValue(patientKey);  funciona
+                                    String prescID = mPresc.push().getKey();
+//                                Log.d(TAG, "Prescription Key: " + prescID);
 
-                                DoctorPrescription doctorPrescription = new DoctorPrescription(
-                                        patientName.getText().toString(),
-                                        patientKey,
-                                        prescID);
-                                mDocPresc.child(userID).push().setValue(doctorPrescription);
+                                    Prescription prescription = new Prescription(
+                                            String.valueOf(java.lang.System.currentTimeMillis()),
+                                            description.getText().toString(),
+                                            itemList);
+                                    mPresc.child(prescID).setValue(prescription);
 
-                                PatientPrescription patientPrescription = new PatientPrescription(
-                                        doctorName,
-                                        userID,
-                                        prescID,
-                                        description.getText().toString(),
-                                        String.valueOf(java.lang.System.currentTimeMillis()),
-                                        patientKey
-                                );
-                                mPatPresc.child(patientKey).push().setValue(patientPrescription);
+                                    DoctorPrescription doctorPrescription = new DoctorPrescription(
+                                            patientName.getText().toString(),
+                                            patientKey,
+                                            prescID);
+                                    mDocPresc.child(userID).push().setValue(doctorPrescription);
 
-                                // TODO Treat when there is a already a patient doctor
-                                DoctorPatient doctorPatient = new DoctorPatient(
-                                        patientName.getText().toString(),
-                                        patientKey);
-                                mDocPat.child(userID).child("patients").push().setValue(doctorPatient);
+                                    PatientPrescription patientPrescription = new PatientPrescription(
+                                            doctorName,
+                                            userID,
+                                            prescID,
+                                            description.getText().toString(),
+                                            String.valueOf(java.lang.System.currentTimeMillis()),
+                                            patientKey
+                                    );
+                                    mPatPresc.child(patientKey).push().setValue(patientPrescription);
 
-                                Toast.makeText(PrescriptionActivity.this, "Receita prescrita com sucesso", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(PrescriptionActivity.this, DoctorHomeActivity.class));
-                                finish();
+                                    // TODO Treat when there is a already a patient doctor
+                                    DoctorPatient doctorPatient = new DoctorPatient(
+                                            patientName.getText().toString(),
+                                            patientKey);
+                                    mDocPat.child(userID).child("patients").push().setValue(doctorPatient);
+
+                                    Toast.makeText(PrescriptionActivity.this, "Receita prescrita com sucesso", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(PrescriptionActivity.this, DoctorHomeActivity.class));
+                                    finish();
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
-                    //DoctorPatient doctorPatient = new DoctorPatient(userID, getPatientKey());
+                            }
+                        });
+                        //DoctorPatient doctorPatient = new DoctorPatient(userID, getPatientKey());
 
+                    }
                 }
-            }
-        });
+            });
 
-
+        } else {
+            noItem.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }
     }
-
 
     private void addToRecyclerView() {
         Bundle bundle = getIntent().getExtras();
+        Log.d(TAG, "BUNDLE " + bundle);
+
         if (bundle != null) {
             HashMap<String, String> med = new HashMap<>();
             med.put("medicine", bundle.getString("medicine"));
@@ -218,8 +277,8 @@ public class PrescriptionActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+        Log.d(TAG, "Activity Started");
 
-        DatabaseReference patientRef = mRootRef.child("users").child("patient");
 
 //        patientRef.addValueEventListener(new ValueEventListener() {
 //            @Override
@@ -232,47 +291,21 @@ public class PrescriptionActivity extends AppCompatActivity {
 //
 //            }
 //        });
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            HashMap<String, String> pat = new HashMap<>();
-            pat.put("patient", bundle.getString("patient"));
-            patKey = bundle.getString("patientKey");
-            Log.d(TAG, "Patient " + bundle.getString("patient"));
-            Log.d(TAG, "Patient Key " + patKey);
 
-            patientRef.orderByChild("fullName")
-                    .equalTo(bundle.getString("patient"))
-                    .addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    getPatientInfo(dataSnapshot);
-                }
+    }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d(TAG, "Activity Restored");
 
-                }
-            });
-        }
-
-        mDocRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                getPatInfo(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
     private void getPatInfo(DataSnapshot dataSnapshot) {
 
         for (DataSnapshot snap : dataSnapshot.getChildren()) {
             Patient patient = snap.getValue(Patient.class);
-            patientName.setText(patient.getFullName());
+            //patientName.setText(patient.getFullName());
             Log.d(TAG, "Patient Full Name " + patient.getFullName());
         }
     }
@@ -285,8 +318,40 @@ public class PrescriptionActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "Activity Paused");
 
-//    private void getPatientList(DataSnapshot dataSnapshot) {
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "Activity Resumed");
+        Bundle bundle1 = getIntent().getExtras();
+        Log.d(TAG, "BUNDLE " + bundle1);
+
+        if (bundle1 != null) {
+//            HashMap<String, String> med = new HashMap<>();
+//            med.put("medicine", bundle.getString("medicine"));
+//            med.put("duration", bundle.getString("duration"));
+//            med.put("frequency", bundle.getString("frequency"));
+//            med.put("via", bundle.getString("via"));
+//            med.put("obs", bundle.getString("obs"));
+            Log.d(TAG, "MEDICINE " + bundle1.getString("medicine"));
+            PrescriptionItem newItem = new PrescriptionItem(
+                    bundle1.getString("medicine"),
+                    bundle1.getString("via"),
+                    bundle1.getString("duration"),
+                    bundle1.getString("frequency"),
+                    bundle1.getString("obs"));
+            itemList.add(newItem);
+        }
+
+    }
+
+    //    private void getPatientList(DataSnapshot dataSnapshot) {
 //
 //        List<String> names = new ArrayList<String>();
 //        patientList = new ArrayList<>();

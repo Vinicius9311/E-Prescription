@@ -3,6 +3,7 @@ package eprescription.tcc.ufam.com.e_prescription.Adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,8 @@ public class DoctorMedicineAdapter extends RecyclerView.Adapter<DoctorMedicineAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         PrescriptionItem prescriptionItem = medicines.get(position);
+
+        Log.d(TAG, "Prescription Item" + prescriptionItem);
 
         holder.medicine.setText(prescriptionItem.getMedicament());
         holder.via.setText(prescriptionItem.getVia());

@@ -40,7 +40,7 @@ public class DocPatientActionActivity extends AppCompatActivity {
     private Button receiptsListBtn;
     private Button prescript;
 
-
+    private String patientName;
     private String userID;
     private String patKey;
 
@@ -89,9 +89,10 @@ public class DocPatientActionActivity extends AppCompatActivity {
         prescript.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(DocPatientActionActivity.this, PrescriptionActivity.class);
-                //intent.putExtra("patientKey", patKey);
-                //startActivity(intent);
+                Intent intent = new Intent(DocPatientActionActivity.this, PrescriptionActivity.class);
+                intent.putExtra("patientKey", patKey);
+                intent.putExtra("patient", patientName);
+                startActivity(intent);
             }
         });
     }
@@ -138,6 +139,8 @@ public class DocPatientActionActivity extends AppCompatActivity {
             dob.setText(patient.getDateOfBirth());
             sex.setText(patient.getSex());
             email.setText(patient.getEmail());
+
+            patientName = patient.getFullName();
 
             Log.d(TAG, "Patient Full Name " + patient.getFullName());
         }

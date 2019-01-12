@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -59,10 +60,12 @@ public class NotificationUpdate extends BroadcastReceiver {
         createNotificationChannel(CHANNEL_ID, context);
         int notificationID = 1;
 
+        String medication[] = med.split(" ", 2);
+
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                .setContentTitle(med)
-                .setContentText(freq)
+                .setContentTitle(context.getString(R.string.medicine_time_title))
+                .setContentText(med)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);

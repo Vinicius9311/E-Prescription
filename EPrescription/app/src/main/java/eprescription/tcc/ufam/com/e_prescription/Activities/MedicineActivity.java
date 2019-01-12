@@ -134,7 +134,7 @@ public class MedicineActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MedicineActivity.this, PrescriptionActivity.class);
-                Log.d(TAG, "Medicine: " +medicineAutoComplete.getText().toString());
+                Log.d(TAG, "Medicine: " + medicineAutoComplete.getText().toString());
                 intent.putExtra("medicine", medicineAutoComplete.getText().toString());
 
 
@@ -153,7 +153,10 @@ public class MedicineActivity extends AppCompatActivity {
 
                 Log.d(TAG, "obs: " +obsEditText.getText().toString());
                 intent.putExtra("obs", obsEditText.getText().toString());
-                startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(intent, 0);
+                finish();
+//                startActivity(intent);
             }
         });
     }
