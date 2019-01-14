@@ -61,7 +61,8 @@
         <activity android:name=".Activities.DoctorPatientsActivity" />
         <activity android:name=".Activities.DocPatientActionActivity" />
         <activity android:name=".Activities.DoctorPrescriptionsActivity" />
-        <activity android:name=".Activities.DoctorPrescriptionActivity"></activity>
+        <activity android:name=".Activities.DoctorPrescriptionActivity" />
+        <activity android:name=".Activities.NotificationMedicineActivity"></activity>
     </application>
 
 </manifest>

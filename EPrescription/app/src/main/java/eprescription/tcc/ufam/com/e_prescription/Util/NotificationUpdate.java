@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
+import eprescription.tcc.ufam.com.e_prescription.Activities.NotificationMedicineActivity;
 import eprescription.tcc.ufam.com.e_prescription.R;
 
 public class NotificationUpdate extends BroadcastReceiver {
@@ -62,11 +64,22 @@ public class NotificationUpdate extends BroadcastReceiver {
 
         String medication[] = med.split(" ", 2);
 
+        // Todo Pending intent to add a tap action
+        // TODO https://developer.android.com/training/notify-user/build-notification#java
+        Intent intent = new Intent(context, NotificationMedicineActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("med", med);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentTitle(context.getString(R.string.medicine_time_title))
                 .setContentText(med)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setStyle(new NotificationCompat.BigTextStyle()
+                    .bigText(context.getString(R.string.medicine_time_title)))
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(notificationID, mBuilder.build());
