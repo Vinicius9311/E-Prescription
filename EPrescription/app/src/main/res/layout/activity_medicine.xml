@@ -20,10 +20,10 @@
                 android:id="@+id/medTextID"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/medicine"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -37,10 +37,10 @@
                 android:id="@+id/medicineAutoTextviewID"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -52,10 +52,10 @@
                 android:id="@+id/viaID"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/admin_via"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -69,9 +69,9 @@
                 android:id="@+id/viaSpinnerID"
                 android:layout_width="368dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viaID" />
@@ -80,9 +80,9 @@
                 android:id="@+id/durationID"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/duration"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -96,20 +96,20 @@
                 android:id="@+id/prescriptionRadioGroupID"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/durationID">
 
                 <!--<RadioButton-->
-                    <!--android:id="@+id/noDueDateButtonID"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:text="@string/no_due_date"-->
-                    <!--android:textSize="16sp" />-->
+                <!--android:id="@+id/noDueDateButtonID"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="@string/no_due_date"-->
+                <!--android:textSize="16sp" />-->
 
                 <RadioButton
                     android:id="@+id/symptomID"
@@ -117,18 +117,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
+                    android:onClick="onRadioButtonClicked"
                     android:text="@string/symptoms"
-                    android:textSize="16sp"
-                    android:onClick="onRadioButtonClicked"/>
+                    android:textSize="16sp" />
 
                 <RadioButton
                     android:id="@+id/daysQtyID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="onRadioButtonClicked"
                     android:text="@string/days_qty"
-                    android:textSize="16sp"
-                    android:onClick="onRadioButtonClicked"/>
+                    android:textSize="16sp" />
 
             </RadioGroup>
 
@@ -136,9 +136,9 @@
                 android:id="@+id/durationTextID"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/days_qty"
                 android:textSize="16sp"
@@ -150,9 +150,9 @@
                 android:id="@+id/frequenceTextID"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="44dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/frequence"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -164,9 +164,9 @@
                 android:id="@+id/frequenceBtnID"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/each"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -177,9 +177,9 @@
                 android:id="@+id/obsID"
                 android:layout_width="0dp"
                 android:layout_height="21dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="48dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/obs"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -191,9 +191,9 @@
                 android:id="@+id/obsTextID"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 app:layout_constraintBottom_toTopOf="@+id/addMedicineID"
@@ -205,9 +205,9 @@
                 android:id="@+id/addMedicineID"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/add"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

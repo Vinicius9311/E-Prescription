@@ -43,18 +43,20 @@ public class DoctorMedicineAdapter extends RecyclerView.Adapter<DoctorMedicineAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         PrescriptionItem prescriptionItem = medicines.get(position);
-
-        Log.d(TAG, "Prescription Item" + prescriptionItem);
+        Log.d(TAG, "Prescription Item " + prescriptionItem);
 
         holder.medicine.setText(prescriptionItem.getMedicament());
         holder.via.setText(prescriptionItem.getVia());
-        if (prescriptionItem.getDuration() != null && !prescriptionItem.getDuration().equals("Até o desaparecimento dos sintomas")) {
-            holder.duration.setText("Durante " + prescriptionItem.getDuration() + " dias");
-        } else if (prescriptionItem.getDuration().equals("Até o desaparecimento dos sintomas")) {
-            holder.duration.setText(prescriptionItem.getDuration());
-        }
+        holder.duration.setText(prescriptionItem.getDuration());
+            if (!prescriptionItem.getDuration().equals("Até o desaparecimento dos sintomas")) {
+                holder.duration.setText("Durante " + prescriptionItem.getDuration() + " dias");
+            } else if (prescriptionItem.getDuration().equals("Até o desaparecimento dos sintomas")) {
+                holder.duration.setText(prescriptionItem.getDuration());
+            }
         holder.frequency.setText("A cada " + prescriptionItem.getFrequency() + " horas");
         holder.observation.setText(prescriptionItem.getObservation());
+//
+
     }
 
     @Override

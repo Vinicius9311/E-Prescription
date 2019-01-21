@@ -93,7 +93,8 @@ public class MedicineActivity extends AppCompatActivity {
         viaSpinner.setAdapter(viaSpecialty);
 
         durationTextView.setVisibility(View.INVISIBLE);
-        duration = "Até o desaparecimento dos sintomas";
+        duration = null;
+//        duration = "Até o desaparecimento dos sintomas";
 
 //        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 //            @Override
@@ -133,56 +134,47 @@ public class MedicineActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MedicineActivity.this, PrescriptionActivity.class);
-                Log.d(TAG, "Medicine: " + medicineAutoComplete.getText().toString());
-                intent.putExtra("medicine", medicineAutoComplete.getText().toString());
+
+                Bundle bundle = getIntent().getExtras();
+
+                if (bundle != null) {
+                    Intent intent = new Intent(MedicineActivity.this, PrescriptionActivity.class);
+
+                    Log.d(TAG, "patientKey " + bundle.getString("patientKey"));
+                    Log.d(TAG, "patName " + bundle.getString("patient"));
+                    intent.putExtra("patientKey", bundle.getString("patientKey"));
+                    intent.putExtra("patient", bundle.getString("patient"));
+
+                    Log.d(TAG, "Medicine: " + medicineAutoComplete.getText().toString());
+                    intent.putExtra("medicine", medicineAutoComplete.getText().toString());
 
 
-                if (duration.equals("Até o desaparecimento dos sintomas")) {
-                    intent.putExtra("duration", duration);
-                    Log.d(TAG, "duration: " + duration);
-                } else {
-                    intent.putExtra("duration", String.valueOf(daysPicker.getValue()));
-                    Log.d(TAG, "duration: " + String.valueOf(daysPicker.getValue()));
-                }
-                Log.d(TAG, "frequency: " +String.valueOf(freqPicker.getValue()));
-                intent.putExtra("frequency", String.valueOf(freqPicker.getValue()));
+                    if (duration.equals("Até o desaparecimento dos sintomas")) {
+                        intent.putExtra("duration", duration);
+                        Log.d(TAG, "duration: " + duration);
+                    } else {
+                        intent.putExtra("duration", String.valueOf(daysPicker.getValue()));
+                        Log.d(TAG, "duration: " + String.valueOf(daysPicker.getValue()));
+                    }
+                    Log.d(TAG, "frequency: " +String.valueOf(freqPicker.getValue()));
+                    intent.putExtra("frequency", String.valueOf(freqPicker.getValue()));
 
-                Log.d(TAG, "via: " +String.valueOf(viaSpinner.getSelectedItem()));
-                intent.putExtra("via", String.valueOf(viaSpinner.getSelectedItem()));
+                    Log.d(TAG, "via: " +String.valueOf(viaSpinner.getSelectedItem()));
+                    intent.putExtra("via", String.valueOf(viaSpinner.getSelectedItem()));
 
-                Log.d(TAG, "obs: " +obsEditText.getText().toString());
-                intent.putExtra("obs", obsEditText.getText().toString());
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivityIfNeeded(intent, 0);
-                finish();
+                    Log.d(TAG, "obs: " +obsEditText.getText().toString());
+                    intent.putExtra("obs", obsEditText.getText().toString());
+                    intent.putExtra("activity", "item");
+                    Log.d(TAG, "activity: " + "item");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivityIfNeeded(intent, 0);
+                    finish();
 //                startActivity(intent);
+                }
+
+
             }
         });
-    }
-
-    private void chooseFrequency() {
-        freqDialogBuilder = new AlertDialog.Builder(this);
-        final View view = getLayoutInflater().inflate(R.layout.frequency, null);
-        freqPicker = (NumberPicker) view.findViewById(R.id.frequencyPickerID);
-        each = (TextView) view.findViewById(R.id.eachHourID);
-        hourS = (TextView) view.findViewById(R.id.hourSID);
-        okFreq = (TextView) view.findViewById(R.id.okFreqID);
-
-        freqPicker.setMinValue(0);
-        freqPicker.setMaxValue(24);
-        freqPicker.setWrapSelectorWheel(true);
-        freqPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                frequenceBtn.setText("A cada " + newVal + " hora(s)");
-                Log.d(TAG, "FREQUENCY PICKER: " +newVal);
-            }
-        });
-
-        freqDialogBuilder.setView(view);
-        freqDialog = freqDialogBuilder.create();
-        freqDialog.show();
     }
 
     private void chooseDaysQty(View v) {
@@ -218,6 +210,30 @@ public class MedicineActivity extends AppCompatActivity {
         });
     }
 
+    private void chooseFrequency() {
+        freqDialogBuilder = new AlertDialog.Builder(this);
+        final View view = getLayoutInflater().inflate(R.layout.frequency, null);
+        freqPicker = (NumberPicker) view.findViewById(R.id.frequencyPickerID);
+        each = (TextView) view.findViewById(R.id.eachHourID);
+        hourS = (TextView) view.findViewById(R.id.hourSID);
+        okFreq = (TextView) view.findViewById(R.id.okFreqID);
+
+        freqPicker.setMinValue(0);
+        freqPicker.setMaxValue(24);
+        freqPicker.setWrapSelectorWheel(true);
+        freqPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                frequenceBtn.setText("A cada " + newVal + " hora(s)");
+                Log.d(TAG, "FREQUENCY PICKER: " +newVal);
+            }
+        });
+
+        freqDialogBuilder.setView(view);
+        freqDialog = freqDialogBuilder.create();
+        freqDialog.show();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -234,22 +250,6 @@ public class MedicineActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void getMedicines(DataSnapshot dataSnapshot) {
-
-        medicineList = new ArrayList<>();
-        ArrayList<String> meds = new ArrayList<String>();
-
-        for (DataSnapshot snap : dataSnapshot.getChildren()) {
-            Medicine medicine = snap.getValue(Medicine.class);
-            Log.d(TAG, "PATIENT NAME: " + medicine.getMedicament());
-            meds.add(medicine.getMedicament());
-            medicineList.add(medicine);
-        }
-
-        ArrayAdapter<String> medicineAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, meds);
-        medicineAutoComplete.setAdapter(medicineAdapter);
     }
 
     public void onRadioButtonClicked(View view) {
@@ -280,4 +280,21 @@ public class MedicineActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    private void getMedicines(DataSnapshot dataSnapshot) {
+
+        medicineList = new ArrayList<>();
+        ArrayList<String> meds = new ArrayList<String>();
+
+        for (DataSnapshot snap : dataSnapshot.getChildren()) {
+            Medicine medicine = snap.getValue(Medicine.class);
+            Log.d(TAG, "PATIENT NAME: " + medicine.getMedicament());
+            meds.add(medicine.getMedicament());
+            medicineList.add(medicine);
+        }
+
+        ArrayAdapter<String> medicineAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, meds);
+        medicineAutoComplete.setAdapter(medicineAdapter);
+    }
+
 }

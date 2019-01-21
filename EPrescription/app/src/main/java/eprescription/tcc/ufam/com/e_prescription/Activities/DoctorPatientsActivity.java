@@ -46,6 +46,7 @@ public class DoctorPatientsActivity extends AppCompatActivity {
     private AutoCompleteTextView patientName;
     private Button advance;
 
+    private List<String> names;
     private List<Patient> patientList;
     private List<PrescriptionItem> itemList;
     private String doctorName;
@@ -86,11 +87,18 @@ public class DoctorPatientsActivity extends AppCompatActivity {
         advance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!patientName.equals("")) {
-                    Intent intent = new Intent(DoctorPatientsActivity.this, DocPatientActionActivity.class);
-                    intent.putExtra("patient", patientName.getText().toString());
-                    Log.d(TAG, "Patient " + patientName.getText());
-                    startActivity(intent);
+                String dPatientName = patientName.getText().toString();
+                if (!dPatientName.matches("")) {
+                    // TODO Check if patient is registered on app before going to next activity
+                    if (names.contains(dPatientName)) {
+                        Intent intent = new Intent(DoctorPatientsActivity.this, DocPatientActionActivity.class);
+                        intent.putExtra("patient", patientName.getText().toString());
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(DoctorPatientsActivity.this,"Paciente não registrado", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(DoctorPatientsActivity.this,"Insira o nome do paciente", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -139,7 +147,7 @@ public class DoctorPatientsActivity extends AppCompatActivity {
 
     private void getPatientList(DataSnapshot dataSnapshot) {
 
-        List<String> names = new ArrayList<String>();
+        names = new ArrayList<String>();
         patientList = new ArrayList<>();
 
         for (DataSnapshot snap: dataSnapshot.getChildren()) {
