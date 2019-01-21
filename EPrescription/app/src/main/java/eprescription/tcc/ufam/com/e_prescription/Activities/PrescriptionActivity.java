@@ -179,7 +179,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         }
     }
 
-    private void getPatientInfo(DataSnapshot dataSnapshot) {
+    private void getDoctorInfo(DataSnapshot dataSnapshot) {
         for (DataSnapshot snap : dataSnapshot.getChildren()) {
             Doctor doctor = snap.getValue(Doctor.class);
             Log.d(TAG, "Doctor Name: " + doctor.getFirstName());
@@ -229,6 +229,18 @@ public class PrescriptionActivity extends AppCompatActivity {
 
                         }
                     });
+
+            mDocRef.orderByKey().equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    getDoctorInfo(dataSnapshot);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
         medicineRecycler.setHasFixedSize(true);
         medicineRecycler.setLayoutManager(new LinearLayoutManager(this));

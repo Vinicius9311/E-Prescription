@@ -32,7 +32,7 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
     /*
         Activity to show patient prescriptions on Patient View
      */
-    private static final String TAG = "PatientPrescription";
+    private static final String TAG = "PatPrescriptionList";
     private TextView myPrescription;
     private RecyclerView prescRecycler;
     private PatientPrescriptionAdapter prescriptionAdapter;
@@ -121,6 +121,7 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
         for (DataSnapshot snap : dataSnapshot.getChildren()) {
             for (DataSnapshot childSnap : snap.getChildren()) {
                 PatientPrescription patientPrescription = childSnap.getValue(PatientPrescription.class);
+                Log.d(TAG, "Doctor Name: " + patientPrescription.getDoctorName());
                 Log.d(TAG, "DataSnapshot: " + childSnap);
                 Log.d(TAG, "PrescriptionID: " + patientPrescription.getPrescriptionID());
                 patientPrescriptions.add(patientPrescription);

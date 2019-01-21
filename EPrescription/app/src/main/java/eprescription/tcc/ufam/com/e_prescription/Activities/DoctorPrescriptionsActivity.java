@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Adapter.DoctorPrescriptionsAdapter;
@@ -84,6 +85,32 @@ public class DoctorPrescriptionsActivity extends AppCompatActivity {
             }
         };
 
+//        mRootRef.child("users")
+//                .child("doctors")
+//                .equalTo(userID)
+//                .addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        for (DataSnapshot snap : dataSnapshot.getChildren()) {
+//                            Log.d(TAG, "ENTROU " + snap);
+//
+//                            PatientPrescription patientPrescription = snap.getValue(PatientPrescription.class);
+//                            Log.d(TAG, "Doctor Name: " + patientPrescription.getDoctorName());
+//                            String doctor = "Dr(a). " + patientPrescription.getDoctorName();
+//                            docName.setText(doctor);
+//                            java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
+//                            String FormatDate = "Data prescrita: " + dateFormat.format(new Date(Long.parseLong(patientPrescription.getDatePrescripted())).getTime());
+//                            datePresc.setText(FormatDate);
+//                            String description = "Descrição: " + patientPrescription.getDescription();
+//                            descPresc.setText(description);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
     }
 
     @Override

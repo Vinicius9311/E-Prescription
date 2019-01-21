@@ -132,6 +132,7 @@ public class PatientPrescriptionActivity extends AppCompatActivity {
                                 PatientPrescription patientPrescription = snap.getValue(PatientPrescription.class);
                                 Log.d(TAG, "Doctor Name: " + patientPrescription.getDoctorName());
                                 String doctor = "Dr(a). " + patientPrescription.getDoctorName();
+                                Log.d(TAG, "Doctor: " + doctor);
                                 docName.setText(doctor);
                                 java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
                                 String FormatDate = "Data prescrita: " + dateFormat.format(new Date(Long.parseLong(patientPrescription.getDatePrescripted())).getTime());
