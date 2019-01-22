@@ -30,6 +30,7 @@ public class NotificationUpdate extends BroadcastReceiver {
     private String med;
     private String freq;
     private String dur;
+    private String obs;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -47,9 +48,11 @@ public class NotificationUpdate extends BroadcastReceiver {
             med = bundle.getString("medicine");
             freq = bundle.getString("frequency");
             dur = bundle.getString("duration");
+            obs = bundle.getString("observation");
             Log.d(TAG, "medicine: " + bundle.getString("medicine"));
             Log.d(TAG, "frequency: " + bundle.getString("frequency"));
             Log.d(TAG, "duration: " + bundle.getString("duration"));
+            Log.d(TAG, "observation: " + bundle.getString("observation"));
         }
 
         simpleNotification(context);
@@ -74,9 +77,9 @@ public class NotificationUpdate extends BroadcastReceiver {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentTitle(context.getString(R.string.medicine_time_title))
-                .setContentText(med)
+                .setContentText(med + "\n\n" + obs)
                 .setStyle(new NotificationCompat.BigTextStyle()
-                    .bigText(context.getString(R.string.medicine_time_title)))
+                    .bigText(med + "\n\n" + obs))
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true);
@@ -84,6 +87,8 @@ public class NotificationUpdate extends BroadcastReceiver {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(notificationID, mBuilder.build());
         Log.d(TAG, "user signed in");
+        Log.d(TAG, "med: " + med);
+
     }
 
     private void createNotificationChannel(String channel_id, Context context) {

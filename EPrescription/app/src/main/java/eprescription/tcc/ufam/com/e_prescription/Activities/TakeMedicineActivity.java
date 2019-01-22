@@ -37,6 +37,7 @@ public class TakeMedicineActivity extends AppCompatActivity {
     private TextView medicine;
     private TextView frequency;
     private TextView duration;
+    private TextView observation;
     private TextView initialDay;
     private TextView initialHour;
     private Button setAlarmButton;
@@ -46,6 +47,7 @@ public class TakeMedicineActivity extends AppCompatActivity {
     private String med;
     private String freq;
     private String dur;
+    private String obs;
 
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
@@ -58,6 +60,7 @@ public class TakeMedicineActivity extends AppCompatActivity {
         medicine = (TextView) findViewById(R.id.medName);
         frequency = (TextView) findViewById(R.id.freqQtyID);
         duration = (TextView) findViewById(R.id.durNameID);
+        observation = (TextView) findViewById(R.id.observationId);
         setAlarmButton = (Button) findViewById(R.id.finishDateID);
         timePicker = (TimePicker) findViewById(R.id.timePicker);
 
@@ -70,14 +73,17 @@ public class TakeMedicineActivity extends AppCompatActivity {
             med = bundle.getString("medicine");
             freq = bundle.getString("frequency");
             dur = bundle.getString("duration");
+            obs = bundle.getString("observation");
             Log.d(TAG, "medicine: " + med);
             Log.d(TAG, "frequency: " + freq);
             Log.d(TAG, "duration: " + dur);
+            Log.d(TAG, "observation: " + obs);
         }
 
         medicine.setText(bundle.getString("medicine"));
         frequency.setText("A cada " + bundle.getString("frequency")+ " hora(s)");
         duration.setText("Durante " + bundle.getString("duration") + " dias");
+        observation.setText(obs);
 
         setAlarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,10 +142,12 @@ public class TakeMedicineActivity extends AppCompatActivity {
         intent.putExtra("frequency", freq);
         intent.putExtra("duration", dur);
         intent.putExtra("repetition", repetition);
+        intent.putExtra("observation", obs);
         Log.d(TAG, "medicine: " + med);
         Log.d(TAG, "frequency: " + freq);
         Log.d(TAG, "duration: " + dur);
         Log.d(TAG, "repetition: " + repetition);
+        Log.d(TAG, "observation: " + obs);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TakeMedicineActivity.this, 0, intent, 0);
 //        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);

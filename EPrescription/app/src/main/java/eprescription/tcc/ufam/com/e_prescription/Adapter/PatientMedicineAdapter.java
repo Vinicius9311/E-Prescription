@@ -104,6 +104,7 @@ public class PatientMedicineAdapter extends RecyclerView.Adapter<PatientMedicine
                     intent.putExtra("medicine", prescriptionItem.getMedicament());
                     intent.putExtra("frequency", prescriptionItem.getFrequency());
                     intent.putExtra("duration", prescriptionItem.getDuration());
+                    intent.putExtra("observation", prescriptionItem.getObservation());
                     ctx.startActivity(intent);
 
                 }

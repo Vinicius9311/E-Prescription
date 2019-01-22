@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -96,14 +95,15 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="TextView"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/durID" />
 
             <TextView
                 android:id="@+id/pickTimeTextID"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="379dp"
+                android:layout_height="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="8dp"
@@ -111,8 +111,9 @@
                 android:text="@string/pick_hour"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/durNameID" />
+                app:layout_constraintTop_toBottomOf="@+id/observationId" />
 
             <Button
                 android:id="@+id/finishDateID"
@@ -124,8 +125,10 @@
                 android:text="@string/finish_prescription"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/timePicker" />
+                app:layout_constraintTop_toBottomOf="@+id/timePicker"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TimePicker
                 android:id="@+id/timePicker"
@@ -137,6 +140,32 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/pickTimeTextID"></TimePicker>
+
+            <TextView
+                android:id="@+id/observationID"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/obs"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/durNameID" />
+
+            <TextView
+                android:id="@+id/observationId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/observationID" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
