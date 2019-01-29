@@ -88,7 +88,6 @@ public class NotificationUpdate extends BroadcastReceiver {
         notificationManager.notify(notificationID, mBuilder.build());
         Log.d(TAG, "user signed in");
         Log.d(TAG, "med: " + med);
-
     }
 
     private void createNotificationChannel(String channel_id, Context context) {
