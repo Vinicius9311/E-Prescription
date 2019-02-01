@@ -70,8 +70,10 @@ public class NotificationUpdate extends BroadcastReceiver {
         // Todo Pending intent to add a tap action
         // TODO https://developer.android.com/training/notify-user/build-notification#java
         Intent intent = new Intent(context, NotificationMedicineActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Log.d(TAG, "medmed: " + med);
         intent.putExtra("med", med);
+        intent.putExtra("table", 0);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
@@ -80,14 +82,12 @@ public class NotificationUpdate extends BroadcastReceiver {
                 .setContentText(med + "\n\n" + obs)
                 .setStyle(new NotificationCompat.BigTextStyle()
                     .bigText(med + "\n\n" + obs))
-                .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(notificationID, mBuilder.build());
-        Log.d(TAG, "user signed in");
-        Log.d(TAG, "med: " + med);
     }
 
     private void createNotificationChannel(String channel_id, Context context) {

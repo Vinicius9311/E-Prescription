@@ -182,4 +182,5 @@
     <string name="no_medicines">Nenhum Medicamento adicionado</string>
     <string name="medicine_time_title">Hora de tomar remédio</string>
     <string name="confirm">Confirmar</string>
+    <string name="zerozero">00:00</string>
 </resources>

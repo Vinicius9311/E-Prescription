@@ -3,6 +3,7 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,7 +33,7 @@ public class TakeMedicineActivity extends AppCompatActivity {
 
     private static final String TAG = "TAKEMEDICINE";
     private DatePicker datePicker;
-    private TimePicker timePicker;
+    private TextView timePicker;
     private Button okButton;
     private TextView medicine;
     private TextView frequency;
@@ -48,6 +49,7 @@ public class TakeMedicineActivity extends AppCompatActivity {
     private String freq;
     private String dur;
     private String obs;
+    private int mHour, mMinute;
 
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
@@ -62,7 +64,7 @@ public class TakeMedicineActivity extends AppCompatActivity {
         duration = (TextView) findViewById(R.id.durNameID);
         observation = (TextView) findViewById(R.id.observationId);
         setAlarmButton = (Button) findViewById(R.id.finishDateID);
-        timePicker = (TimePicker) findViewById(R.id.timePicker);
+        timePicker = (TextView) findViewById(R.id.timeView);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -85,6 +87,32 @@ public class TakeMedicineActivity extends AppCompatActivity {
         duration.setText("Durante " + bundle.getString("duration") + " dias");
         observation.setText(obs);
 
+        timePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(TakeMedicineActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker1, int selectedHour, int selectedMinute) {
+                        mHour = selectedHour;
+                        mMinute = selectedMinute;
+                        if (mMinute >= 0 && mMinute <= 9) {
+                            timePicker.setText( selectedHour + ":0" + selectedMinute);
+                        } else {
+                            timePicker.setText( selectedHour + ":" + selectedMinute);
+                        }
+                        Log.d(TAG, "Hour: " + mHour);
+                        Log.d(TAG, "Minute: " + mMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
         setAlarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,14 +125,14 @@ public class TakeMedicineActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        BroadcastReceiver nu = new NotificationUpdate();
-        IntentFilter filter = new IntentFilter();
-        registerReceiver(nu, filter);
+//
+//        BroadcastReceiver nu = new NotificationUpdate();
+//        IntentFilter filter = new IntentFilter();
+//        registerReceiver(nu, filter);
     }
 
 
-    private void sendMyBroadcast(){
+    private void sendMyBroadcast() {
         Calendar calendar = Calendar.getInstance();
 
         if (Build.VERSION.SDK_INT >= 23) {
@@ -112,8 +140,8 @@ public class TakeMedicineActivity extends AppCompatActivity {
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH),
-                    timePicker.getHour(),
-                    timePicker.getMinute(),
+                    mHour,
+                    mMinute,
                     0
             );
         } else {
@@ -121,8 +149,8 @@ public class TakeMedicineActivity extends AppCompatActivity {
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH),
-                    timePicker.getCurrentHour(),
-                    timePicker.getCurrentMinute(),
+                    mHour,
+                    mMinute,
                     0
             );
         }
@@ -155,20 +183,20 @@ public class TakeMedicineActivity extends AppCompatActivity {
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * Long.parseLong(freq)*60, pendingIntent);
 
         if (Build.VERSION.SDK_INT >= 23) {
-            if (timePicker.getMinute() >= 0 && timePicker.getMinute()<=9) {
+            if (mMinute >= 0 && mMinute <= 9) {
                 Toast.makeText(TakeMedicineActivity.this,
-                        "Alarm set to " + timePicker.getHour() + ":0" + timePicker.getMinute(), Toast.LENGTH_SHORT).show();
+                        "Alarm set to " + mHour + ":0" + mMinute, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(TakeMedicineActivity.this,
-                        "Alarm set to " + timePicker.getHour() + ":" + timePicker.getMinute(), Toast.LENGTH_SHORT).show();
+                        "Alarm set to " + mHour + ":" + mMinute, Toast.LENGTH_SHORT).show();
             }
         } else {
-            if (timePicker.getCurrentMinute() >= 0 && timePicker.getCurrentMinute()<=9) {
+            if (mMinute >= 0 && mMinute <= 9) {
                 Toast.makeText(TakeMedicineActivity.this,
-                        "Alarm set to " + timePicker.getCurrentHour() + ":0" + timePicker.getCurrentMinute(), Toast.LENGTH_SHORT).show();
+                        "Alarm set to " + mHour + ":0" + mMinute, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(TakeMedicineActivity.this,
-                        "Alarm set to " + timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute(), Toast.LENGTH_SHORT).show();
+                        "Alarm set to " + mHour + ":" + mMinute, Toast.LENGTH_SHORT).show();
             }
         }
     }
