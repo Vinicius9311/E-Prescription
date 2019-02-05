@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ public class NotificationMedicineActivity extends AppCompatActivity {
 
     private String userID;
     private TextView medName;
+    private Button confirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class NotificationMedicineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification_medicine);
 
         medName = (TextView) findViewById(R.id.medNameID);
+        confirm = (Button) findViewById(R.id.confirmBtn);
 
         Bundle bundle = getIntent().getExtras();
 
@@ -43,6 +47,8 @@ public class NotificationMedicineActivity extends AppCompatActivity {
             medName.setText(bundle.getString("med/"));
         }
 
+        mDatabase = FirebaseDatabase.getInstance();
+        patMedRef = mDatabase.getReference().child("patientPrescriptionMedicine");
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         userID = mUser.getUid();
@@ -65,6 +71,13 @@ public class NotificationMedicineActivity extends AppCompatActivity {
         };
 
         // TODO See how to implement a way to user say that he has taken the medicine
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO add here event to set value of adhered medicine false
+
+            }
+        });
 
     }
 

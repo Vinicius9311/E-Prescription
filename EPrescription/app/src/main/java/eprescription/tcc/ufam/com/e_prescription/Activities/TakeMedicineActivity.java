@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +23,11 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -51,8 +57,12 @@ public class TakeMedicineActivity extends AppCompatActivity {
     private String obs;
     private int mHour, mMinute;
 
-    private AlarmManager alarmManager;
-    private PendingIntent alarmIntent;
+    private FirebaseDatabase database;
+    private DatabaseReference patMedRef;
+    private FirebaseUser mUser;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +75,29 @@ public class TakeMedicineActivity extends AppCompatActivity {
         observation = (TextView) findViewById(R.id.observationId);
         setAlarmButton = (Button) findViewById(R.id.finishDateID);
         timePicker = (TextView) findViewById(R.id.timeView);
+
+        database = FirebaseDatabase.getInstance();
+        patMedRef = database.getReference().child("patientPrescriptionMedicine");
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        userID = mUser.getUid();
+
+        Log.d(TAG, "userID: " + userID.toString());
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                if (user != null) {
+                    Toast.makeText(TakeMedicineActivity.this,"Email: " + user.getEmail() + "\nUserID: " + userID, Toast.LENGTH_LONG).show();
+                } else {
+                    // user is signed out
+                    Toast.makeText(TakeMedicineActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(TakeMedicineActivity.this, MainActivity.class));
+                }
+            }
+        };
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -133,6 +166,9 @@ public class TakeMedicineActivity extends AppCompatActivity {
 
 
     private void sendMyBroadcast() {
+
+        // TODO Write requisites to set a time alarm
+
         Calendar calendar = Calendar.getInstance();
 
         if (Build.VERSION.SDK_INT >= 23) {
@@ -171,6 +207,7 @@ public class TakeMedicineActivity extends AppCompatActivity {
         intent.putExtra("duration", dur);
         intent.putExtra("repetition", repetition);
         intent.putExtra("observation", obs);
+        intent.putExtra("userID", userID);
         Log.d(TAG, "medicine: " + med);
         Log.d(TAG, "frequency: " + freq);
         Log.d(TAG, "duration: " + dur);
@@ -199,72 +236,21 @@ public class TakeMedicineActivity extends AppCompatActivity {
                         "Alarm set to " + mHour + ":" + mMinute, Toast.LENGTH_SHORT).show();
             }
         }
+
+        patMedRef.child(userID).child(med).setValue(calendar.getTimeInMillis());
     }
 
-//    private void simpleNotification() {
-//
-//        String CHANNEL_ID = "my_channel";
-//        createNotificationChannel(CHANNEL_ID);
-//        int notificationID = 1;
-//
-//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-//                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-//                .setContentTitle("Test")
-//                .setContentText("Test")
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//
-//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-//        notificationManager.notify(notificationID, mBuilder.build());
-//        Log.d(TAG, "user signed in");
-//    }
-//
-//    private void createNotificationChannel(String channel_id) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            CharSequence name = getString(R.string.channel_name);
-//            String description = getString(R.string.channel_description);
-//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-//            NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
-//            channel.setDescription(description);
-//
-//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-//            notificationManager.createNotificationChannel(channel);
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
 
-    //    private void createCalendarPopUp() {
-//
-//        Calendar calendar = Calendar.getInstance();
-//        int mYear = calendar.get(Calendar.YEAR);
-//        int mMonth = calendar.get(Calendar.MONTH);
-//        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-//        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-//            @Override
-//            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-//                initialDay.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-//                fYear = year;
-//                fMonth = month;
-//                fDay = dayOfMonth;
-//            }
-//        }, mYear, mMonth, mDay);
-//        datePickerDialog.show();
-//        simpleNotification();
-//
-//    }
-//
-//    private void createClockPopUp() {
-//
-//        Calendar calendar = Calendar.getInstance();
-//        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-//        int mMinute = calendar.get(Calendar.MINUTE);
-//
-//        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-//            @Override
-//            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//                initialHour.setText(hourOfDay + ":" + minute);
-//                fHour = hourOfDay;
-//                fMinute = minute;
-//            }
-//        }, hour, mMinute, true);
-//        timePickerDialog.show();
-//    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
 }

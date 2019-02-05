@@ -19,6 +19,9 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.HashMap;
 
 import eprescription.tcc.ufam.com.e_prescription.Activities.NotificationMedicineActivity;
@@ -31,6 +34,10 @@ public class NotificationUpdate extends BroadcastReceiver {
     private String freq;
     private String dur;
     private String obs;
+    private String userID;
+
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -39,6 +46,9 @@ public class NotificationUpdate extends BroadcastReceiver {
 //        MediaPlayer mediaPlayer = MediaPlayer.create(context, Settings.System.DEFAULT_RINGTONE_URI);
 //        mediaPlayer.start();
         Bundle bundle = intent.getExtras();
+
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference();
 
         if (bundle != null) {
             HashMap<String, String> presc = new HashMap<>();
@@ -49,10 +59,12 @@ public class NotificationUpdate extends BroadcastReceiver {
             freq = bundle.getString("frequency");
             dur = bundle.getString("duration");
             obs = bundle.getString("observation");
+            userID = bundle.getString("userID");
             Log.d(TAG, "medicine: " + bundle.getString("medicine"));
             Log.d(TAG, "frequency: " + bundle.getString("frequency"));
             Log.d(TAG, "duration: " + bundle.getString("duration"));
             Log.d(TAG, "observation: " + bundle.getString("observation"));
+            Log.d(TAG, "userID: " + bundle.getString("userID"));
         }
 
         simpleNotification(context);
@@ -65,12 +77,10 @@ public class NotificationUpdate extends BroadcastReceiver {
         createNotificationChannel(CHANNEL_ID, context);
         int notificationID = 1;
 
-        String medication[] = med.split(" ", 2);
+        // TODO add here event to set value of adhered medicine false
+        reference.child("test").setValue(true);
 
-        // Todo Pending intent to add a tap action
-        // TODO https://developer.android.com/training/notify-user/build-notification#java
         Intent intent = new Intent(context, NotificationMedicineActivity.class);
-        Log.d(TAG, "medmed: " + med);
         intent.putExtra("med", med);
         intent.putExtra("table", 0);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -84,7 +94,7 @@ public class NotificationUpdate extends BroadcastReceiver {
                     .bigText(med + "\n\n" + obs))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
+                .setAutoCancel(false);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(notificationID, mBuilder.build());

@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import eprescription.tcc.ufam.com.e_prescription.Adapter.PatientPrescriptionAdapter;
@@ -125,6 +126,7 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
                 Log.d(TAG, "DataSnapshot: " + childSnap);
                 Log.d(TAG, "PrescriptionID: " + patientPrescription.getPrescriptionID());
                 patientPrescriptions.add(patientPrescription);
+                Collections.reverse(patientPrescriptions);
             }
 
             prescRecycler.setHasFixedSize(true);
