@@ -35,6 +35,7 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
      */
     private static final String TAG = "PatPrescriptionList";
     private TextView myPrescription;
+    private TextView noMeds;
     private RecyclerView prescRecycler;
     private PatientPrescriptionAdapter prescriptionAdapter;
     private List<PatientPrescription> patientPrescriptions;
@@ -56,6 +57,7 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
 
         patientPrescriptions = new ArrayList<>();
         myPrescription = (TextView) findViewById(R.id.myPrescID);
+        noMeds = (TextView) findViewById(R.id.emptyListID);
         progressBar = (ProgressBar) findViewById(R.id.prescsProgressBar);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -129,11 +131,16 @@ public class PatientPrescriptionListsActivity extends AppCompatActivity {
                 Collections.reverse(patientPrescriptions);
             }
 
-            prescRecycler.setHasFixedSize(true);
-            prescRecycler.setLayoutManager(new LinearLayoutManager(this));
-            prescriptionAdapter = new PatientPrescriptionAdapter(this, patientPrescriptions);
-            prescRecycler.setAdapter(prescriptionAdapter);
-            prescriptionAdapter.notifyDataSetChanged();
+            if (patientPrescriptions.isEmpty()) {
+                noMeds.setVisibility(View.VISIBLE);
+            } else {
+                noMeds.setVisibility(View.INVISIBLE);
+                prescRecycler.setHasFixedSize(true);
+                prescRecycler.setLayoutManager(new LinearLayoutManager(this));
+                prescriptionAdapter = new PatientPrescriptionAdapter(this, patientPrescriptions);
+                prescRecycler.setAdapter(prescriptionAdapter);
+                prescriptionAdapter.notifyDataSetChanged();
+            }
         }
         Log.d(TAG, "ITEM COUNT: " + patientPrescriptions.size());
         progressBar.setVisibility(View.GONE);

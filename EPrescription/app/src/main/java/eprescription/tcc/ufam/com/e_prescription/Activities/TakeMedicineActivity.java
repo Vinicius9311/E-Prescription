@@ -90,10 +90,13 @@ public class TakeMedicineActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
-                    Toast.makeText(TakeMedicineActivity.this,"Email: " + user.getEmail() + "\nUserID: " + userID, Toast.LENGTH_LONG).show();
+                    Toast.makeText(TakeMedicineActivity.this,
+                            "Email: " + user.getEmail() + "\nUserID: " + userID,
+                            Toast.LENGTH_LONG).show();
                 } else {
                     // user is signed out
-                    Toast.makeText(TakeMedicineActivity.this,"Not Signed In", Toast.LENGTH_LONG).show();
+                    Toast.makeText(TakeMedicineActivity.this,
+                            "Not Signed In", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(TakeMedicineActivity.this, MainActivity.class));
                 }
             }
@@ -217,7 +220,11 @@ public class TakeMedicineActivity extends AppCompatActivity {
 //        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         getBaseContext().sendBroadcast(intent);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * Long.parseLong(freq)*60, pendingIntent);
+        alarmManager.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                1000 * 60 * Long.parseLong(freq)*60,
+                pendingIntent);
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (mMinute >= 0 && mMinute <= 9) {
@@ -237,7 +244,9 @@ public class TakeMedicineActivity extends AppCompatActivity {
             }
         }
 
-        patMedRef.child(userID).child(med).setValue(calendar.getTimeInMillis());
+//        patMedRef.child(userID).child(med).setValue(calendar.getTimeInMillis());
+        patMedRef.child(userID).child(med).setValue(true);
+
     }
 
     @Override

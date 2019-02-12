@@ -75,6 +75,8 @@ public class NotificationMedicineActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO add here event to set value of adhered medicine false
+//                patMedRef.child(userID).child(med).setValue(calendar.getTimeInMillis());
+                patMedRef.child(userID).setValue(false);
 
             }
         });

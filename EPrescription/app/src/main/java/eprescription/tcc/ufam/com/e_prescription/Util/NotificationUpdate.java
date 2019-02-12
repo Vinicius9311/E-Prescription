@@ -78,7 +78,7 @@ public class NotificationUpdate extends BroadcastReceiver {
         int notificationID = 1;
 
         // TODO add here event to set value of adhered medicine false
-        reference.child("test").setValue(true);
+        reference.child("patientPrescriptionMedicine").child(med).child(userID).setValue(false);
 
         Intent intent = new Intent(context, NotificationMedicineActivity.class);
         intent.putExtra("med", med);
